@@ -1,0 +1,77 @@
+<!-- 
+Il codice contenuto in questo file va copia incollato in un panel di tipo text
+in modalita' html
+-->
+
+<!-- Stile per rendere la visualizzazione dei json piu' gradevole -->
+<style>			
+ pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
+ .string { color: green; }
+ .number { color: darkorange; }
+ .boolean { color: blue; }
+ .null { color: magenta; }
+ .key { color: red; }
+</style>
+
+<!-- Bottoni utili e div in cui inserire il json -->
+<a href="#" onclick="displayJSON()">Display JSON</a>
+<a href="#" onclick="hideJSON()">Hide JSON</a>
+<div id="container"></div>
+
+<script type="text/javascript">
+  let isDisplayed=false;	//mantiene lo stato del panel (se sta mostrando o meno i JSON)
+	
+  //permette l'applicazione dello stile (inserendo dell'html usato dal css)
+  function syntaxHighlight(json) {
+      json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+          var cls = 'number';
+          if (/^"/.test(match)) {
+              if (/:$/.test(match)) {
+                  cls = 'key';
+              } else {
+                  cls = 'string';
+              }
+          } else if (/true|false/.test(match)) {
+              cls = 'boolean';
+          } else if (/null/.test(match)) {
+              cls = 'null';
+          }
+          return '<span class="' + cls + '">' + match + '</span>';
+      });
+  }
+  
+  //dato un url, esegue un fetch e restituisce un array di stringhe rappresentanti i JSON ottenuti
+  async function getJSON(url){
+    try {
+      const response  = await fetch(url);
+      const json = await response.json();
+      const data = [];
+      for(i=0;i<json.length;i++){
+        data[i] = JSON.stringify(json[i], null, 2);
+      }
+      return data;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  
+  //chiede e mostra i JSON
+  async function displayJSON(){
+	url = 'https://jsonplaceholder.typicode.com/posts';
+    if(!isDisplayed){
+      let data = await getJSON(url);
+      for(i=0;i<data.length&&!isDisplayed;i++){
+        document.getElementById("container").insertAdjacentHTML("beforeend", "<pre>"+syntaxHighlight(data[i])+"</pre>");
+      }
+      isDisplayed=true;
+    }
+  }
+  
+  //nasconde i JSON
+  function hideJSON(){
+    isDisplayed=false;
+    document.getElementById("container").innerHTML = "";
+  }
+
+</script>
