@@ -20,36 +20,22 @@ queryNum.cpt = [
     [0.1, 0.1, 0.6, 0.2] // probability for each value of queryNum given activeUsers >= 500
 ];
 cpuLoad.cpt = [
-    [0.8, 0.2, 0, 0],
-    [0.2, 0.6, 0.15, 0.05],
-    [0.1, 0.2, 0.5, 0.2],
-    [0, 0.05, 0.55, 0.4]
+    [0.8, 0.2, 0],
+    [0.2, 0.6, 0.2],
+    [0.1, 0.2, 0.7],
+    [0, 0.25, 0.75]
 ];
 queriesSucceed.setCpt([
     [1, 0], [0.9, 0.1], [0.6, 0.4], [0.2, 0.8],
     [1, 0], [0.8, 0.2], [0.5, 0.5], [0.1, 0.9],
     [0.5, 0.5], [0.4, 0.6], [0.1, 0.9], [0, 1]
 ]);
-/*queriesSucceed.cpt = [
-    [
-        [1, 0], [0.9, 0.1], [0.6, 0.4], [0.2, 0.8]
-    ],
-    [
-        [1, 0], [0.8, 0.2], [0.5, 0.5], [0.1, 0.9]
-    ],
-    [
-        [0.5, 0.5], [0.4, 0.6], [0.1, 0.9], [0, 1]
-    ]
-];*/
 dbMonitor.saveSamples = true;
-dbMonitor.sample(5);
+dbMonitor.sample(1);
 console.log("STARTING OUTPUT");
-console.log(dbMonitor);
-console.log("-----------------------------------------------------------");
-console.log(queriesSucceed);
-console.log("-----------------------------------------------------------");
-console.log(queriesSucceed.cpt);
-console.log("-----------------------------------------------------------");
-console.log(dbMonitor);
-console.log("-----------------------------------------------------------");
+console.log(activeUsers.values[activeUsers.value]);
+console.log(cpuLoad.values[cpuLoad.value]);
+console.log(cpuLoad.value);
+console.log(queryNum.values[queryNum.value]);
+console.log(queriesSucceed.value);
 console.log("ENDING OUTPUT");
