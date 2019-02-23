@@ -270,3 +270,9 @@ TSWLatexianTemp*
 # End of https://www.gitignore.io/api/latex
 
 ProofOfConcept/atrevisi/node_modules/
+
+ProofOfConcept/barzrov/\.idea/
+
+ProofOfConcept/barzrov/*.js
+
+ProofOfConcept/barzrov/*.map

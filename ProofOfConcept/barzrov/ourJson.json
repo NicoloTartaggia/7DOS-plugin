@@ -1,0 +1,37 @@
+{
+    "nodes": [
+        {
+            "name": "Example",
+            "values": [
+                "0",
+                "1"
+            ],
+            "parents": [
+                "Example2"
+            ],
+            "cpt": [
+                [0.2, 0.8],
+                [0.8, 0.2]
+            ]
+        },
+        {
+            "name": "Example2",
+            "values": [
+                "0",
+                "1"
+            ],
+            "parents": [],
+            "cpt": [0.8, 0.2]
+        },
+        {
+            "name": "Example3",
+            "values": [
+                [0, 10],
+                [10, 50],
+                [50, 100]
+            ],
+            "parents": [],
+            "cpt": [0.8, 0.2]
+        }
+    ]
+}
