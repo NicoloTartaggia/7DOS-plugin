@@ -17,8 +17,8 @@ maryCalls.addParent(alarm);
 
 dbMonitor.reinit();
 
-burglary.cpt = [0.999, 0.001]; // burglary[false,true]
-earthquake.cpt = [0.998, 0.002]; //earthquake[false,true]
+burglary.cpt = [0, 1]; // burglary[false,true]
+earthquake.cpt = [0, 1]; //earthquake[false,true]
 
 alarm.setCpt ( [
     [0.999, 0.001], // probability for each value of alarm given burglary=false && earthquake=false
@@ -27,17 +27,17 @@ alarm.setCpt ( [
     [0.05, 0.95], // probability for each value of alarm given burglary=true && earthquake=true
 ]);
 johnCalls.cpt = [
-    [0.05, 0.95], // alarm=false
-    [0.9, 0.1], // alarm=true
+    [0.95, 0.05], // alarm=false
+    [0.1, 0.9], // alarm=true
 ];
 
 maryCalls.cpt = [
-    [0.01, 0.99], // alarm=false
-    [0.7, 0.3] // alarm=true
+    [0.99, 0.01], // alarm=false
+    [0.3, 0.7] // alarm=true
 ];
 
 dbMonitor.saveSamples = true;
-dbMonitor.sample(100000);
+dbMonitor.sample(1000000);
 
 console.log("STARTING OUTPUT");
 
