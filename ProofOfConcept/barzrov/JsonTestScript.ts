@@ -1,76 +1,191 @@
 import * as jsbayes from "../../jsbayesLibrary/jsbayes";
-
-// ---
-// Json file import
-// ---
-//import small_json from "./ourJson.json";
-import big_network from "./bigNetwork.json";
-
-console.log("Starting script");
-console.log("---");
+import * as fs from "fs";
 
 // ---
 // Script di test lettura da Json
 // ---
 
-let g = jsbayes.newGraph();
-console.log("newGraph done");
+//-----------------------------------------
+//-----------------------------------------
+//-----------------------------------------
+// Wrapper di test per i tipi di valori dei nodi nel json
 
-let nodes_hashmap = {};
-let samples_number = 1000000;
-let json_file = <any>big_network;
+class NodeValue {
+    private readonly name: string;
 
-//Creazione nodi leggendo i nomi dal json
-for (let i = 0; i < (json_file).nodes.length; i++) {
-    let name = (json_file).nodes[i].name;
-    nodes_hashmap[name] = g.addNode(name, (json_file).nodes[i].values);
-}
+    constructor(input_name: string) {
+        this.name = input_name;
+    }
 
-//Associazione parenti dei nodi
-for (let i = 0; i < (json_file).nodes.length; i++) {
-    let name = (json_file).nodes[i].name;
-    //Per ogni nodo leggo la sua lista di parenti
-    for (let k = 0; k < (json_file).nodes[i].parents.length; k++) {
-        let ParentName = (json_file).nodes[i].parents[k];
-        nodes_hashmap[name].addParent(nodes_hashmap[ParentName])
+    getName() {
+        return this.name;
     }
 }
 
-//Lettura tabelle cpt
-for (let i = 0; i < (json_file).nodes.length; i++) {
-    let name = (json_file).nodes[i].name;
-    nodes_hashmap[name].cpt = (json_file).nodes[i].cpt;
+class SingleValue extends NodeValue {
+    private readonly value: string;
+
+    constructor(input_name: string, input_value: string) {
+        super(input_name);
+        this.value = input_value
+    }
+
+    getValue() {
+        return this.value;
+    }
 }
 
-g.observe("n3", "1");
-g.sample(samples_number).then(function (result) {
-    console.log("Json result:" + result / samples_number);
-});
+class RangeValue extends NodeValue {
+    private readonly rangeMin: number;
+    private readonly rangeMax: number;
 
-console.log("Json sample called - " + samples_number);
+    constructor(input_name: string, input_rangeMin: number, input_rangeMax: number) {
+        super(input_name);
+        this.rangeMin = input_rangeMin;
+        this.rangeMax = input_rangeMax;
+    }
 
-// ---
-// Test rete fatta a mano
-// ---
+    getRangeMin() {
+        return this.rangeMin;
+    }
 
-let g2 = jsbayes.newGraph();
-let n1 = g2.addNode('n1', ['0', '1']);
-let n2 = g2.addNode('n2', ['0', '1']);
-let n3 = g2.addNode('n3', ['0', '1']);
+    getRangeMax() {
+        return this.rangeMax;
+    }
+}
 
-n3.addParent(n1);
-n3.addParent(n2);
+//-----------------------------------------
+//-----------------------------------------
+//-----------------------------------------
+// Wrapper di test per la rete Bayesiana
 
-n1.cpt = [0.2, 0.8]; //[ P(n1=0), P(n1=1) ]
-n2.cpt = [0.8, 0.2]; //[ P(n2=0), P(n2=1) ]
-n3.cpt = [
-    [[0.2, 0.8], [0.8, 0.2]],
-    [[0.2, 0.8], [0.8, 0.2]]
-];
+class Network_Node {
+    private readonly name: string;
+    private values: NodeValue[];
+    private cpt: [];
 
-g2.observe("n3", "1");
-g2.sample(samples_number).then(function (result) {
-    console.log("Manual result:" + result / samples_number);
-});
+    public constructor(input_name: string, input_values: NodeValue[], input_cpt: []) {
+        this.name = input_name;
+        this.values = input_values;
+        this.cpt = input_cpt;
+    }
 
-console.log("Manual sample called - " + samples_number);
+    public getStringValues() {
+        let returnString: string[] = [];
+        for (let i = 0; i < this.values.length; i++) {
+            returnString.push(this.values[i].getName());
+        }
+        return returnString;
+    }
+}
+
+class Network {
+    private readonly network: jsbayes;
+    private node_objects_dictionary: { [name: string]: Network_Node; } = {};
+    private node_dictionary: {} = {};
+
+    public constructor(json_filename: string = null) {
+        this.network = jsbayes.newGraph();
+
+        if (json_filename != null) {
+            this.buildNetworkFromJson(json_filename);
+        }
+    }
+
+    private checkIfNodeExist(node_name: string) {
+        return node_name in this.node_objects_dictionary;
+    }
+
+    public addNode(input_name: string, input_values: NodeValue[], input_cpt: []) {
+        let node = new Network_Node(input_name, input_values, input_cpt);
+        this.node_dictionary[input_name] = this.network.addNode(input_name, node.getStringValues());
+        this.node_dictionary[input_name].cpt = input_cpt;
+        this.node_objects_dictionary[input_name] = node;
+    }
+
+    public removeNode(input_name: string) {
+        //TODO
+    }
+
+    public createLink(node_name: string, node_parent_name: string) {
+        if (this.checkIfNodeExist(node_name)) {
+            if (this.checkIfNodeExist(node_parent_name)) {
+                this.node_dictionary[node_name].addParent(this.node_dictionary[node_parent_name])
+            } else {
+                throw new Error("The node called " + node_parent_name + " can't be found!");
+            }
+        } else {
+            throw new Error("The node called " + node_name + " can't be found!");
+        }
+    }
+
+    public removeLink(node_name: string, node_parent_name: string) {
+        //TODO
+    }
+
+    public observe(node_name: string, value: NodeValue) {
+        if (this.checkIfNodeExist(node_name)) {
+            if (this.node_objects_dictionary[node_name].getStringValues().includes(value.getName())) {
+                this.network.observe(node_name, value.getName());
+            } else {
+                throw new Error("The value is not valid for this node!");
+            }
+        } else {
+            throw new Error("The node called " + node_name + " can't be found!");
+        }
+    }
+
+    public unobserve(node_name: string) {
+        if (this.checkIfNodeExist(node_name)) {
+            this.network.unobserve(node_name);
+        } else {
+            throw new Error("The node called " + node_name + " can't be found!");
+        }
+    }
+
+    public sample(samples: number) {
+        this.network.sample(samples);
+    }
+
+    private buildNetworkFromJson(json_filename: string) {
+        if (!fs.existsSync(json_filename)) {
+            throw new Error("The file:" + json_filename + " can't be found!");
+        }
+        let json_file = JSON.parse(fs.readFileSync(json_filename, 'utf8'));
+
+        //Creazione nodi leggendo i nomi dal json e delle relative cpt
+        for (let i = 0; i < (json_file).nodes.length; i++) {
+            let name = (json_file).nodes[i].name;
+
+            let obj_values: NodeValue[] = [];
+            for (let k = 0; k < (json_file).nodes[i].values.length; k++) {
+                let current_value = (json_file).nodes[i].values[k];
+                if (current_value.type === "single") {
+                    obj_values.push(new SingleValue(current_value.name, current_value.value));
+                } else if (current_value.type === "range") {
+                    obj_values.push(new RangeValue(current_value.name, current_value.rangeMin, current_value.rangeMax));
+                }
+            }
+            this.addNode(name, obj_values, (json_file).nodes[i].cpt);
+        }
+
+        //Associazione parenti dei nodi
+        for (let i = 0; i < (json_file).nodes.length; i++) {
+            let name = (json_file).nodes[i].name;
+            //Per ogni nodo leggo la sua lista di parenti
+            for (let k = 0; k < (json_file).nodes[i].parents.length; k++) {
+                let ParentName = (json_file).nodes[i].parents[k];
+                this.createLink(name, ParentName);
+            }
+        }
+
+    }//end_buildNetworkFromJson
+}
+
+console.log("---");
+console.log("Starting script");
+let Network1 = new Network("./bigNetwork.json");
+let Network2 = new Network("./ourJson.json");
+console.log("Objects build done without errors");
+console.log("---");
+

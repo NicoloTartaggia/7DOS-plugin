@@ -276,3 +276,5 @@ ProofOfConcept/barzrov/\.idea/
 ProofOfConcept/barzrov/*.js
 
 ProofOfConcept/barzrov/*.map
+
+ProofOfConcept/barzrov/node_modules/

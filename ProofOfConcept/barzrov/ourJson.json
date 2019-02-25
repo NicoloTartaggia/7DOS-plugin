@@ -3,8 +3,16 @@
         {
             "name": "Example",
             "values": [
-                "0",
-                "1"
+                {
+                    "name": "False",
+                    "type": "single",
+                    "value": "0"
+                },
+                {
+                    "name": "True",
+                    "type": "single",
+                    "value": "1"
+                }
             ],
             "parents": [
                 "Example2"
@@ -17,8 +25,16 @@
         {
             "name": "Example2",
             "values": [
-                "0",
-                "1"
+                {
+                    "name": "False",
+                    "type": "single",
+                    "value": "0"
+                },
+                {
+                    "name": "True",
+                    "type": "single",
+                    "value": "1"
+                }
             ],
             "parents": [],
             "cpt": [0.8, 0.2]
@@ -26,9 +42,24 @@
         {
             "name": "Example3",
             "values": [
-                [0, 10],
-                [10, 50],
-                [50, 100]
+                {
+                    "name": "Low Range",
+                    "type": "range",
+                    "rangeMin": 0,
+                    "rangeMax": 10
+                },
+                {
+                    "name": "Normal Range",
+                    "type": "range",
+                    "rangeMin": 11,
+                    "rangeMax": 80
+                },
+                {
+                    "name": "Alert Range",
+                    "type": "range",
+                    "rangeMin": 81,
+                    "rangeMax": 100
+                }
             ],
             "parents": [],
             "cpt": [0.8, 0.2]

@@ -3,8 +3,16 @@
         {
             "name": "n1",
             "values": [
-                "0",
-                "1"
+                {
+                    "name": "False",
+                    "type": "single",
+                    "value": "0"
+                },
+                {
+                    "name": "True",
+                    "type": "single",
+                    "value": "1"
+                }
             ],
             "parents": [],
             "cpt": [0.2, 0.8]
@@ -12,8 +20,16 @@
         {
             "name": "n2",
             "values": [
-                "0",
-                "1"
+                {
+                    "name": "False",
+                    "type": "single",
+                    "value": "0"
+                },
+                {
+                    "name": "True",
+                    "type": "single",
+                    "value": "1"
+                }
             ],
             "parents": [],
             "cpt": [0.8, 0.2]
@@ -21,8 +37,16 @@
         {
             "name": "n3",
             "values": [
-                "0",
-                "1"
+                {
+                    "name": "False",
+                    "type": "single",
+                    "value": "0"
+                },
+                {
+                    "name": "True",
+                    "type": "single",
+                    "value": "1"
+                }
             ],
             "parents": ["n1", "n2"],
             "cpt": [
