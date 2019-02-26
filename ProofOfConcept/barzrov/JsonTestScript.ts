@@ -100,7 +100,7 @@ class Network {
         }
     }
 
-    private checkIfNodeExist(node_name: string) {
+    private checkIfNodeExist(node_name: string): boolean {
         return node_name in this.node_objects_dictionary;
     }
 
@@ -170,13 +170,13 @@ class Network {
         return this.network.sample(samples);
     }
 
-    private buildNetworkFromJson(json_filename: string) {
+    private buildNetworkFromJson(json_filename: string): void {
         if (!fs.existsSync(json_filename)) {
             throw new Error("The file:" + json_filename + " can't be found!");
         }
         let json_file = JSON.parse(fs.readFileSync(json_filename, 'utf8'));
 
-        //Creazione nodi leggendo i nomi dal json e delle relative cpt
+        //Creazione nodi leggendo i nomi e i valori dal json
         for (let i = 0; i < (json_file).nodes.length; i++) {
             let name = (json_file).nodes[i].name;
 
@@ -191,10 +191,11 @@ class Network {
                 }
             }
 
+            //Aggiungo il nodo alla rete
             this.addNode(name, obj_values, []);
         }
 
-        //Per ogni nodo leggo la sua lista di parenti
+        //Per ogni nodo leggo la sua lista di parenti e li collego
         for (let i = 0; i < (json_file).nodes.length; i++) {
             let name = (json_file).nodes[i].name;
             for (let k = 0; k < (json_file).nodes[i].parents.length; k++) {
@@ -203,7 +204,7 @@ class Network {
             }
         }
 
-        //Associazione parenti dei nodi
+        //Lettura cpt nodi
         for (let i = 0; i < (json_file).nodes.length; i++) {
             let name = (json_file).nodes[i].name;
             this.setNodeCpt(name, (json_file).nodes[i].cpt);
