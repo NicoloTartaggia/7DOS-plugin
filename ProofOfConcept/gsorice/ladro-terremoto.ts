@@ -1,6 +1,6 @@
 import "jsbayes";
 declare var require: any
-var jsbayes = require("C:/Users/trogd/git/7DOS-plugin/jsbayesLibrary/jsbayes"); //import jbayes
+var jsbayes = require("jsbayes"); //import jbayes
 //setting up a mock bayesian network
 let dbMonitor : JGraph = jsbayes.newGraph(); 
 let burglary : JNode = dbMonitor.addNode('burglary',  ['false', 'true']);
