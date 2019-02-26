@@ -62,9 +62,9 @@ class RangeValue extends NodeValue {
 class Network_Node {
     private readonly name: string;
     private values: NodeValue[];
-    private cpt: [];
+    private cpt: Array<Array<number>>;
 
-    public constructor(input_name: string, input_values: NodeValue[], input_cpt: []) {
+    public constructor(input_name: string, input_values: NodeValue[], input_cpt: Array<Array<number>>) {
         this.name = input_name;
         this.values = input_values;
         this.cpt = input_cpt;
@@ -76,6 +76,14 @@ class Network_Node {
             returnString.push(this.values[i].getName());
         }
         return returnString;
+    }
+
+    public setCpt(input_cpt: Array<Array<number>>) {
+        this.cpt = input_cpt;
+    }
+
+    public getCpt() {
+        return this.cpt;
     }
 }
 
@@ -96,11 +104,13 @@ class Network {
         return node_name in this.node_objects_dictionary;
     }
 
-    public addNode(input_name: string, input_values: NodeValue[], input_cpt: []) {
+    public addNode(input_name: string, input_values: NodeValue[], input_cpt: Array<Array<number>>) {
         let node = new Network_Node(input_name, input_values, input_cpt);
         this.node_dictionary[input_name] = this.network.addNode(input_name, node.getStringValues());
-        this.node_dictionary[input_name].cpt = input_cpt;
         this.node_objects_dictionary[input_name] = node;
+        if (input_cpt.length > 0) {
+            this.setNodeCpt(input_name, input_cpt);
+        }
     }
 
     public removeNode(input_name: string) {
@@ -143,6 +153,19 @@ class Network {
         }
     }
 
+    public setNodeCpt(node_name: string, input_cpt: Array<Array<number>>) {
+        if (this.checkIfNodeExist(node_name)) {
+            this.node_objects_dictionary[node_name].setCpt(input_cpt);
+            if (input_cpt.length == 1) {
+                this.node_dictionary[node_name].setCpt(input_cpt[0]);
+            } else {
+                this.node_dictionary[node_name].setCpt(input_cpt);
+            }
+        } else {
+            throw new Error("The node called " + node_name + " can't be found!");
+        }
+    }
+
     public sample(samples: number) {
         return this.network.sample(samples);
     }
@@ -157,6 +180,7 @@ class Network {
         for (let i = 0; i < (json_file).nodes.length; i++) {
             let name = (json_file).nodes[i].name;
 
+            //Per ogni nodo leggo la sua lista di possibili valori
             let obj_values: NodeValue[] = [];
             for (let k = 0; k < (json_file).nodes[i].values.length; k++) {
                 let current_value = (json_file).nodes[i].values[k];
@@ -166,17 +190,23 @@ class Network {
                     obj_values.push(new RangeValue(current_value.name, current_value.rangeMin, current_value.rangeMax));
                 }
             }
-            this.addNode(name, obj_values, (json_file).nodes[i].cpt);
+
+            this.addNode(name, obj_values, []);
+        }
+
+        //Per ogni nodo leggo la sua lista di parenti
+        for (let i = 0; i < (json_file).nodes.length; i++) {
+            let name = (json_file).nodes[i].name;
+            for (let k = 0; k < (json_file).nodes[i].parents.length; k++) {
+                let ParentName = (json_file).nodes[i].parents[k];
+                this.createLink(name, ParentName);
+            }
         }
 
         //Associazione parenti dei nodi
         for (let i = 0; i < (json_file).nodes.length; i++) {
             let name = (json_file).nodes[i].name;
-            //Per ogni nodo leggo la sua lista di parenti
-            for (let k = 0; k < (json_file).nodes[i].parents.length; k++) {
-                let ParentName = (json_file).nodes[i].parents[k];
-                this.createLink(name, ParentName);
-            }
+            this.setNodeCpt(name, (json_file).nodes[i].cpt);
         }
 
     }//end_buildNetworkFromJson
