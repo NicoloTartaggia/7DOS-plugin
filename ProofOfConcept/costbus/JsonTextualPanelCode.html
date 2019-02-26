@@ -16,10 +16,13 @@ in modalita' html
 <!-- Bottoni utili e div in cui inserire il json -->
 <a href="#" onclick="displayJSON()">Display JSON</a>
 <a href="#" onclick="hideJSON()">Hide JSON</a>
+<br />
+<input type="file" id="selectFiles" value="Import" />
 <div id="container"></div>
 
 <script type="text/javascript">
   let isDisplayed=false;	//mantiene lo stato del panel (se sta mostrando o meno i JSON)
+  
 	
   //permette l'applicazione dello stile (inserendo dell'html usato dal css)
   function syntaxHighlight(json) {
@@ -55,15 +58,50 @@ in modalita' html
       console.log(err);
     }
   }
+	//evento che si attiva ogni nuovo file importato
+	function onChange(event) {
+		var reader = new FileReader();
+		reader.onload = onReaderLoad;
+		reader.readAsText(event.target.files[0]);
+	}
+
+	//evento che si attiva al caricamento di un file
+	function onReaderLoad(event){
+		document.getElementById("container").innerHTML = ""; //svuoto il container
+        console.log(event.target.result);
+        var obj = JSON.parse(event.target.result);	//parsing del JSON
+		
+		for (var i = 0; i < obj.nodes.length; i++) { //costruisco la definizione della rete
+			var string = "";
+			var node = obj.nodes[i];
+			string = string.concat("Node: ", node.name, "\n\n Values: \n");
+			
+			for(var j = 0; j < node.values.length; j++){
+				var value = node.values[j];
+				string = string.concat("Name: ", value.name, "\n Type: ", value.type, "\n Value: ", value.value, "\n");
+			}
+			string = string.concat("\n Parents: \n");
+			for(var j = 0; j < node.parents.length; j++){
+				var parent = node.parents[j];
+				string = string.concat(parent, "\n ");
+			}
+			string = string.concat("\n CPT: \n ");
+			for(var j = 0; j < node.cpt.length; j++){
+				var cptValue = node.cpt[j];
+				string = string.concat("[",cptValue, "]\n");
+			}
+			
+			document.getElementById("container").insertAdjacentHTML("beforeend", "<pre>"+syntaxHighlight(string)+"</pre>");
+		}
+    }
+ 
+document.getElementById('selectFiles').addEventListener('change', onChange);
+	  
   
   //chiede e mostra i JSON
   async function displayJSON(){
-	url = 'https://jsonplaceholder.typicode.com/posts';
     if(!isDisplayed){
-      let data = await getJSON(url);
-      for(i=0;i<data.length&&!isDisplayed;i++){
-        document.getElementById("container").insertAdjacentHTML("beforeend", "<pre>"+syntaxHighlight(data[i])+"</pre>");
-      }
+	  document.getElementById("container").style.display = "inline";
       isDisplayed=true;
     }
   }
@@ -71,7 +109,7 @@ in modalita' html
   //nasconde i JSON
   function hideJSON(){
     isDisplayed=false;
-    document.getElementById("container").innerHTML = "";
+    document.getElementById("container").style.display = "none";
   }
 
 </script>
