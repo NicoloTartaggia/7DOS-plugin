@@ -1,0 +1,22 @@
+{
+  "type": "panel",
+  "name": "JSON Bayes",
+  "id": "grafana-json-bayes",
+  "info": {
+    "description": "Plugin for import Bayesian network from JSON file",
+    "author": {
+      "name": "7dos",
+      "url": "https://github.com/NicoloTartaggia/7DOS-plugin"
+    },
+    "keywords": [ ],
+    "logos": { },
+    "links": [ { "name": "GitHub repo", "url": "https://github.com/NicoloTartaggia/7DOS-plugin" }] ,
+    "screenshots": [ ],
+    "version": "0.0.1",
+    "updated": "2019-02-27"
+  },
+  "dependencies": {
+    "grafanaVersion": "4.1.1",
+    "plugins": [ ]
+  }
+}
