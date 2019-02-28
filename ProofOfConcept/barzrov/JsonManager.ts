@@ -11,7 +11,7 @@ abstract class NodeValue {
         this.name = input_name;
     }
 
-    getName() {
+    public getName() {
         return this.name;
     }
 
@@ -20,18 +20,18 @@ abstract class NodeValue {
      * return a string that represent the current node value in JSON object format
      * @returns Return a string that represent the NodeValue as a Json Object
      */
-    abstract getJsonValue(): string;
+    public abstract getJsonValue(): string;
 }
 
 export class SingleValue extends NodeValue {
     private readonly value: string;
 
-    constructor(input_name: string, input_value: string) {
+    public constructor(input_name: string, input_value: string) {
         super(input_name);
         this.value = input_value
     }
 
-    getValue() {
+    public getValue() {
         return this.value;
     }
 
@@ -39,7 +39,7 @@ export class SingleValue extends NodeValue {
      * Override - Function that return a string that represent the current SingleValue object in JSON object format
      * @returns Return a string that represent the SingleValue as a Json Object
      */
-    getJsonValue(): string {
+    public getJsonValue(): string {
         let json_string = "{";
         json_string = json_string.concat('"name": "' + this.getName() + '",');
         json_string = json_string.concat('"type": "single",');
@@ -53,17 +53,17 @@ export class RangeValue extends NodeValue {
     private readonly rangeMin: number;
     private readonly rangeMax: number;
 
-    constructor(input_name: string, input_rangeMin: number, input_rangeMax: number) {
+    public constructor(input_name: string, input_rangeMin: number, input_rangeMax: number) {
         super(input_name);
         this.rangeMin = input_rangeMin;
         this.rangeMax = input_rangeMax;
     }
 
-    getRangeMin(): number {
+    public getRangeMin(): number {
         return this.rangeMin;
     }
 
-    getRangeMax(): number {
+    public getRangeMax(): number {
         return this.rangeMax;
     }
 
@@ -71,7 +71,7 @@ export class RangeValue extends NodeValue {
      * Override - Function that return a string that represent the current RangeValue object in JSON object format
      * @returns Return a string that represent the RangeValue as a Json Object
      */
-    getJsonValue(): string {
+    public getJsonValue(): string {
         let json_string = "{";
         json_string = json_string.concat('"name": "' + this.getName() + '",');
         json_string = json_string.concat('"type": "range",');
@@ -170,7 +170,7 @@ export class Network_Node {
      * Override - Function that return a string that represent the current node as a Json object: with name, values etc
      * @returns Return a string that represent the current node as Json object
      */
-    getJsonValue(): string {
+    public getJsonValue(): string {
         //Begin
         let json_string = "{";
         //Name
