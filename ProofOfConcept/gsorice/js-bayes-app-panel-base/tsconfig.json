@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "strictNullChecks": true,
+    "module": "none",
+    "target": "es6",
+    "rootDir": "./src",
+    "jsx": "react"
+
+  },
+  "include": [
+    "./src/**/*.ts"
+  ]
+}
