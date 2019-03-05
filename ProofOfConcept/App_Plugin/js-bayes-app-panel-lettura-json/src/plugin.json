@@ -6,18 +6,18 @@
   "info": {
     "description": "JsBayes plugin for Grafana",
     "author": {
-      "name": "Alexander Zobnin",
-      "url": "https://github.com/alexanderzobnin"
+      "name": "7DOS",
+      "url": ""
     },
-    "keywords": ["zabbix"],
+    "keywords": [""],
     "logos": {
       "small": "img/zabbix_app_logo.svg",
       "large": "img/zabbix_app_logo.svg"
     },
     "links": [
-      {"name": "GitHub", "url": "https://github.com/alexanderzobnin/grafana-zabbix"},
-      {"name": "Docs", "url": "https://alexanderzobnin.github.io/grafana-zabbix"},
-      {"name": "License", "url": "https://github.com/alexanderzobnin/grafana-zabbix/blob/master/LICENSE"}
+      {"name": "GitHub", "url": ""},
+      {"name": "Docs", "url": ""},
+      {"name": "License", "url": ""}
     ],
     "screenshots": [
     ],
