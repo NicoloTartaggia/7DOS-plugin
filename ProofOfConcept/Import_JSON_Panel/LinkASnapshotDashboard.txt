@@ -1,5 +1,0 @@
-// dashboard grafico custom
-https://snapshot.raintank.io/dashboard/snapshot/N3N4vkkpLmsT4dBTnNR100xbxM2Tp9L7
-
-//dashboard testuale per visualizzare i json che costituiscono la rete
-https://snapshot.raintank.io/dashboard/snapshot/FDyWwEqKreejdkAF7uDUHhzRYmUeyNwG
