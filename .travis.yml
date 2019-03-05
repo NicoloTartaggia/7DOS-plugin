@@ -1,20 +1,66 @@
 language: node_js
-sudo: false
+node_js:
+  - 9
+  - 8
+  - 6
 
-install:
-  - mvn clean install
+before_install:
+  # Use npm 5.7.x since it has introduced `npm ci`
+  - if [[ `npm -v` != 5.7* ]]; then npm install -g npm@'>=5.7.1'; fi
 
 script:
-  - mvn clean verify
+  # Run tests without coverage since it's 2x faster
+  - npm run test:jest -- --runInBand
 
-after_success:
-  - mvn clean test jacoco:report coveralls:report
+# Trigger a push build on master branches only + PRs build on every branches
+# Avoid double build on PRs (See https://github.com/travis-ci/travis-ci/issues/1147)
+branches:
+  only:
+    - master
 
-cache:
-  directories:
-    - '$HOME/.m2/repository'
+stages:
+  - lint
+  - test
+  - typecheck
+  - integration
+  - coverage
+  - name: release
+    if: type != pull_request AND branch = master
+  - name: documentation
+    if: type != pull_request AND branch = master
+jobs:
+  include:
+    - stage: lint
+      script:
+        - npm run lint
+        - npx danger ci
 
-notifications:
-  email:
-    on_success: never
-    on_failure: always
+    - stage: typecheck
+      script:
+        - npm run flow check
+
+    - stage: integration
+      script:
+        # Compile JS
+        - npm run compile
+        # Build all examples
+        - npm run build:basic
+        - npm run build:customised
+        - npm run build:sections
+        # Check that examples really works: no JS errors on load
+        - npm run test:browser:pre
+        - npm run test:browser:basic
+        - npm run test:browser:customised
+        - npm run test:browser:sections
+        # Run integration tests with Cypress
+        - npm run test:cypress:pre
+        - npm run test:cypress:startServer &
+        - npm run test:cypress:startServer:post
+        - npm run test:cypress:run
+
+    - stage: coverage
+      script:
+        # Run tests with coverage
+        - npm run test:coverage -- --runInBand
+        # Upload coverage report to Codecov
+        - bash <(curl -s https://codecov.io/bash)
