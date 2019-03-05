@@ -1,0 +1,34 @@
+{
+    "name": "7dos-grafana-plugin",
+    "version": "1.0.0",
+    "description": "Some description...",
+    "main": "dist/module",
+    "scripts": {
+        "build": "webpack"
+    },
+    "keywords": [],
+    "author": "7DOS",
+    "license": "MIT",
+    "repository": "https://github.com/NicoloTartaggia/7DOS-plugin",
+    "devDependencies": {
+        "@types/grafana": "git+https://git@github.com/CorpGlory/types-grafana.git",
+        "@types/lodash": "^4.14.121",
+        "@types/node": "^11.10.4",
+        "@babel/core": "^7.3.4",
+        "babel-loader": "^8.0.5",
+        "@babel/preset-env": "^7.3.4",
+        "@babel/preset-react": "^7.0.0",
+        "clean-webpack-plugin": "^2.0.0",
+        "copy-webpack-plugin": "^5.0.0",
+        "loader-utils": "^1.2.3",
+        "react": "^16.8.3",
+        "react-dom": "^16.8.3",
+        "ts-loader": "^5.3.3",
+        "typescript": "^3.3.3",
+        "webpack": "^4.29.6",
+        "webpack-cli": "^3.2.3"
+    },
+    "dependencies": {
+        "lodash": "^4.17.11"
+    }
+}
