@@ -1,4 +1,3 @@
-
 export class JsBayesAppConfigCtrl {
   static templateUrl = 'components/config.html';
   enabled: boolean;
