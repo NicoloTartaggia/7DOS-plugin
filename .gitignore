@@ -38,3 +38,7 @@ grafana
 7dos-grafana-plugin/dist/
 
 7dos-grafana-plugin/package-lock\.json
+
+dist/
+
+package-lock\.json
