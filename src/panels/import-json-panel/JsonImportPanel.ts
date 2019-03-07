@@ -1,47 +1,60 @@
 import {PanelCtrl} from 'grafana/app/plugins/sdk';
-import {SingleValue, Network} from "./JsonManager";
+import {Network, SingleValue} from "./JsonManager";
+
+let _ = require('lodash');
 
 
 export class JsImportPanel extends PanelCtrl {
-  static templateUrl:string = "panels/import-json-panel/html-structure/template.html";
+  static templateUrl: string = "panels/import-json-panel/partials/panelTemplate.html";
   static scrollable: boolean = true;
+
+  panelDefaults = {
+    jsonContent: ""
+  };
   //Tests strings
   message: string;
   result: string;
-  jsonContent: string;
+
   //Form
-  node_name:string;
-  observe_value:string;
-  samples:number = 1000;
+  node_name: string;
+  observe_value: string;
+  samples: number = 1000;
   //loaded network
-  LoadedNetwork : Network;
-  //Currently loaded json - still not used
-  JsBN:JSON;
+  LoadedNetwork: Network;
 
   constructor($scope, $injector) {
     super($scope, $injector);
+    _.defaults(this.panel, this.panelDefaults);
+
+    this.events.on('init-edit-mode', this.onInitEditMode.bind(this));
+  }
+
+  onInitEditMode() {
+    this.addEditorTab('JSON Import or edit', 'public/plugins/jsbayes-app/panels/import-json-panel/partials/optionTab_importEditJson.html', 1);
+    this.addEditorTab('Graphic Network Editor', 'public/plugins/jsbayes-app/panels/import-json-panel/partials/optionTab_GraphicEditor.html', 2);
+    this.addEditorTab('Network Connection to Grafana', 'public/plugins/jsbayes-app/panels/import-json-panel/partials/optionTab_ConnectNetwork.html', 3);
   }
 
   onUpload(net) {
     console.log("On upload");
-    try{
+    try {
       this.LoadedNetwork = new Network(JSON.stringify(net));
-    }catch(e){
-      this.message="Upload fallito!";
-      this.result="Errore nella lettura del JSON, probabilmente non valido...";
+    } catch (e) {
+      this.message = "Upload fallito!";
+      this.result = "Errore nella lettura del JSON, probabilmente non valido...";
       return
     }
-    this.message="Upload riuscito con successo!";
-    this.result="Rete JSON pronta al calcolo dei sample!";
-    this.jsonContent=JSON.stringify(net);
+    this.message = "Upload riuscito con successo!";
+    this.result = "Rete pronta!";
+    this.panel.jsonContent = JSON.stringify(net);
   }
 
-  onSubmit(){
+  onSubmit() { //Currently not used
     console.log("onSubmit() called");
-    console.log("Node name:"+this.node_name);
-    console.log("observe value:"+this.observe_value);
-    console.log("Samples:"+this.samples);
-    this.message="Calculating...";
+    console.log("Node name:" + this.node_name);
+    console.log("observe value:" + this.observe_value);
+    console.log("Samples:" + this.samples);
+    this.message = "Calculating...";
     this.LoadedNetwork.observe(this.node_name, new SingleValue(this.observe_value, "0"));
     let sample_promise = this.LoadedNetwork.sample(this.samples);
     let this_ref = this;
@@ -50,9 +63,9 @@ export class JsImportPanel extends PanelCtrl {
       sample_result = result / this_ref.samples;
       console.log(sample_result);
       this_ref.result = "Samples calculation done!";
-      alert("Sample result:"+result / this_ref.samples)
+      alert("Sample result:" + result / this_ref.samples)
     });
-    this.message="Done!";
+    this.message = "Done!";
     console.log("Out-Done");
   }
 
