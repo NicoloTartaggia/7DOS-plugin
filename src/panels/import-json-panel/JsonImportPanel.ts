@@ -30,9 +30,9 @@ export class JsImportPanel extends PanelCtrl {
   }
 
   onInitEditMode() {
-    this.addEditorTab('JSON Import or edit', 'public/plugins/jsbayes-app/panels/import-json-panel/partials/optionTab_importEditJson.html', 1);
-    this.addEditorTab('Graphic Network Editor', 'public/plugins/jsbayes-app/panels/import-json-panel/partials/optionTab_GraphicEditor.html', 2);
-    this.addEditorTab('Network Connection to Grafana', 'public/plugins/jsbayes-app/panels/import-json-panel/partials/optionTab_ConnectNetwork.html', 3);
+    this.addEditorTab('JSON-Import-or-edit', 'public/plugins/jsbayes-app/panels/import-json-panel/partials/optionTab_importEditJson.html', 1);
+    this.addEditorTab('Graphic-Network-Editor', 'public/plugins/jsbayes-app/panels/import-json-panel/partials/optionTab_GraphicEditor.html', 2);
+    this.addEditorTab('Network-Connection-to-Grafana', 'public/plugins/jsbayes-app/panels/import-json-panel/partials/optionTab_ConnectNetwork.html', 3);
   }
 
   onUpload(net) {
