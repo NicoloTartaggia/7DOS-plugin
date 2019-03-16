@@ -1,39 +1,39 @@
 {
-  "type": "app",
-  "name": "JsBayes",
-  "id": "jsbayes-app",
+    "type": "app",
+    "name": "JsBayes",
+    "id": "jsbayes-app",
 
-  "info": {
-    "description": "JsBayes plugin for Grafana",
-    "author": {
-      "name": "7DOS",
-      "url": ""
+    "info": {
+        "description": "JsBayes plugin for Grafana",
+        "author": {
+            "name": "7DOS",
+            "url": "https://github.com/NicoloTartaggia/7DOS-plugin/"
+        },
+        "keywords": ["7DOS"],
+        "logos": {
+            "small": "img/logo/logo-big.png",
+            "large": "img/logo/logo-small.png"
+        },
+        "links": [
+            {"name": "GitHub", "url": "https://github.com/NicoloTartaggia/7DOS-plugin/"},
+            {"name": "Docs", "url": "https://github.com/NicoloTartaggia/7DOS-plugin/"},
+            {"name": "License", "url": "https://github.com/NicoloTartaggia/7DOS-plugin/"}
+        ],
+        "screenshots": [
+        ],
+        "version": "1.0.0",
+        "updated": "2019-02-14"
     },
-    "keywords": [""],
-    "logos": {
-      "small": "img/zabbix_app_logo.svg",
-      "large": "img/zabbix_app_logo.svg"
-    },
-    "links": [
-      {"name": "GitHub", "url": ""},
-      {"name": "Docs", "url": ""},
-      {"name": "License", "url": ""}
-    ],
-    "screenshots": [
-    ],
-    "version": "1.0.0",
-    "updated": "2019-02-14"
-  },
 
-  "includes": [
-    {
-      "type": "panel",
-      "name": "Triggers Panel"
+    "includes": [
+        {
+            "type": "panel",
+            "name": "JSON Panels"
+        }
+    ],
+
+    "dependencies": {
+        "grafanaVersion": "5.x",
+        "plugins": []
     }
-  ],
-
-  "dependencies": {
-    "grafanaVersion": "5.x",
-    "plugins": []
-  }
 }

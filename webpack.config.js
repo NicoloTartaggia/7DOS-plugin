@@ -3,13 +3,13 @@ const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
-
 module.exports = {
+  mode: 'development',
   target: 'node',
   context: __dirname + "/src",
   entry: {
     './module': './module.ts',
-    './panels/module': './panels/module.ts',
+    './panels/import-json-panel/module': './panels/import-json-panel/module.ts',
   },
   output: {
     filename: "[name].js",
@@ -18,8 +18,8 @@ module.exports = {
   },
   externals: [
     // remove the line below if you don't want to use buildin versions
-    'lodash',"jsbayes",
-    function(context, request, callback) {
+    'lodash',
+    function (context, request, callback) {
       var prefix = 'grafana/';
       if (request.indexOf(prefix) === 0) {
         return callback(null, request.substr(prefix.length));
@@ -30,14 +30,15 @@ module.exports = {
   plugins: [
     new webpack.optimize.OccurrenceOrderPlugin(),
     new CopyWebpackPlugin([
-      { from: '**/plugin.json' },
-      { from: '**/*.html' },
-      { from: 'dashboards/*' },
-      { from: '../README.md' },
-      { from: '**/img/*' },
+      {from: '**/plugin.json'},
+      {from: '**/*.html'},
+      {from: 'dashboards/*'},
+      {from: '../README.md'},
+      {from: '**/img/**'},
     ]),
-    new CleanWebpackPlugin(['dist'], {
-      root: path.resolve(__dirname, '.'),
+    new CleanWebpackPlugin({
+      verbose: true,
+      cleanOnceBeforeBuildPatterns: [path.resolve(__dirname, 'dist')]
     })
   ],
   resolve: {
@@ -46,14 +47,14 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.tsx?$/, 
+        test: /\.tsx?$/,
         loaders: [
           {
             loader: "babel-loader",
-            options: { presets: ['env'] }
+            options: {presets: ['@babel/preset-env']}
           },
           "ts-loader"
-        ], 
+        ],
         exclude: /node_modules/,
       },
       {
@@ -68,10 +69,10 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           query: {
-            presets: ['babel-preset-env']
+            presets: ['@babel/preset-env']
           }
         }
       },
     ]
   }
-}
+};

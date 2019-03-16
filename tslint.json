@@ -1,0 +1,42 @@
+{
+    "extends": [
+        "tslint:latest"
+    ],
+    "linterOptions": {
+        "exclude": [
+            "src/lib/**"
+        ]
+    },
+    "rules": {
+        "indent": [
+            true,
+            "spaces",
+            2
+        ],
+        "no-implicit-dependencies": false,
+        "no-submodule-imports": false,
+        "no-empty": false,
+        "no-console": false,
+        "no-this-assignment": false,
+        "only-arrow-functions": false,
+        "variable-name": [
+            true,
+            "check-format",
+            "allow-snake-case"
+        ],
+        "space-before-function-paren": [
+            true,
+            {
+                "anonymous": "always",
+                "named": "always",
+                "asyncArrow": "always"
+            }
+        ],
+        "max-classes-per-file": false,
+        "class-name": false,
+        "array-type": [
+            true,
+            "generic"
+        ]
+    }
+}
