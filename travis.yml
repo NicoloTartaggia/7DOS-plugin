@@ -1,0 +1,36 @@
+language: node_js
+node_js:
+  - 6
+
+cache: npm
+
+before_install:
+  - npm i -g npm@6.4.1
+
+# Trigger a push build on master branches only + PRs build on every branches
+branches:
+  only:
+    - master
+
+stages:
+  - lint
+  - build
+
+jobs:
+  include:
+    - stage: lint
+      script:
+        - npm run tslint
+
+    - stage: build
+      script:
+        - npm run build
+
+after_success:
+  - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
+  - chmod +x send.sh
+  - ./send.sh success $WEBHOOK_URL
+after_failure:
+  - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
+  - chmod +x send.sh
+  - ./send.sh failure $WEBHOOK_URL

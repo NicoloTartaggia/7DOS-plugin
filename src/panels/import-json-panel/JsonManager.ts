@@ -28,7 +28,7 @@ export class SingleValue extends NodeValue {
 
   public constructor(input_name: string, input_value: string) {
     super(input_name);
-    this.value = input_value
+    this.value = input_value;
   }
 
   public getValue() {
@@ -44,7 +44,7 @@ export class SingleValue extends NodeValue {
     json_string = json_string.concat('"name": "' + this.getName() + '",');
     json_string = json_string.concat('"type": "single",');
     json_string = json_string.concat('"value": "' + this.value + '"');
-    json_string = json_string.concat('}');
+    json_string = json_string.concat("}");
     return json_string;
   }
 }
@@ -75,34 +75,34 @@ export class RangeValue extends NodeValue {
     let json_string = "{";
     json_string = json_string.concat('"name": "' + this.getName() + '",');
     json_string = json_string.concat('"type": "range",');
-    json_string = json_string.concat('"rangeMin": ' + this.rangeMin + ',');
+    json_string = json_string.concat('"rangeMin": ' + this.rangeMin + ",");
     json_string = json_string.concat('"rangeMax": ' + this.rangeMax);
-    json_string = json_string.concat('}');
+    json_string = json_string.concat("}");
     return json_string;
   }
 }
 
-//-----------------------------------------
-//-----------------------------------------
-//-----------------------------------------
+// -----------------------------------------
+// -----------------------------------------
+// -----------------------------------------
 // Wrapper classes for Bayesian Network Library (jsbayes)
 
 export class Network_Node {
   private readonly name: string;
   private parents: { [name: string]: Network_Node; } = {};
-  private values: NodeValue[];
+  private values: Array<NodeValue>;
   private cpt: Array<Array<number>>;
 
-  public constructor(input_name: string, input_values: NodeValue[], input_cpt: Array<Array<number>>) {
+  public constructor(input_name: string, input_values: Array<NodeValue>, input_cpt: Array<Array<number>>) {
     this.name = input_name;
     this.values = input_values;
     this.cpt = input_cpt;
   }
 
   public getStringValues() {
-    let returnString: string[] = [];
-    for (let i = 0; i < this.values.length; i++) {
-      returnString.push(this.values[i].getName());
+    const returnString: Array<string> = [];
+    for (const entry of this.values) {
+      returnString.push(entry.getName());
     }
     return returnString;
   }
@@ -125,25 +125,46 @@ export class Network_Node {
     return this.cpt;
   }
 
-  //--------------------
-  //JSON GENERATION STUFF
-  //--------------------
+  /**
+   * Override - Function that return a string that represent the current node as a Json object: with name, values etc
+   * @returns Return a string that represent the current node as Json object
+   */
+  public getJsonValue(): string {
+    // Begin
+    let json_string = "{";
+    // Name
+    json_string = json_string.concat('"name": "' + this.name + '",');
+    // Values
+    json_string = json_string.concat(this.generateJsonValueString());
+    // Parents
+    json_string = json_string.concat(this.generateJsonParentsString());
+    // CPT
+    json_string = json_string.concat(this.generateJsonCPTString());
+    // End
+    json_string = json_string.concat("}");
+    return json_string;
+  }
+
+  // --------------------
+  // JSON GENERATION STUFF
+  // --------------------
 
   /**
-   * Override - Function that return a string that represent the dictionary of parents of the current node in Json array format
+   * Override - Function that return a string that represent the
+   * dictionary of parents of the current node in Json array format
    * @returns Return a string that represent the array of parents
    */
   private generateJsonParentsString(): string {
     let json_string = '"parents":[';
-    let keys = Object.keys(this.parents);
+    const keys = Object.keys(this.parents);
     for (let i = 0; i < keys.length; i++) {
       json_string = json_string.concat('"' + this.parents[keys[i]].name + '"');
-      //If is not the last element i must add a comma to separate the elements
+      // If is not the last element i must add a comma to separate the elements
       if (i + 1 < keys.length) {
         json_string = json_string.concat(",");
       }
     }
-    json_string = json_string.concat('],');
+    json_string = json_string.concat("],");
     return json_string;
   }
 
@@ -154,48 +175,28 @@ export class Network_Node {
   private generateJsonCPTString(): string {
     let json_string = '"cpt":[';
     for (let i = 0; i < this.cpt.length; i++) {
-      json_string = json_string.concat('[');
+      json_string = json_string.concat("[");
       json_string = json_string.concat(this.cpt[i].toString());
-      json_string = json_string.concat(']');
-      //If is not the last element i must add a comma to separate the elements
+      json_string = json_string.concat("]");
+      // If is not the last element i must add a comma to separate the elements
       if (i + 1 < this.cpt.length) {
         json_string = json_string.concat(",");
       }
     }
-    json_string = json_string.concat(']');
+    json_string = json_string.concat("]");
     return json_string;
   }
 
-  private generateJsonValueString(): string{
+  private generateJsonValueString(): string {
     let json_string = '"values": [';
     for (let i = 0; i < this.values.length; i++) {
       json_string = json_string.concat(this.values[i].getJsonValue());
-      //If is not the last element i must add a comma to separate the elements
+      // If is not the last element i must add a comma to separate the elements
       if (i + 1 < this.values.length) {
         json_string = json_string.concat(",");
       }
     }
-    json_string = json_string.concat('],');
-    return json_string;
-  }
-
-  /**
-   * Override - Function that return a string that represent the current node as a Json object: with name, values etc
-   * @returns Return a string that represent the current node as Json object
-   */
-  public getJsonValue(): string {
-    //Begin
-    let json_string = "{";
-    //Name
-    json_string = json_string.concat('"name": "' + this.name + '",');
-    //Values
-    json_string = json_string.concat(this.generateJsonValueString());
-    //Parents
-    json_string = json_string.concat(this.generateJsonParentsString());
-    //CPT
-    json_string = json_string.concat(this.generateJsonCPTString());
-    //End
-    json_string = json_string.concat("}");
+    json_string = json_string.concat("],");
     return json_string;
   }
 }
@@ -213,12 +214,8 @@ export class Network {
     }
   }
 
-  private checkIfNodeExist(node_name: string): boolean {
-    return node_name in this.node_objects_dictionary;
-  }
-
-  public addNode(input_name: string, input_values: NodeValue[], input_cpt: Array<Array<number>>) {
-    let node = new Network_Node(input_name, input_values, input_cpt);
+  public addNode(input_name: string, input_values: Array<NodeValue>, input_cpt: Array<Array<number>>) {
+    const node = new Network_Node(input_name, input_values, input_cpt);
     this.node_dictionary[input_name] = this.network.addNode(input_name, node.getStringValues());
     this.node_objects_dictionary[input_name] = node;
     if (input_cpt.length > 0) {
@@ -227,14 +224,14 @@ export class Network {
   }
 
   public removeNode(input_name: string) {
-    //TODO
+    // TODO
   }
 
   public createLink(node_name: string, node_parent_name: string) {
     if (this.checkIfNodeExist(node_name)) {
       if (this.checkIfNodeExist(node_parent_name)) {
         this.node_objects_dictionary[node_name].addParent(this.node_objects_dictionary[node_parent_name]);
-        this.node_dictionary[node_name].addParent(this.node_dictionary[node_parent_name])
+        this.node_dictionary[node_name].addParent(this.node_dictionary[node_parent_name]);
       } else {
         throw new Error("The node called " + node_parent_name + " can't be found!");
       }
@@ -244,7 +241,7 @@ export class Network {
   }
 
   public removeLink(node_name: string, node_parent_name: string) {
-    //TODO
+    // TODO
   }
 
   public observe(node_name: string, value: NodeValue) {
@@ -270,7 +267,7 @@ export class Network {
   public setNodeCpt(node_name: string, input_cpt: Array<Array<number>>) {
     if (this.checkIfNodeExist(node_name)) {
       this.node_objects_dictionary[node_name].setCpt(input_cpt);
-      if (input_cpt.length == 1) {
+      if (input_cpt.length === 1) {
         this.node_dictionary[node_name].setCpt(input_cpt[0]);
       } else {
         this.node_dictionary[node_name].setCpt(input_cpt);
@@ -290,16 +287,20 @@ export class Network {
    */
   public getNetworkJson(): string {
     let json_string = '{"nodes": [';
-    let keys = Object.keys(this.node_objects_dictionary);
+    const keys = Object.keys(this.node_objects_dictionary);
     for (let i = 0; i < keys.length; i++) {
       json_string = json_string.concat(this.node_objects_dictionary[keys[i]].getJsonValue());
-      //If is not the last element i must add a comma to separate the elements
+      // If is not the last element i must add a comma to separate the elements
       if (i + 1 < keys.length) {
         json_string = json_string.concat(",");
       }
     }
-    json_string = json_string.concat(']}');
+    json_string = json_string.concat("]}");
     return json_string;
+  }
+
+  private checkIfNodeExist(node_name: string): boolean {
+    return node_name in this.node_objects_dictionary;
   }
 
   /**
@@ -309,21 +310,19 @@ export class Network {
   private buildNetworkFromJson(json_string: string): void {
 
     let json_file;
-    //Check if Json String is valid
+    // Check if Json String is valid
     try {
       json_file = JSON.parse(json_string);
     } catch (e) {
-      throw new Error('Bad Json Content! Error:' + e.toString());
+      throw new Error("Bad Json Content! Error:" + e.toString());
     }
 
-    //Network creation parsing the json string
-    for (let i = 0; i < (json_file).nodes.length; i++) {
-      let name = (json_file).nodes[i].name;
+    for (const node of (json_file).nodes) {
+      const name = node.name;
 
-      //For each node i read his list of possible values
-      let obj_values: NodeValue[] = [];
-      for (let k = 0; k < (json_file).nodes[i].values.length; k++) {
-        let current_value = (json_file).nodes[i].values[k];
+      // For each node i read his list of possible values
+      const obj_values: Array<NodeValue> = [];
+      for (const current_value of node.values) {
         if (current_value.type === "single") {
           obj_values.push(new SingleValue(current_value.name, current_value.value));
         } else if (current_value.type === "range") {
@@ -331,25 +330,23 @@ export class Network {
         }
       }
 
-      //Add the node to the network
+      // Add the node to the network
       this.addNode(name, obj_values, []);
     }
 
-    //For each node i read his parents and create a link between them
-    for (let i = 0; i < (json_file).nodes.length; i++) {
-      let name = (json_file).nodes[i].name;
-      for (let k = 0; k < (json_file).nodes[i].parents.length; k++) {
-        let ParentName = (json_file).nodes[i].parents[k];
-        this.createLink(name, ParentName);
+    // For each node i read his parents and create a link between them
+    for (const node of (json_file).nodes) {
+      const name = node.name;
+      for (const parent of node.parents) {
+        this.createLink(name, parent);
       }
     }
 
-    //For each node i read his CPT table
-    for (let i = 0; i < (json_file).nodes.length; i++) {
-      let name = (json_file).nodes[i].name;
-      this.setNodeCpt(name, (json_file).nodes[i].cpt);
+    // For each node i read his CPT table
+    for (const node of (json_file).nodes) {
+      const name = node.name;
+      this.setNodeCpt(name, node.cpt);
     }
 
-  }//end_buildNetworkFromJson
+  }// end_buildNetworkFromJson
 }
-
