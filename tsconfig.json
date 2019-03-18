@@ -4,7 +4,10 @@
         "module": "none",
         "target": "es6",
         "rootDir": "./src",
-        "jsx": "react"
+        "jsx": "react",
+        "plugins": [
+            { "name": "typescript-tslint-plugin" }
+        ]
     },
     "include": [
         "./src/**/*.ts"

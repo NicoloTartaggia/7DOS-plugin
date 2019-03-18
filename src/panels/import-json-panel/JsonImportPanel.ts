@@ -1,11 +1,33 @@
-import {PanelCtrl} from "grafana/app/plugins/sdk";
+import {MetricsPanelCtrl} from "grafana/app/plugins/sdk";
 import {Network, SingleValue} from "./JsonManager";
 
 import _ = require("lodash");
 
-export class JsImportPanel extends PanelCtrl {
+export class JsImportPanel extends MetricsPanelCtrl {
   public static templateUrl: string = "panels/import-json-panel/partials/panelTemplate.html";
   public static scrollable: boolean = true;
+
+  // Test metricPanel
+  public scope: any;
+  public datasource: any;
+  public $q: any;
+  public $timeout: any;
+  public contextSrv: any;
+  public datasourceSrv: any;
+  public timeSrv: any;
+  public templateSrv: any;
+  public timing: any;
+  public range: any;
+  public interval: any;
+  public intervalMs: any;
+  public resolution: any;
+  public timeInfo: any;
+  public skipDataOnInit: boolean;
+  public dataStream: any;
+  public dataSubscription: any;
+  public dataList: any;
+  public nextRefId: string;
+// end test
 
   public panelDefaults = {
     jsonContent: "",
@@ -24,11 +46,13 @@ export class JsImportPanel extends PanelCtrl {
   constructor($scope, $injector) {
     super($scope, $injector);
     _.defaults(this.panel, this.panelDefaults);
-
     this.events.on("init-edit-mode", this.onInitEditMode.bind(this));
   }
 
   public onInitEditMode() {
+
+    const test = [this.editorTabs[0]];
+    this.editorTabs = test;
     this.addEditorTab("JSON-Import-or-edit",
       "public/plugins/jsbayes-app/panels/import-json-panel/partials/optionTab_importEditJson.html",
       1);
@@ -38,6 +62,8 @@ export class JsImportPanel extends PanelCtrl {
     this.addEditorTab("Network-Connection-to-Grafana",
       "public/plugins/jsbayes-app/panels/import-json-panel/partials/optionTab_ConnectNetwork.html",
       3);
+    this.events.emit("data-received", null);
+
   }
 
   public onUpload(net) {
@@ -52,6 +78,8 @@ export class JsImportPanel extends PanelCtrl {
     this.message = "Upload riuscito con successo!";
     this.result = "Rete pronta!";
     this.panel.jsonContent = JSON.stringify(net);
+    this.events.emit("data-received", null);
+
   }
 
   public onSubmit() { // Currently not used
@@ -74,7 +102,7 @@ export class JsImportPanel extends PanelCtrl {
     console.log("Out-Done");
   }
 
-  public downloadNetwork(filename, id){
+  public downloadNetwork(filename, id) {
     const element = document.createElement("a");
     const text = (document.getElementById(id) as HTMLInputElement).value;
     element.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(text));

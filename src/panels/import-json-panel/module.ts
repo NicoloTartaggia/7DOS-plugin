@@ -1,5 +1,3 @@
-import {JsImportPanel} from "./JsonImportPanel";
+import { JsImportPanel } from "./JsonImportPanel";
 
-export  {
-  JsImportPanel as PanelCtrl,
-};
+export { JsImportPanel as PanelCtrl };
