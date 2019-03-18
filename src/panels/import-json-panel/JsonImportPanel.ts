@@ -74,6 +74,20 @@ export class JsImportPanel extends PanelCtrl {
     console.log("Out-Done");
   }
 
+  public downloadNetwork(filename, id){
+    var element = document.createElement('a');
+    var text = (<HTMLInputElement>document.getElementById(id)).value;
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('download', filename);
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);    
+  }
+
   public link(scope, element) {
   }
 }
