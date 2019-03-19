@@ -106,8 +106,8 @@ export class MetricsTabCtrl {
     }
 
     this.panelCtrl.addQuery({
-      isNew: true,
       datasource: option.datasource.name,
+      isNew: true,
     });
     this.addQueryDropdown = { text: "Add Query", value: null, fake: true };
   }
@@ -146,10 +146,10 @@ export class MetricsTabCtrl {
 export function metricsTabDirective () {
   "use strict";
   return {
+    controller: MetricsTabCtrl,
     restrict: "E",
     scope: true,
     templateUrl: "public/plugins/jsbayes-app/panels/import-json-panel/partials/optionTab_ConnectNetwork.html",
-    controller: MetricsTabCtrl,
   };
 }
 
