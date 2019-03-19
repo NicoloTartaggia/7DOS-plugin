@@ -1,33 +1,11 @@
 import {MetricsPanelCtrl} from "grafana/app/plugins/sdk";
-import {Network, SingleValue} from "./JsonManager";
-
 import _ = require("lodash");
+import {Network, SingleValue} from "./JsonManager";
+import { metricsTabDirective } from "./metrics_tab";
 
 export class JsImportPanel extends MetricsPanelCtrl {
   public static templateUrl: string = "panels/import-json-panel/partials/panelTemplate.html";
   public static scrollable: boolean = true;
-
-  // Test metricPanel
-  public scope: any;
-  public datasource: any;
-  public $q: any;
-  public $timeout: any;
-  public contextSrv: any;
-  public datasourceSrv: any;
-  public timeSrv: any;
-  public templateSrv: any;
-  public timing: any;
-  public range: any;
-  public interval: any;
-  public intervalMs: any;
-  public resolution: any;
-  public timeInfo: any;
-  public skipDataOnInit: boolean;
-  public dataStream: any;
-  public dataSubscription: any;
-  public dataList: any;
-  public nextRefId: string;
-// end test
 
   public panelDefaults = {
     jsonContent: "",
@@ -60,9 +38,7 @@ export class JsImportPanel extends MetricsPanelCtrl {
       "public/plugins/jsbayes-app/panels/import-json-panel/partials/optionTab_GraphicEditor.html",
       2);
     this.addEditorTab("Network-Connection-to-Grafana",
-      "public/plugins/jsbayes-app/panels/import-json-panel/partials/optionTab_ConnectNetwork.html",
-      3);
-    this.events.emit("data-received", null);
+    metricsTabDirective, 3);
 
   }
 
