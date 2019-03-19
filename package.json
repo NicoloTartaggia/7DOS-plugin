@@ -12,16 +12,17 @@
     "license": "MIT",
     "repository": "https://github.com/NicoloTartaggia/7DOS-plugin",
     "devDependencies": {
+        "@babel/core": "^7.3.4",
+        "@babel/preset-env": "^7.3.4",
+        "@babel/preset-react": "^7.0.0",
         "@types/grafana": "git+https://git@github.com/CorpGlory/types-grafana.git",
         "@types/lodash": "^4.14.121",
         "@types/node": "^11.10.4",
-        "@babel/core": "^7.3.4",
         "babel-loader": "^8.0.5",
-        "@babel/preset-env": "^7.3.4",
-        "@babel/preset-react": "^7.0.0",
         "clean-webpack-plugin": "^2.0.0",
         "copy-webpack-plugin": "^5.0.0",
         "loader-utils": "^1.2.3",
+        "pre-commit": "^1.2.2",
         "react": "^16.8.3",
         "react-dom": "^16.8.3",
         "ts-loader": "^5.3.3",
@@ -34,5 +35,9 @@
         "lodash": "^4.17.11",
         "remarkable": "^1.7.1",
         "tslint": "^5.14.0"
-    }
+    },
+    "pre-commit": [
+        "tslint",
+        "build"
+    ]
 }
