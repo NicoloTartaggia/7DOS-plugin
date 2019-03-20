@@ -1,7 +1,9 @@
 {
     "compilerOptions": {
+        "allowSyntheticDefaultImports": true,
         "strictNullChecks": true,
         "module": "none",
+        "moduleResolution": "node",
         "target": "es6",
         "rootDir": "./src",
         "jsx": "react",
