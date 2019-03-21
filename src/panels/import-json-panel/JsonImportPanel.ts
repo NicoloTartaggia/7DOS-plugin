@@ -1,5 +1,8 @@
+import {RxHR} from "@akanass/rx-http-request/browser/index.js";
 import {MetricsPanelCtrl} from "grafana/app/plugins/sdk";
+
 import _ = require("lodash");
+
 import {Network, SingleValue} from "./JsonManager";
 import { metricsTabDirective } from "./metrics_tab";
 
@@ -93,44 +96,16 @@ export class JsImportPanel extends MetricsPanelCtrl {
   }
 
   public datasourceTest() {
-    console.log("datasource in jsonimportpanel");
-    console.log(this.datasource);
+    console.log("Pre request");
+    RxHR.get("http://localhost:8086/query?db=telegraf&q=SELECT * FROM \"win_cpu\"").subscribe(
+      (data) => {
 
-    const scopedVars = {...this.panel.scopedVars,
-                        __interval: { text: this.interval, value: this.interval },
-                        __interval_ms: { text: this.intervalMs, value: this.intervalMs }};
-
-    const myTargets = [
-      {
-        groupBy: [{ type: "time", params: ["$__interval"] }, { type: "fill", params: ["null"] }],
-        limit: 10,
-        measurement: "win_cpu",
-        orderByTime: "ASC",
-        policy: "default",
-        resultFormat: "time_series",
-        select: { type: "field", params: "Percent_DPC_Time" },
-        tags: [],
+        if (data.response.statusCode === 200) {
+          console.log(data.body); // Show the HTML for the Google homepage.
+        }
       },
-    ];
-
-    const metricsQuery = {
-      cacheTimeout: this.panel.cacheTimeout,
-      dashboardId: this.dashboard.id,
-      interval: this.interval,
-      intervalMs: this.intervalMs,
-      maxDataPoints: this.resolution,
-      panelId: this.panel.id,
-      range: this.range,
-      rangeRaw: this.range.raw,
-      scopedVars,
-      targets: myTargets,
-      timezone: this.dashboard.getTimezone(),
-    };
-
-    const result = this.datasource.query(metricsQuery);
-    console.log(result);
-    console.log(metricsQuery);
-    console.log(scopedVars);
+      (err) => console.error(err), // Show error in console
+    );
   }
 
   public link(scope, element) {
