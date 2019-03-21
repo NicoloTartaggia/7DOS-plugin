@@ -5,7 +5,7 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
   mode: 'development',
-  target: 'node',
+  target: 'web',
   context: __dirname + "/src",
   entry: {
     './module': './module.ts',
