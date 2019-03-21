@@ -92,6 +92,47 @@ export class JsImportPanel extends MetricsPanelCtrl {
     document.body.removeChild(element);
   }
 
+  public datasourceTest() {
+    console.log("datasource in jsonimportpanel");
+    console.log(this.datasource);
+
+    const scopedVars = {...this.panel.scopedVars,
+                        __interval: { text: this.interval, value: this.interval },
+                        __interval_ms: { text: this.intervalMs, value: this.intervalMs }};
+
+    const myTargets = [
+      {
+        groupBy: [{ type: "time", params: ["$__interval"] }, { type: "fill", params: ["null"] }],
+        limit: 10,
+        measurement: "win_cpu",
+        orderByTime: "ASC",
+        policy: "default",
+        resultFormat: "time_series",
+        select: { type: "field", params: "Percent_DPC_Time" },
+        tags: [],
+      },
+    ];
+
+    const metricsQuery = {
+      cacheTimeout: this.panel.cacheTimeout,
+      dashboardId: this.dashboard.id,
+      interval: this.interval,
+      intervalMs: this.intervalMs,
+      maxDataPoints: this.resolution,
+      panelId: this.panel.id,
+      range: this.range,
+      rangeRaw: this.range.raw,
+      scopedVars,
+      targets: myTargets,
+      timezone: this.dashboard.getTimezone(),
+    };
+
+    const result = this.datasource.query(metricsQuery);
+    console.log(result);
+    console.log(metricsQuery);
+    console.log(scopedVars);
+  }
+
   public link(scope, element) {
   }
 }
