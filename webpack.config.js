@@ -5,11 +5,11 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
   mode: 'development',
-  target: 'node',
+  target: 'web',
   context: __dirname + "/src",
   entry: {
     './module': './module.ts',
-    './panels/import-json-panel/module': './panels/import-json-panel/module.ts',
+    //'./panels/import-json-panel/module': './panels/import-json-panel/module.ts',
   },
   output: {
     filename: "[name].js",
@@ -18,7 +18,7 @@ module.exports = {
   },
   externals: [
     // remove the line below if you don't want to use buildin versions
-    'lodash','remarkable',
+    'lodash','remarkable','jquery','angular',
     function (context, request, callback) {
       var prefix = 'grafana/';
       if (request.indexOf(prefix) === 0) {

@@ -1,43 +1,52 @@
 {
-    "name": "7dos-grafana-plugin",
-    "version": "1.0.0",
-    "description": "Some description...",
-    "main": "dist/module",
-    "scripts": {
-        "build": "webpack",
-        "tslint": "tslint -c tslint.json 'src/**/*.ts'"
-    },
-    "keywords": [],
-    "author": "7DOS",
-    "license": "MIT",
-    "repository": "https://github.com/NicoloTartaggia/7DOS-plugin",
-    "devDependencies": {
-        "@babel/core": "^7.3.4",
-        "@babel/preset-env": "^7.3.4",
-        "@babel/preset-react": "^7.0.0",
-        "@types/grafana": "git+https://git@github.com/CorpGlory/types-grafana.git",
-        "@types/lodash": "^4.14.121",
-        "@types/node": "^11.10.4",
-        "babel-loader": "^8.0.5",
-        "clean-webpack-plugin": "^2.0.0",
-        "copy-webpack-plugin": "^5.0.0",
-        "loader-utils": "^1.2.3",
-        "pre-commit": "^1.2.2",
-        "react": "^16.8.3",
-        "react-dom": "^16.8.3",
-        "ts-loader": "^5.3.3",
-        "typescript": "^3.3.3",
-        "webpack": "^4.29.6",
-        "webpack-cli": "^3.2.3"
-    },
-    "dependencies": {
-        "@types/remarkable": "^1.7.3",
-        "lodash": "^4.17.11",
-        "remarkable": "^1.7.1",
-        "tslint": "^5.14.0"
-    },
-    "pre-commit": [
-        "tslint",
-        "build"
-    ]
+  "name": "7dos-grafana-plugin",
+  "version": "1.0.0",
+  "description": "Some description...",
+  "main": "dist/module",
+  "scripts": {
+    "build": "webpack",
+    "tslint": "tslint -c tslint.json 'src/**/*.ts'"
+  },
+  "keywords": [],
+  "author": "7DOS",
+  "license": "MIT",
+  "repository": "https://github.com/NicoloTartaggia/7DOS-plugin",
+  "devDependencies": {
+    "@types/angular": "^1.6.43",
+    "@types/flot": "0.0.31",
+    "@types/grafana": "git+https://git@github.com/CorpGlory/types-grafana.git",
+    "@types/jquery": "^3.3.0",
+    "@types/lodash": "^4.14.121",
+    "@types/moment": "^2.13.0",
+    "@types/node": "^11.10.4",
+    "@types/perfect-scrollbar": "^1.3.0",
+    "@types/tinycolor2": "^1.4.0",
+    "@types/tether-drop": "^1.4.8",
+    "@babel/core": "^7.3.4",
+    "@babel/preset-env": "^7.3.4",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.5",
+    "clean-webpack-plugin": "^2.0.0",
+    "copy-webpack-plugin": "^5.0.0",
+    "loader-utils": "^1.2.3",
+    "ts-loader": "^5.3.3",
+    "typescript": "^3.3.3",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.2.3",
+    "pre-commit": "^1.2.2",
+    "react": "^16.8.3",
+    "react-dom": "^16.8.3"
+  },
+  "dependencies": {
+    "@types/remarkable": "^1.7.3",
+    "lodash": "^4.17.11",
+    "remarkable": "^1.7.1",
+    "tether-drop": "^1.4.2",
+    "tinycolor2": "^1.4.1",
+    "tslint": "^5.14.0"
+  },
+  "pre-commit": [
+    "tslint",
+    "build"
+  ]
 }
