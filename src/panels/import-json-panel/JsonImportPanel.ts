@@ -1,4 +1,3 @@
-import {RxHR} from "@akanass/rx-http-request/browser/index.js";
 import {MetricsPanelCtrl} from "grafana/app/plugins/sdk";
 
 import _ = require("lodash");
@@ -93,19 +92,6 @@ export class JsImportPanel extends MetricsPanelCtrl {
     element.click();
 
     document.body.removeChild(element);
-  }
-
-  public datasourceTest() {
-    console.log("Pre request");
-    RxHR.get("http://localhost:8086/query?db=telegraf&q=SELECT * FROM \"win_cpu\"").subscribe(
-      (data) => {
-
-        if (data.response.statusCode === 200) {
-          console.log(data.body); // Show the HTML for the Google homepage.
-        }
-      },
-      (err) => console.error(err), // Show error in console
-    );
   }
 
   public link(scope, element) {

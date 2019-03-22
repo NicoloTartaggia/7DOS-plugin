@@ -1,4 +1,5 @@
 // Libraries
+import {RxHR} from "@akanass/rx-http-request/browser/index.js";
 import _ = require("lodash");
 // import Remarkable = require("remarkable");
 
@@ -140,6 +141,41 @@ export class MetricsTabCtrl {
     this.optionsOpen = false;
     this.queryTroubleshooterOpen = !this.queryTroubleshooterOpen;
   }
+
+  public getUrl() {
+    console.log("Pre request");
+    console.log(this.datasourceInstance);
+    const datasourceName = this.datasourceInstance.name;
+    let datasourceURL = "";
+    RxHR.get("http://localhost:3000/api/datasources/name/" + datasourceName).subscribe(
+      (data) => {
+        if (data.response.statusCode === 200) {
+          console.log(data.body);
+          datasourceURL = JSON.parse(data.body).url;
+          console.log("Nome: " + datasourceName + " url: " + datasourceURL);
+          return datasourceURL;
+        }
+      },
+      (err) => console.error(err),
+    );
+  }
+
+  public async queryMaker() {
+    const datasourceURL = await this.getUrl();
+    RxHR.get(datasourceURL + "/query?db=telegraf&q=SELECT * FROM \"win_cpu\"").subscribe(
+      (data) => {
+        if (data.response.statusCode === 200) {
+          console.log(data.body); // Show the HTML for the Google homepage.
+        }
+      },
+      (err) => console.error(err), // Show error in console
+    );
+  }
+
+  public datasourceTest() {
+    this.queryMaker();
+  }
+
 }
 
 /** @ngInject */
