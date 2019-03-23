@@ -131,10 +131,10 @@ class GraphCtrl extends MetricsPanelCtrl {
   }
 
   onInitEditMode() {
-    //var partialPath = this.panelPath + 'partials';
+    var partialPath = this.panelPath + 'partials';
     this.addEditorTab('Axes', axesEditorComponent, 2);
-    //this.addEditorTab('Legend', `${partialPath}/tab_legend.html`, 3);
-    //this.addEditorTab('Display', `${partialPath}/tab_display.html`, 4);
+    this.addEditorTab('Legend', `${partialPath}/tab_legend.html`, 3);
+    this.addEditorTab('Display', `${partialPath}/tab_display.html`, 4);
 
     if (config.alertingEnabled) {
       this.addEditorTab('Alert', alertTab, 5);
