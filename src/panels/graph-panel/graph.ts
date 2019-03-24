@@ -13,7 +13,7 @@ import { EventManager } from './vendor/grafana/event_manager';
 import { updateLegendValues } from './vendor/grafana/time_series2';
 import { tickStep } from './vendor/grafana/ticks';
 
-import * as $ from 'jquery';
+import * as $ from "jquery";
 import _ from 'lodash';
 import moment from 'moment';
 import kbn from 'grafana/app/core/utils/kbn';
