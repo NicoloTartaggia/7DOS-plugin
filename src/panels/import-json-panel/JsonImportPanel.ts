@@ -1,8 +1,8 @@
 import _ from "lodash";
 
-import {Network, SingleValue} from "./JsonManager";
-//import { metricsTabDirective } from "./metrics_tab";
+// import { metricsTabDirective } from "./metrics_tab";
 import {GraphCtrl} from "../graph-panel/module";
+import {Network, SingleValue} from "./JsonManager";
 
 export class JsImportPanel extends GraphCtrl {
   public static scrollable: boolean = true;
@@ -24,15 +24,15 @@ export class JsImportPanel extends GraphCtrl {
     this.events.on("init-edit-mode", this.onInitJsonImportEditMode.bind(this));
   }
 
-  onInitJsonImportEditMode() {
-    //const test = [this.editorTabs[0]];
-    //this.editorTabs = test;
+  public onInitJsonImportEditMode() {
+    // const test = [this.editorTabs[0]];
+    // this.editorTabs = test;
     this.addEditorTab("JSON-Import-or-edit",
       "public/plugins/app-jsbayes/panels/import-json-panel/partials/optionTab_importEditJson.html");
     this.addEditorTab("Graphic-Network-Editor",
       "public/plugins/app-jsbayes/panels/import-json-panel/partials/optionTab_GraphicEditor.html");
-    //this.addEditorTab("Network-Connection-to-Grafana",
-    //metricsTabDirective, 3);
+    // this.addEditorTab("Network-Connection-to-Grafana",
+    // metricsTabDirective, 3);
   }
 
   public onUpload(net) {
