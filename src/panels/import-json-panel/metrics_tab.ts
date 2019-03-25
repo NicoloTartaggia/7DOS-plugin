@@ -1,6 +1,6 @@
 // Libraries
-import {RxHR} from "@akanass/rx-http-request/browser/index.js";
-import _ = require("lodash");
+import { RxHR } from "@akanass/rx-http-request/browser/index.js";
+import _ from "lodash";
 // import Remarkable = require("remarkable");
 
 // Services & utils
@@ -153,8 +153,8 @@ export class MetricsTabCtrl {
           console.log(data.body);
           datasourceURL = JSON.parse(data.body).url;
           console.log("Nome: " + datasourceName + " url: " + datasourceURL);
-          return datasourceURL;
         }
+        return datasourceURL;
       },
       (err) => console.error(err),
     );
