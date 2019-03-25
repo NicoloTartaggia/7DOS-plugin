@@ -1,17 +1,12 @@
-import {MetricsPanelCtrl} from "grafana/app/plugins/sdk";
-
 import _ from "lodash";
 
 import {Network, SingleValue} from "./JsonManager";
-import { metricsTabDirective } from "./metrics_tab";
+//import { metricsTabDirective } from "./metrics_tab";
+import {GraphCtrl} from "../graph-panel/module";
 
-export class JsImportPanel extends MetricsPanelCtrl {
-  public static templateUrl: string = "panels/import-json-panel/partials/panelTemplate.html";
+export class JsImportPanel extends GraphCtrl {
   public static scrollable: boolean = true;
 
-  public panelDefaults = {
-    jsonContent: "",
-  };
   // Tests strings
   public message: string;
   public result: string;
@@ -23,25 +18,21 @@ export class JsImportPanel extends MetricsPanelCtrl {
   // loaded network
   public loaded_network: Network;
 
-  constructor($scope, $injector) {
-    super($scope, $injector);
+  constructor($scope, $injector, annotationsSrv) {
+    super($scope, $injector, annotationsSrv);
     _.defaults(this.panel, this.panelDefaults);
-    this.events.on("init-edit-mode", this.onInitEditMode.bind(this));
+    this.events.on("init-edit-mode", this.onInitJsonImportEditMode.bind(this));
   }
 
-  public onInitEditMode() {
-
-    const test = [this.editorTabs[0]];
-    this.editorTabs = test;
+  onInitJsonImportEditMode() {
+    //const test = [this.editorTabs[0]];
+    //this.editorTabs = test;
     this.addEditorTab("JSON-Import-or-edit",
-      "public/plugins/jsbayes-app/panels/import-json-panel/partials/optionTab_importEditJson.html",
-      1);
+      "public/plugins/app-jsbayes/panels/import-json-panel/partials/optionTab_importEditJson.html");
     this.addEditorTab("Graphic-Network-Editor",
-      "public/plugins/jsbayes-app/panels/import-json-panel/partials/optionTab_GraphicEditor.html",
-      2);
-    this.addEditorTab("Network-Connection-to-Grafana",
-    metricsTabDirective, 3);
-
+      "public/plugins/app-jsbayes/panels/import-json-panel/partials/optionTab_GraphicEditor.html");
+    //this.addEditorTab("Network-Connection-to-Grafana",
+    //metricsTabDirective, 3);
   }
 
   public onUpload(net) {
