@@ -2,7 +2,7 @@
   "compilerOptions": {
     "moduleResolution": "node",
     "outDir": "dist",
-    "target": "es6",
+    "target": "es5",
     "rootDir": "./src",
     "jsx": "react",
     "lib": [
@@ -20,11 +20,12 @@
     "noEmitOnError": false,
     "emitDecoratorMetadata": false,
     "experimentalDecorators": true,
+    "noImplicitReturns": true,
     "noImplicitThis": false,
     "noImplicitUseStrict": false,
     "noImplicitAny": false,
     "noUnusedLocals": true,
-    "baseUrl": "./src"
+    "baseUrl": "public"
   },
   "typeRoots": [
     "node_modules/@types"

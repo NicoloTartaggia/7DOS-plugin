@@ -8,9 +8,8 @@ module.exports = {
   target: 'web',
   context: __dirname + "/src",
   entry: {
-    //'./module': './module.ts',
-    './panels/import-json-panel/module': './panels/import-json-panel/module.ts',
-    //"./panels/graph-panel": "./panels/graph-panel/module.ts"
+    './module': './module.ts',
+    //'./panels/import-json-panel/module': './panels/import-json-panel/module.ts',
   },
   output: {
     filename: "[name].js",

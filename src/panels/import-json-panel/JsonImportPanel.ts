@@ -1,12 +1,17 @@
+import {MetricsPanelCtrl} from "grafana/app/plugins/sdk";
+
 import _ from "lodash";
 
 import {Network, SingleValue} from "./JsonManager";
-//import { metricsTabDirective } from "./metrics_tab";
-import {GraphCtrl} from "../graph-panel/module";
+import { metricsTabDirective } from "./metrics_tab";
 
-export class JsImportPanel extends GraphCtrl {
+export class JsImportPanel extends MetricsPanelCtrl {
+  public static templateUrl: string = "panels/import-json-panel/partials/panelTemplate.html";
   public static scrollable: boolean = true;
 
+  public panelDefaults = {
+    jsonContent: "",
+  };
   // Tests strings
   public message: string;
   public result: string;
@@ -18,21 +23,25 @@ export class JsImportPanel extends GraphCtrl {
   // loaded network
   public loaded_network: Network;
 
-  constructor($scope, $injector, annotationsSrv) {
-    super($scope, $injector, annotationsSrv);
+  constructor($scope, $injector) {
+    super($scope, $injector);
     _.defaults(this.panel, this.panelDefaults);
-    this.events.on("init-edit-mode", this.onInitJsonImportEditMode.bind(this));
+    this.events.on("init-edit-mode", this.onInitEditMode.bind(this));
   }
 
-  onInitJsonImportEditMode() {
-    //const test = [this.editorTabs[0]];
-    //this.editorTabs = test;
+  public onInitEditMode() {
+
+    const test = [this.editorTabs[0]];
+    this.editorTabs = test;
     this.addEditorTab("JSON-Import-or-edit",
-      "public/plugins/app-jsbayes/panels/import-json-panel/partials/optionTab_importEditJson.html");
+      "public/plugins/jsbayes-app/panels/import-json-panel/partials/optionTab_importEditJson.html",
+      1);
     this.addEditorTab("Graphic-Network-Editor",
-      "public/plugins/app-jsbayes/panels/import-json-panel/partials/optionTab_GraphicEditor.html");
-    //this.addEditorTab("Network-Connection-to-Grafana",
-    //metricsTabDirective, 3);
+      "public/plugins/jsbayes-app/panels/import-json-panel/partials/optionTab_GraphicEditor.html",
+      2);
+    this.addEditorTab("Network-Connection-to-Grafana",
+    metricsTabDirective, 3);
+
   }
 
   public onUpload(net) {
