@@ -1,5 +1,20 @@
 {
     "type": "panel",
     "name": "7DOS - JSON Test Import Panel",
-    "id": "json-test-import-panel"
+    "id": "json-test-import-panel",
+
+    "info": {
+        "author": {
+            "name": "7DOS",
+            "url": "https://github.com/NicoloTartaggia/7DOS-plugin/"
+        },
+        "logos": {
+            "small": "img/logo-small.png",
+            "large": "img/logo-big.png"
+        }
+    },
+
+    "dependencies": {
+        "grafanaVersion": "4.6.x"
+    }
 }

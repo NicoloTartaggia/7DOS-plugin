@@ -1,39 +1,31 @@
 {
-    "type": "app",
-    "name": "JsBayes",
-    "id": "jsbayes-app",
+  "type": "app",
+  "name": "7DOS jsBayes App",
 
-    "info": {
-        "description": "JsBayes plugin for Grafana",
-        "author": {
-            "name": "7DOS",
-            "url": "https://github.com/NicoloTartaggia/7DOS-plugin/"
-        },
-        "keywords": ["7DOS"],
-        "logos": {
-            "small": "img/logo/logo-big.png",
-            "large": "img/logo/logo-small.png"
-        },
-        "links": [
-            {"name": "GitHub", "url": "https://github.com/NicoloTartaggia/7DOS-plugin/"},
-            {"name": "Docs", "url": "https://github.com/NicoloTartaggia/7DOS-plugin/"},
-            {"name": "License", "url": "https://github.com/NicoloTartaggia/7DOS-plugin/"}
-        ],
-        "screenshots": [
-        ],
-        "version": "1.0.0",
-        "updated": "2019-02-14"
+  "id": "app-jsbayes",
+
+  "info": {
+    "author": {
+      "name": "7DOS",
+      "url": "https://github.com/NicoloTartaggia/7DOS-plugin/"
     },
-
-    "includes": [
-        {
-            "type": "panel",
-            "name": "JSON Panels"
-        }
-    ],
-
-    "dependencies": {
-        "grafanaVersion": "5.x",
-        "plugins": []
+    "logos": {
+      "small": "img/logo-small.png",
+      "large": "img/logo-big.png"
     }
+  },
+  "includes": [
+    {
+      "type": "panel",
+      "name": "7DOS jsBayes"
+    },
+    {
+      "type": "panel",
+      "name": "7DOS - JSON Test Import Panel"
+    }
+  ],
+  "dependencies": {
+    "grafanaVersion": "4.6.x",
+    "plugins": []
+  }
 }

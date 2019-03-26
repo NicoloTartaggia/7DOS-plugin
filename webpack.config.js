@@ -10,6 +10,7 @@ module.exports = {
   entry: {
     './module': './module.ts',
     './panels/import-json-panel/module': './panels/import-json-panel/module.ts',
+    //"./panels/graph-panel": "./panels/graph-panel/module.ts"
   },
   output: {
     filename: "[name].js",
@@ -18,7 +19,7 @@ module.exports = {
   },
   externals: [
     // remove the line below if you don't want to use buildin versions
-    'lodash','remarkable',
+    'lodash','remarkable','jquery','angular',
     function (context, request, callback) {
       var prefix = 'grafana/';
       if (request.indexOf(prefix) === 0) {

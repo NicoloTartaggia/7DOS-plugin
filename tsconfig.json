@@ -1,20 +1,35 @@
 {
-    "compilerOptions": {
-        "allowSyntheticDefaultImports": true,
-        "strictNullChecks": true,
-        "module": "none",
-        "moduleResolution": "node",
-        "target": "es6",
-        "rootDir": "./src",
-        "jsx": "react",
-        "plugins": [
-            { "name": "typescript-tslint-plugin" }
-        ]
-    },
-    "typeRoots": [
-        "node_modules/@types"
-      ],
-    "include": [
-        "./src/**/*.ts"
-    ]
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "outDir": "dist",
+    "target": "es6",
+    "rootDir": "./src",
+    "jsx": "react",
+    "lib": [
+      "es6",
+      "dom"
+    ],
+    "plugins": [
+      { "name": "typescript-tslint-plugin" }
+    ],
+    "module": "esnext",
+    "declaration": false,
+    "allowSyntheticDefaultImports": true,
+    "inlineSourceMap": false,
+    "sourceMap": true,
+    "noEmitOnError": false,
+    "emitDecoratorMetadata": false,
+    "experimentalDecorators": true,
+    "noImplicitThis": false,
+    "noImplicitUseStrict": false,
+    "noImplicitAny": false,
+    "noUnusedLocals": true,
+    "baseUrl": "./src"
+  },
+  "typeRoots": [
+    "node_modules/@types"
+  ],
+  "include": [
+    "./src/**/*.ts"
+  ]
 }
