@@ -1,21 +1,21 @@
-import kbn from 'grafana/app/core/utils/kbn';
-import { getFlotTickDecimals } from './ticks';
-import _ from 'lodash';
+import kbn from "grafana/app/core/utils/kbn";
+import _ from "lodash";
+import { getFlotTickDecimals } from "./ticks";
 
-function matchSeriesOverride(aliasOrRegex, seriesAlias) {
+function matchSeriesOverride (aliasOrRegex, seriesAlias) {
   if (!aliasOrRegex) {
     return false;
   }
 
-  if (aliasOrRegex[0] === '/') {
-    var regex = kbn.stringToJsRegex(aliasOrRegex);
+  if (aliasOrRegex[0] === "/") {
+    const regex = kbn.stringToJsRegex(aliasOrRegex);
     return seriesAlias.match(regex) != null;
   }
 
   return aliasOrRegex === seriesAlias;
 }
 
-function translateFillOption(fill) {
+function translateFillOption (fill) {
   return fill === 0 ? 0.001 : fill / 10;
 }
 
@@ -24,33 +24,34 @@ function translateFillOption(fill) {
  * @param data series data
  * @param panel
  */
-export function updateLegendValues(data: TimeSeries[], panel) {
-  for (let i = 0; i < data.length; i++) {
-    let series = data[i];
-    let yaxes = panel.yaxes;
-    const seriesYAxis = series.yaxis || 1;
-    let axis = yaxes[seriesYAxis - 1];
-    let { tickDecimals, scaledDecimals } = getFlotTickDecimals(data, axis);
-    let formater = kbn.valueFormats[panel.yaxes[seriesYAxis - 1].format];
+export function updateLegendValues (data: Array<TimeSeries>, panel) {
+  for (const current_serie of data) {
+    const yaxes = panel.yaxes;
+    const seriesYAxis = current_serie.yaxis || 1;
+    const axis = yaxes[seriesYAxis - 1];
+    const scaledDecimals = getFlotTickDecimals(data, axis).scaledDecimals;
+    let tickDecimals = getFlotTickDecimals(data, axis).tickDecimals;
+    // let { tickDecimals, scaledDecimals } = getFlotTickDecimals(data, axis);
+    const formater = kbn.valueFormats[panel.yaxes[seriesYAxis - 1].format];
 
     // decimal override
     if (_.isNumber(panel.decimals)) {
-      series.updateLegendValues(formater, panel.decimals, null);
+      current_serie.updateLegendValues(formater, panel.decimals, null);
     } else {
       // auto decimals
       // legend and tooltip gets one more decimal precision
       // than graph legend ticks
       tickDecimals = (tickDecimals || -1) + 1;
-      series.updateLegendValues(formater, tickDecimals, scaledDecimals + 2);
+      current_serie.updateLegendValues(formater, tickDecimals, scaledDecimals + 2);
     }
   }
 }
 
-export function getDataMinMax(data: TimeSeries[]) {
+export function getDataMinMax (data: Array<TimeSeries>) {
   let datamin = null;
   let datamax = null;
 
-  for (let series of data) {
+  for (const series of data) {
     if (datamax === null || datamax < series.stats.max) {
       datamax = series.stats.max;
     }
@@ -63,34 +64,34 @@ export function getDataMinMax(data: TimeSeries[]) {
 }
 
 export default class TimeSeries {
-  datapoints: any;
-  id: string;
-  label: string;
-  alias: string;
-  aliasEscaped: string;
-  color: string;
-  valueFormater: any;
-  stats: any;
-  legend: boolean;
-  allIsNull: boolean;
-  allIsZero: boolean;
-  decimals: number;
-  scaledDecimals: number;
-  hasMsResolution: boolean;
-  isOutsideRange: boolean;
+  public datapoints: any;
+  public id: string;
+  public label: string;
+  public alias: string;
+  public aliasEscaped: string;
+  public color: string;
+  public valueFormater: any;
+  public stats: any;
+  public legend: boolean;
+  public allIsNull: boolean;
+  public allIsZero: boolean;
+  public decimals: number;
+  public scaledDecimals: number;
+  public hasMsResolution: boolean;
+  public isOutsideRange: boolean;
 
-  lines: any;
-  dashes: any;
-  bars: any;
-  points: any;
-  yaxis: any;
-  zindex: any;
-  stack: any;
-  nullPointMode: any;
-  fillBelowTo: any;
-  transform: any;
-  flotpairs: any;
-  unit: any;
+  public lines: any;
+  public dashes: any;
+  public bars: any;
+  public points: any;
+  public yaxis: any;
+  public zindex: any;
+  public stack: any;
+  public nullPointMode: any;
+  public fillBelowTo: any;
+  public transform: any;
+  public flotpairs: any;
+  public unit: any;
 
   constructor(opts) {
     this.datapoints = opts.datapoints;
@@ -106,7 +107,7 @@ export default class TimeSeries {
     this.hasMsResolution = this.isMsResolutionNeeded();
   }
 
-  applySeriesOverrides(overrides) {
+  public applySeriesOverrides(overrides) {
     this.lines = {};
     this.dashes = {
       dashLength: [],
@@ -118,73 +119,72 @@ export default class TimeSeries {
     this.nullPointMode = null;
     delete this.stack;
 
-    for (var i = 0; i < overrides.length; i++) {
-      var override = overrides[i];
-      if (!matchSeriesOverride(override.alias, this.alias)) {
+    for (const current_override of overrides) {
+      if (!matchSeriesOverride(current_override.alias, this.alias)) {
         continue;
       }
-      if (override.lines !== void 0) {
-        this.lines.show = override.lines;
+      if (current_override.lines !== void 0) {
+        this.lines.show = current_override.lines;
       }
-      if (override.dashes !== void 0) {
-        this.dashes.show = override.dashes;
+      if (current_override.dashes !== void 0) {
+        this.dashes.show = current_override.dashes;
         this.lines.lineWidth = 0;
       }
-      if (override.points !== void 0) {
-        this.points.show = override.points;
+      if (current_override.points !== void 0) {
+        this.points.show = current_override.points;
       }
-      if (override.bars !== void 0) {
-        this.bars.show = override.bars;
+      if (current_override.bars !== void 0) {
+        this.bars.show = current_override.bars;
       }
-      if (override.fill !== void 0) {
-        this.lines.fill = translateFillOption(override.fill);
+      if (current_override.fill !== void 0) {
+        this.lines.fill = translateFillOption(current_override.fill);
       }
-      if (override.stack !== void 0) {
-        this.stack = override.stack;
+      if (current_override.stack !== void 0) {
+        this.stack = current_override.stack;
       }
-      if (override.linewidth !== void 0) {
-        this.lines.lineWidth = this.dashes.show ? 0 : override.linewidth;
-        this.dashes.lineWidth = override.linewidth;
+      if (current_override.linewidth !== void 0) {
+        this.lines.lineWidth = this.dashes.show ? 0 : current_override.linewidth;
+        this.dashes.lineWidth = current_override.linewidth;
       }
-      if (override.dashLength !== void 0) {
-        this.dashes.dashLength[0] = override.dashLength;
+      if (current_override.dashLength !== void 0) {
+        this.dashes.dashLength[0] = current_override.dashLength;
       }
-      if (override.spaceLength !== void 0) {
-        this.dashes.dashLength[1] = override.spaceLength;
+      if (current_override.spaceLength !== void 0) {
+        this.dashes.dashLength[1] = current_override.spaceLength;
       }
-      if (override.nullPointMode !== void 0) {
-        this.nullPointMode = override.nullPointMode;
+      if (current_override.nullPointMode !== void 0) {
+        this.nullPointMode = current_override.nullPointMode;
       }
-      if (override.pointradius !== void 0) {
-        this.points.radius = override.pointradius;
+      if (current_override.pointradius !== void 0) {
+        this.points.radius = current_override.pointradius;
       }
-      if (override.steppedLine !== void 0) {
-        this.lines.steps = override.steppedLine;
+      if (current_override.steppedLine !== void 0) {
+        this.lines.steps = current_override.steppedLine;
       }
-      if (override.zindex !== void 0) {
-        this.zindex = override.zindex;
+      if (current_override.zindex !== void 0) {
+        this.zindex = current_override.zindex;
       }
-      if (override.fillBelowTo !== void 0) {
-        this.fillBelowTo = override.fillBelowTo;
+      if (current_override.fillBelowTo !== void 0) {
+        this.fillBelowTo = current_override.fillBelowTo;
       }
-      if (override.color !== void 0) {
-        this.color = override.color;
+      if (current_override.color !== void 0) {
+        this.color = current_override.color;
       }
-      if (override.transform !== void 0) {
-        this.transform = override.transform;
+      if (current_override.transform !== void 0) {
+        this.transform = current_override.transform;
       }
-      if (override.legend !== void 0) {
-        this.legend = override.legend;
+      if (current_override.legend !== void 0) {
+        this.legend = current_override.legend;
       }
 
-      if (override.yaxis !== void 0) {
-        this.yaxis = override.yaxis;
+      if (current_override.yaxis !== void 0) {
+        this.yaxis = current_override.yaxis;
       }
     }
   }
 
-  getFlotPairs(fillStyle) {
-    var result = [];
+  public getFlotPairs(fillStyle) {
+    const result = [];
 
     this.stats.total = 0;
     this.stats.max = -Number.MAX_VALUE;
@@ -200,23 +200,23 @@ export default class TimeSeries {
     this.allIsNull = true;
     this.allIsZero = true;
 
-    var ignoreNulls = fillStyle === 'connected';
-    var nullAsZero = fillStyle === 'null as zero';
-    var currentTime;
-    var currentValue;
-    var nonNulls = 0;
-    var previousTime;
-    var previousValue = 0;
-    var previousDeltaUp = true;
+    const ignoreNulls = fillStyle === "connected";
+    const nullAsZero = fillStyle === "null as zero";
+    let currentTime;
+    let currentValue;
+    let nonNulls = 0;
+    let previousTime;
+    let previousValue = 0;
+    let previousDeltaUp = true;
 
-    for (var i = 0; i < this.datapoints.length; i++) {
+    for (let i = 0; i < this.datapoints.length; i++) {
       currentValue = this.datapoints[i][0];
       currentTime = this.datapoints[i][1];
 
       // Due to missing values we could have different timeStep all along the series
       // so we have to find the minimum one (could occur with aggregators such as ZimSum)
       if (previousTime !== undefined) {
-        let timeStep = currentTime - previousTime;
+        const timeStep = currentTime - previousTime;
         if (timeStep < this.stats.timeStep) {
           this.stats.timeStep = timeStep;
         }
@@ -305,23 +305,23 @@ export default class TimeSeries {
     return result;
   }
 
-  updateLegendValues(formater, decimals, scaledDecimals) {
+  public updateLegendValues(formater, decimals, scaledDecimals) {
     this.valueFormater = formater;
     this.decimals = decimals;
     this.scaledDecimals = scaledDecimals;
   }
 
-  formatValue(value) {
+  public formatValue(value) {
     if (!_.isFinite(value)) {
       value = null; // Prevent NaN formatting
     }
     return this.valueFormater(value, this.decimals, this.scaledDecimals);
   }
 
-  isMsResolutionNeeded() {
-    for (var i = 0; i < this.datapoints.length; i++) {
-      if (this.datapoints[i][1] !== null) {
-        var timestamp = this.datapoints[i][1].toString();
+  public isMsResolutionNeeded() {
+    for (const current_datapoint of this.datapoints) {
+      if (current_datapoint[1] !== null) {
+        const timestamp = current_datapoint[1].toString();
         if (timestamp.length === 13 && timestamp % 1000 !== 0) {
           return true;
         }
@@ -330,7 +330,7 @@ export default class TimeSeries {
     return false;
   }
 
-  hideFromLegend(options) {
+  public hideFromLegend(options) {
     if (options.hideEmpty && this.allIsNull) {
       return true;
     }

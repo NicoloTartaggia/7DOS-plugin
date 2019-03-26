@@ -29,9 +29,61 @@ class GraphCtrl extends MetricsPanelCtrl {
   public processor: DataProcessor;
 
   public panelDefaults = {
+    // series color overrides
+    aliasColors: {},
+    // show hide bars
+    bars: false,
+    // length of a dash
+    dashLength: 10,
+    // show/hide dashed line
+    dashes: false,
     datasource: null,
+    // fill factor
+    fill: 1,
+    // legend options
+    legend: {
+      avg: false,
+      current: false,
+      max: false,
+      min: false,
+      show: true, // disable/enable legend
+      total: false,
+      values: false, // disable/enable legend values
+    },
+    // show/hide lines
+    lines: true,
+    // line width in pixels
+    linewidth: 1,
+    // how null points should be handled
+    nullPointMode: "null",
+    // stack percentage mode
+    percentage: false,
+    // point radius in pixels
+    pointradius: 5,
+    // show hide points
+    points: false,
     // sets client side (flot) or native graphite png renderer (png)
     renderer: "flot",
+    // other style overrides
+    seriesOverrides: [],
+    // length of space between two dashes
+    spaceLength: 10,
+    // enable/disable stacking
+    stack: false,
+    // staircase line mode
+    steppedLine: false,
+    // metric queries
+    targets: [{}],
+    thresholds: [],
+    // time overrides
+    timeFrom: null,
+    timeShift: null,
+    // tooltip options
+    tooltip: {
+      shared: true,
+      sort: 0,
+      value_type: "individual",
+    },
     xaxis: {
       buckets: null,
       mode: "time",
@@ -57,58 +109,6 @@ class GraphCtrl extends MetricsPanelCtrl {
         show: true,
       },
     ],
-    // show/hide lines
-    lines: true,
-    // fill factor
-    fill: 1,
-    // line width in pixels
-    linewidth: 1,
-    // show/hide dashed line
-    dashes: false,
-    // length of a dash
-    dashLength: 10,
-    // length of space between two dashes
-    spaceLength: 10,
-    // show hide points
-    points: false,
-    // point radius in pixels
-    pointradius: 5,
-    // show hide bars
-    bars: false,
-    // enable/disable stacking
-    stack: false,
-    // stack percentage mode
-    percentage: false,
-    // legend options
-    legend: {
-      avg: false,
-      current: false,
-      max: false,
-      min: false,
-      show: true, // disable/enable legend
-      total: false,
-      values: false, // disable/enable legend values
-    },
-    // how null points should be handled
-    nullPointMode: "null",
-    // staircase line mode
-    steppedLine: false,
-    // tooltip options
-    tooltip: {
-      shared: true,
-      sort: 0,
-      value_type: "individual",
-    },
-    // time overrides
-    timeFrom: null,
-    timeShift: null,
-    // metric queries
-    targets: [{}],
-    // series color overrides
-    aliasColors: {},
-    // other style overrides
-    seriesOverrides: [],
-    thresholds: [],
   };
 
   /** @ngInject */

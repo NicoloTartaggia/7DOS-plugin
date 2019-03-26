@@ -1,13 +1,13 @@
 import kbn from "grafana/app/core/utils/kbn";
 
 export class AxesEditorCtrl {
+  public unitFormats: any;
+  public logScales: any;
+  public xAxisModes: any;
+  public xAxisStatOptions: any;
+  public xNameSegment: any;
   private panel: any;
   private panelCtrl: any;
-  private unitFormats: any;
-  private logScales: any;
-  private xAxisModes: any;
-  private xAxisStatOptions: any;
-  private xNameSegment: any;
 
   constructor (private $scope, private $q) {
     this.panelCtrl = $scope.ctrl;

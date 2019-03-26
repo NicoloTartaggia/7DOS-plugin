@@ -17,6 +17,7 @@
         "no-implicit-dependencies": false,
         "no-submodule-imports": false,
         "no-empty": false,
+        "radix": false,
         "no-console": false,
         "no-this-assignment": false,
         "only-arrow-functions": false,

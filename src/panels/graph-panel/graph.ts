@@ -110,7 +110,7 @@ function graphDirective (timeSrv, popoverSrv, contextSrv) {
 
       }
 
-      function drawHook (plot) {
+      function drawHook (plot_param) {
         // add left axis labels
         if (panel.yaxes[0].label && panel.yaxes[0].show) {
           $("<div class='axisLabel left-yaxis-label flot-temp-elem'></div>")
@@ -129,10 +129,10 @@ function graphDirective (timeSrv, popoverSrv, contextSrv) {
           $(`<div class="datapoints-warning flot-temp-elem">${ctrl.dataWarning.title}</div>`).appendTo(elem);
         }
 
-        thresholdManager.draw(plot);
+        thresholdManager.draw(plot_param);
       }
 
-      function processOffsetHook (plot, gridMargin) {
+      function processOffsetHook (plot_param, gridMargin) {
         const left = panel.yaxes[0];
         const right = panel.yaxes[1];
         if (left.show && left.label) {
@@ -143,7 +143,7 @@ function graphDirective (timeSrv, popoverSrv, contextSrv) {
         }
 
         // apply y-axis min/max options
-        const yaxis = plot.getYAxes();
+        const yaxis = plot_param.getYAxes();
         for (let i = 0; i < yaxis.length; i++) {
           const axis = yaxis[i];
           const panelOptions = panel.yaxes[i];
@@ -155,10 +155,10 @@ function graphDirective (timeSrv, popoverSrv, contextSrv) {
       // Series could have different timeSteps,
       // let's find the smallest one so that bars are correctly rendered.
       // In addition, only take series which are rendered as bars for this.
-      function getMinTimeStepOfSeries (data) {
+      function getMinTimeStepOfSeries (data_param) {
         let min = Number.MAX_VALUE;
 
-        for (const current_data of data) {
+        for (const current_data of data_param) {
           if (!current_data.stats.timeStep) {
             continue;
           }
@@ -206,8 +206,8 @@ function graphDirective (timeSrv, popoverSrv, contextSrv) {
         callPlot(options, true);
       }
 
-      function buildFlotPairs (data) {
-        for (const serie of data) {
+      function buildFlotPairs (data_param) {
+        for (const serie of data_param) {
           serie.data = serie.getFlotPairs(serie.nullPointMode || panel.nullPointMode);
 
           // if hidden remove points and disable stack
@@ -218,15 +218,15 @@ function graphDirective (timeSrv, popoverSrv, contextSrv) {
         }
       }
 
-      function prepareXAxis (options, panel) {
-        switch (panel.xaxis.mode) {
+      function prepareXAxis (options, panel_param) {
+        switch (panel_param.xaxis.mode) {
           case "series": {
             options.series.bars.barWidth = 0.7;
             options.series.bars.align = "center";
 
             for (let i = 0; i < data.length; i++) {
               const series = data[i];
-              series.data = [[i + 1, series.stats[panel.xaxis.values[0]]]];
+              series.data = [[i + 1, series.stats[panel_param.xaxis.values[0]]]];
             }
 
             addXSeriesAxis(options);
@@ -239,7 +239,7 @@ function graphDirective (timeSrv, popoverSrv, contextSrv) {
             if (data.length && values.length) {
               const histMin = _.min(_.map(data, (s: any) => s.stats.min));
               const histMax = _.max(_.map(data, (s: any) => s.stats.max));
-              const ticks = panel.xaxis.buckets || panelWidth / 50;
+              const ticks = panel_param.xaxis.buckets || panelWidth / 50;
               bucketSize = tickStep(histMin, histMax, ticks);
               const histogram = convertValuesToHistogram(values, bucketSize);
               data[0].data = histogram;
@@ -284,16 +284,16 @@ function graphDirective (timeSrv, popoverSrv, contextSrv) {
         }
       }
 
-      function buildFlotOptions (panel) {
-        const stack = panel.stack ? true : null;
+      function buildFlotOptions (panel_param) {
+        const stack = panel_param.stack ? true : null;
         return {
           crosshair: {
             mode: "x",
           },
           dashes: {
-            dashLength: [panel.dashLength, panel.spaceLength],
-            lineWidth: panel.linewidth,
-            show: panel.dashes,
+            dashLength: [panel_param.dashLength, panel_param.spaceLength],
+            lineWidth: panel_param.linewidth,
+            show: panel_param.dashes,
           },
           grid: {
             backgroundColor: null,
@@ -320,38 +320,38 @@ function graphDirective (timeSrv, popoverSrv, contextSrv) {
               barWidth: 1,
               fill: 1,
               lineWidth: 0,
-              show: panel.bars,
+              show: panel_param.bars,
               zero: false,
             },
             lines: {
-              fill: translateFillOption(panel.fill),
-              lineWidth: panel.dashes ? 0 : panel.linewidth,
-              show: panel.lines,
-              steps: panel.steppedLine,
+              fill: translateFillOption(panel_param.fill),
+              lineWidth: panel_param.dashes ? 0 : panel_param.linewidth,
+              show: panel_param.lines,
+              steps: panel_param.steppedLine,
               zero: false,
             },
             points: {
               fill: 1,
               fillColor: false,
-              radius: panel.points ? panel.pointradius : 2,
-              show: panel.points,
+              radius: panel_param.points ? panel_param.pointradius : 2,
+              show: panel_param.points,
             },
             shadowSize: 0,
-            stack: panel.percentage ? null : stack,
-            stackpercent: panel.stack ? panel.percentage : false,
+            stack: panel_param.percentage ? null : stack,
+            stackpercent: panel_param.stack ? panel_param.percentage : false,
           },
           xaxis: {},
           yaxes: [],
         };
       }
 
-      function sortSeries (series, panel) {
-        const sortBy = panel.legend.sort;
-        const sortOrder = panel.legend.sortDesc;
+      function sortSeries (series, panel_param) {
+        const sortBy = panel_param.legend.sort;
+        const sortOrder = panel_param.legend.sortDesc;
         const haveSortBy = sortBy !== null || sortBy !== undefined;
         const haveSortOrder = sortOrder !== null || sortOrder !== undefined;
-        const shouldSortBy = panel.stack && haveSortBy && haveSortOrder;
-        const sortDesc = panel.legend.sortDesc === true ? -1 : 1;
+        const shouldSortBy = panel_param.stack && haveSortBy && haveSortOrder;
+        const sortDesc = panel_param.legend.sortDesc === true ? -1 : 1;
 
         series.sort((x, y) => {
           if (x.zindex > y.zindex) {
@@ -430,19 +430,19 @@ function graphDirective (timeSrv, popoverSrv, contextSrv) {
           max = _.max(ticks);
 
           // Adjust tick step
-          let tickStep = bucketSize;
-          let ticks_num = Math.floor((max - min) / tickStep);
+          let local_tickStep = bucketSize;
+          let ticks_num = Math.floor((max - min) / local_tickStep);
           while (ticks_num > defaultTicks) {
-            tickStep = tickStep * 2;
-            ticks_num = Math.ceil((max - min) / tickStep);
+            local_tickStep = local_tickStep * 2;
+            ticks_num = Math.ceil((max - min) / local_tickStep);
           }
 
           // Expand ticks for pretty view
-          min = Math.floor(min / tickStep) * tickStep;
-          max = Math.ceil(max / tickStep) * tickStep;
+          min = Math.floor(min / local_tickStep) * local_tickStep;
+          max = Math.ceil(max / local_tickStep) * local_tickStep;
 
           ticks = [];
-          for (let i = min; i <= max; i += tickStep) {
+          for (let i = min; i <= max; i += local_tickStep) {
             ticks.push(i);
           }
         } else {
@@ -486,7 +486,7 @@ function graphDirective (timeSrv, popoverSrv, contextSrv) {
         };
       }
 
-      function configureYAxisOptions (data, options) {
+      function configureYAxisOptions (data_param, options) {
         const defaults = {
           index: 1,
           logBase: panel.yaxes[0].logBase || 1,
@@ -499,7 +499,7 @@ function graphDirective (timeSrv, popoverSrv, contextSrv) {
 
         options.yaxes.push(defaults);
 
-        if (_.find(data, {yaxis: 2})) {
+        if (_.find(data_param, {yaxis: 2})) {
           const secondY = _.clone(defaults);
           secondY.index = 2;
           secondY.show = panel.yaxes[1].show;
@@ -510,10 +510,10 @@ function graphDirective (timeSrv, popoverSrv, contextSrv) {
           secondY.tickDecimals = panel.yaxes[1].decimals;
           options.yaxes.push(secondY);
 
-          applyLogScale(options.yaxes[1], data);
+          applyLogScale(options.yaxes[1], data_param);
           configureAxisMode(options.yaxes[1], panel.percentage && panel.stack ? "percent" : panel.yaxes[1].format);
         }
-        applyLogScale(options.yaxes[0], data);
+        applyLogScale(options.yaxes[0], data_param);
         configureAxisMode(options.yaxes[0], panel.percentage && panel.stack ? "percent" : panel.yaxes[0].format);
       }
 
@@ -525,7 +525,7 @@ function graphDirective (timeSrv, popoverSrv, contextSrv) {
         return _.toNumber(value);
       }
 
-      function applyLogScale (axis, data) {
+      function applyLogScale (axis, data_param) {
         if (axis.logBase === 1) {
           return;
         }
@@ -544,8 +544,8 @@ function graphDirective (timeSrv, popoverSrv, contextSrv) {
         let max = axis.max;
         let min = axis.min;
 
-        for (i = 0; i < data.length; i++) {
-          series = data[i];
+        for (i = 0; i < data_param.length; i++) {
+          series = data_param[i];
           if (series.yaxis === axis.index) {
             if (!max || max < series.stats.max) {
               max = series.stats.max;
@@ -630,8 +630,8 @@ function graphDirective (timeSrv, popoverSrv, contextSrv) {
       }
 
       function configureAxisMode (axis, format) {
-        axis.tickFormatter = function (val, axis) {
-          return kbn.valueFormats[format](val, axis.tickDecimals, axis.scaledDecimals);
+        axis.tickFormatter = function (val, local_axis) {
+          return kbn.valueFormats[format](val, local_axis.tickDecimals, local_axis.scaledDecimals);
         };
       }
 
