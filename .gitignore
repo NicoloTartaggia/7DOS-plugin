@@ -34,3 +34,5 @@ profile.cov
 .notouch
 .DS_Store
 .tscache
+
+package-lock\.json
