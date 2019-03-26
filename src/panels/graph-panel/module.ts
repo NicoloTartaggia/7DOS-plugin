@@ -1,4 +1,3 @@
-
 import "./graph";
 import "./legend";
 import "./series_overrides_ctrl";
@@ -6,10 +5,10 @@ import "./thresholds_form";
 // import { JsImportPanel } from "src/panel/import-json-panel/JsImportPanel";    //
 
 import config from "grafana/app/core/config";
-import { alertTab, MetricsPanelCtrl } from "grafana/app/plugins/sdk";
+import {alertTab, MetricsPanelCtrl} from "grafana/app/plugins/sdk";
 import _ from "lodash";
-import { axesEditorComponent } from "./axes_editor";
-import { DataProcessor } from "./data_processor";
+import {axesEditorComponent} from "./axes_editor";
+import {DataProcessor} from "./data_processor";
 import template from "./template";
 
 class GraphCtrl extends MetricsPanelCtrl {
@@ -21,7 +20,7 @@ class GraphCtrl extends MetricsPanelCtrl {
   public annotations: any = [];
   public alertState: any;
 
-  _panelPath: any;
+  public panel_path: any;
 
   public annotationsPromise: any;
   public dataWarning: any;
@@ -33,31 +32,31 @@ class GraphCtrl extends MetricsPanelCtrl {
     datasource: null,
     // sets client side (flot) or native graphite png renderer (png)
     renderer: "flot",
-    yaxes: [
-      {
-        label: null,
-        show: true,
-        logBase: 1,
-        min: null,
-        max: null,
-        format: "short",
-      },
-      {
-        label: null,
-        show: true,
-        logBase: 1,
-        min: null,
-        max: null,
-        format: "short",
-      },
-    ],
     xaxis: {
-      show: true,
+      buckets: null,
       mode: "time",
       name: null,
+      show: true,
       values: [],
-      buckets: null,
     },
+    yaxes: [
+      {
+        format: "short",
+        label: null,
+        logBase: 1,
+        max: null,
+        min: null,
+        show: true,
+      },
+      {
+        format: "short",
+        label: null,
+        logBase: 1,
+        max: null,
+        min: null,
+        show: true,
+      },
+    ],
     // show/hide lines
     lines: true,
     // fill factor
@@ -82,13 +81,13 @@ class GraphCtrl extends MetricsPanelCtrl {
     percentage: false,
     // legend options
     legend: {
-      show: true, // disable/enable legend
-      values: false, // disable/enable legend values
-      min: false,
-      max: false,
-      current: false,
-      total: false,
       avg: false,
+      current: false,
+      max: false,
+      min: false,
+      show: true, // disable/enable legend
+      total: false,
+      values: false, // disable/enable legend values
     },
     // how null points should be handled
     nullPointMode: "null",
@@ -96,9 +95,9 @@ class GraphCtrl extends MetricsPanelCtrl {
     steppedLine: false,
     // tooltip options
     tooltip: {
-      value_type: "individual",
       shared: true,
       sort: 0,
+      value_type: "individual",
     },
     // time overrides
     timeFrom: null,
@@ -113,7 +112,7 @@ class GraphCtrl extends MetricsPanelCtrl {
   };
 
   /** @ngInject */
-  constructor($scope, $injector, private annotationsSrv) {
+  constructor ($scope, $injector, private annotationsSrv) {
     super($scope, $injector);
 
     _.defaults(this.panel, this.panelDefaults);
@@ -131,7 +130,7 @@ class GraphCtrl extends MetricsPanelCtrl {
     this.events.on("init-panel-actions", this.onInitPanelActions.bind(this));
   }
 
-  public onInitEditMode() {
+  public onInitEditMode () {
     this.addEditorTab("Axes", axesEditorComponent, 2);
     this.addEditorTab("Legend", "public/plugins/graph-panel-template-panel/partials/tab_legend.html", 3);
     this.addEditorTab("Display", "public/plugins/graph-panel-template-panel/partials/tab_display.html", 4);
@@ -143,12 +142,12 @@ class GraphCtrl extends MetricsPanelCtrl {
     this.subTabIndex = 0;
   }
 
-  public onInitPanelActions(actions) {
-    actions.push({ text: "Export CSV", click: "ctrl.exportCsv()" });
-    actions.push({ text: "Toggle legend", click: "ctrl.toggleLegend()" });
+  public onInitPanelActions (actions) {
+    actions.push({text: "Export CSV", click: "ctrl.exportCsv()"});
+    actions.push({text: "Toggle legend", click: "ctrl.toggleLegend()"});
   }
 
-  public issueQueries(datasource) {
+  public issueQueries (datasource) {
     this.annotationsPromise = this.annotationsSrv.getAnnotations({
       dashboard: this.dashboard,
       panel: this.panel,
@@ -157,11 +156,11 @@ class GraphCtrl extends MetricsPanelCtrl {
     return super.issueQueries(datasource);
   }
 
-  public zoomOut(evt) {
+  public zoomOut (evt) {
     this.publishAppEvent("zoom-out", 2);
   }
 
-  public onDataSnapshotLoad(snapshotData) {
+  public onDataSnapshotLoad (snapshotData) {
     this.annotationsPromise = this.annotationsSrv.getAnnotations({
       dashboard: this.dashboard,
       panel: this.panel,
@@ -170,13 +169,13 @@ class GraphCtrl extends MetricsPanelCtrl {
     this.onDataReceived(snapshotData);
   }
 
-  public onDataError(err) {
+  public onDataError (err) {
     this.seriesList = [];
     this.annotations = [];
     this.render([]);
   }
 
-  public onDataReceived(dataList) {
+  public onDataReceived (dataList) {
     this.dataList = dataList;
     this.seriesList = this.processor.getSeriesList({
       dataList,
@@ -190,15 +189,15 @@ class GraphCtrl extends MetricsPanelCtrl {
 
     if (datapointsCount === 0) {
       this.dataWarning = {
-        title: "No data points",
         tip: "No datapoints returned from data query",
+        title: "No data points",
       };
     } else {
       for (const series of this.seriesList) {
         if (series.isOutsideRange) {
           this.dataWarning = {
-            title: "Data points outside time range",
             tip: "Can be caused by timezone mismatch or missing time filter in query",
+            title: "Data points outside time range",
           };
           break;
         }
@@ -219,7 +218,7 @@ class GraphCtrl extends MetricsPanelCtrl {
     );
   }
 
-  public onRender() {
+  public onRender () {
     if (!this.seriesList) {
       return;
     }
@@ -233,13 +232,13 @@ class GraphCtrl extends MetricsPanelCtrl {
     }
   }
 
-  public changeSeriesColor(series, color) {
+  public changeSeriesColor (series, color) {
     series.color = color;
     this.panel.aliasColors[series.alias] = series.color;
     this.render();
   }
 
-  public toggleSeries(serie, event) {
+  public toggleSeries (serie, event) {
     if (event.ctrlKey || event.metaKey || event.shiftKey) {
       if (this.hiddenSeries[serie.alias]) {
         delete this.hiddenSeries[serie.alias];
@@ -252,7 +251,7 @@ class GraphCtrl extends MetricsPanelCtrl {
     this.render();
   }
 
-  public toggleSeriesExclusiveMode(serie) {
+  public toggleSeriesExclusiveMode (serie) {
     const hidden = this.hiddenSeries;
 
     if (hidden[serie.alias]) {
@@ -285,52 +284,52 @@ class GraphCtrl extends MetricsPanelCtrl {
     }
   }
 
-  public toggleAxis(info) {
-    let override = _.find(this.panel.seriesOverrides, { alias: info.alias });
+  public toggleAxis (info) {
+    let override = _.find(this.panel.seriesOverrides, {alias: info.alias});
     if (!override) {
-      override = { alias: info.alias };
+      override = {alias: info.alias};
       this.panel.seriesOverrides.push(override);
     }
     // info.yaxis = override.yaxis = info.yaxis === 2 ? 1 : 2;
     this.render();
   }
 
-  public addSeriesOverride(override) {
+  public addSeriesOverride (override) {
     this.panel.seriesOverrides.push(override || {});
   }
 
-  public removeSeriesOverride(override) {
+  public removeSeriesOverride (override) {
     this.panel.seriesOverrides = _.without(this.panel.seriesOverrides, override);
     this.render();
   }
 
-  public toggleLegend() {
+  public toggleLegend () {
     this.panel.legend.show = !this.panel.legend.show;
     this.refresh();
   }
 
-  public legendValuesOptionChanged() {
+  public legendValuesOptionChanged () {
     const legend = this.panel.legend;
     legend.values = legend.min || legend.max || legend.avg || legend.current || legend.total;
     this.render();
   }
 
-  public exportCsv() {
+  public exportCsv () {
     const scope = this.$scope.$new(true);
     scope.seriesList = this.seriesList;
     this.publishAppEvent("show-modal", {
-      templateHtml: '<export-data-modal data="seriesList"></export-data-modal>',
-      scope,
       modalClass: "modal--narrow",
+      scope,
+      templateHtml: '<export-data-modal data="seriesList"></export-data-modal>',
     });
   }
 
-  get panelPath() {
-    if (this._panelPath === undefined) {
-      this._panelPath = "/public/plugins/" + this.pluginId + "/";
+  get panelPath () {
+    if (this.panel_path === undefined) {
+      this.panel_path = "/public/plugins/" + this.pluginId + "/";
     }
-    return this._panelPath;
+    return this.panel_path;
   }
 }
 
-export { GraphCtrl, GraphCtrl as PanelCtrl };
+export {GraphCtrl, GraphCtrl as PanelCtrl};
