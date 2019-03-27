@@ -4,15 +4,20 @@ export class ConcreteNodeAdapter{
   private values: Array<AbstractValue>;
   private node:JNode;
 
-  public getName() {
+  constructor(node:JNode, values:Array<AbstractValue>) {
+      this.node = node;
+      this.values = values;
+  }
+
+  public getName(): string {
     return this.node.name;
   }
 
-  public getStates() {
+  public getStates(): Array<string> {
     return this.node.values;
   }
 
-  public getValues() {
+  public getValues(): Array<AbstractValue> {
     return this.values;
   }
 }
