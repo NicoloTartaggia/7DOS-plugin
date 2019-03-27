@@ -30,6 +30,7 @@
     "node_modules/@types"
   ],
   "include": [
-    "./src/**/*.ts"
+    "./src/**/*.ts",
+    "node_modules/jsbayes/index.d.ts"
   ]
 }
