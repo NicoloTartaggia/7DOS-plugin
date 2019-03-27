@@ -1,6 +1,5 @@
 import { AbstractValue } from "./AbstractValue";
 
-
 class StringValue extends AbstractValue {
     private value: string;
 
