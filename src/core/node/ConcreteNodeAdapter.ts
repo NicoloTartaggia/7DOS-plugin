@@ -1,10 +1,10 @@
 import { AbstractValue } from "./Value/AbstractValue";
 
-export class ConcreteNodeAdapter{
+export class ConcreteNodeAdapter {
   private values: Array<AbstractValue>;
-  private node:JNode;
+  private node: JNode;
 
-  constructor(node:JNode, values:Array<AbstractValue>) {
+  constructor(node: JNode, values: Array<AbstractValue>) {
       this.node = node;
       this.values = values;
   }
