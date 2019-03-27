@@ -17,10 +17,6 @@
   "includes": [
     {
       "type": "panel",
-      "name": "7DOS jsBayes"
-    },
-    {
-      "type": "panel",
       "name": "7DOS - JSON Test Import Panel"
     }
   ],
