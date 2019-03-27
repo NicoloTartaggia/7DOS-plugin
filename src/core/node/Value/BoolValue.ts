@@ -7,7 +7,7 @@ class BoolValue extends AbstractValue {
     constructor(value: boolean, name: string) {
         super();
         this.value = value;
-        this.name = name
+        this.name = name;
     }
 
     public getName() {
