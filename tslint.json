@@ -13,6 +13,7 @@
             "spaces",
             2
         ],
+        "interface-name": [true, "never-prefix"],
         "prefer-conditional-expression": false,
         "no-implicit-dependencies": false,
         "no-submodule-imports": false,
