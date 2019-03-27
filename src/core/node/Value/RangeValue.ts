@@ -13,8 +13,7 @@ class RangeValue {
             return false;
         } else if (numericValue < this.minRange || numericValue > this.maxRange) {
             return false;
-        }
-        else {
+        } else {
             return true;
         }
     }
