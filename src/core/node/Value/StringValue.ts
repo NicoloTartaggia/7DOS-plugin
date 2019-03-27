@@ -1,7 +1,11 @@
-class StringValue {
+import { AbstractValue } from "./AbstractValue";
+
+
+class StringValue extends AbstractValue {
     private value: string;
 
     constructor(value: string) {
+        super();
         this.value = value;
     }
 
@@ -13,3 +17,5 @@ class StringValue {
         }
     }
 }
+
+export { StringValue };

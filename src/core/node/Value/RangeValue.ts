@@ -1,8 +1,11 @@
-class RangeValue {
+import { AbstractValue } from "./AbstractValue";
+
+class RangeValue extends AbstractValue {
     private minRange: number;
     private maxRange: number;
 
     constructor(minRange: number, maxRange: number) {
+        super();
         this.minRange = minRange;
         this.maxRange = maxRange;
     }
@@ -18,3 +21,5 @@ class RangeValue {
         }
     }
 }
+
+export { RangeValue };

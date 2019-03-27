@@ -1,7 +1,10 @@
-class BoolValue {
+import { AbstractValue } from "./AbstractValue";
+
+class BoolValue extends AbstractValue {
     private value: boolean;
 
     constructor(value: boolean) {
+        super();
         this.value = value;
     }
 
@@ -18,3 +21,5 @@ class BoolValue {
         }
     }
 }
+
+export { BoolValue };
