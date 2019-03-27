@@ -9,7 +9,7 @@ export class ConcreteNodeAdapter{
   }
 
   public getStates() {
-    
+    return this.node.values;
   }
 
   public getValues() {

@@ -17,8 +17,8 @@ abstract class NodeValue {
 
   /**
    * abstract function that will be implemented in the child classes
-   * return a string that represent the current node value in JSON object format
-   * @returns Return a string that represent the NodeValue as a Json Object
+   * returns a string that represents the current node value in JSON object format
+   * @returns Returns a string that represents the NodeValue as a Json Object
    */
   public abstract getJsonValue(): string;
 }
@@ -36,8 +36,8 @@ export class SingleValue extends NodeValue {
   }
 
   /**
-   * Override - Function that return a string that represent the current SingleValue object in JSON object format
-   * @returns Return a string that represent the SingleValue as a Json Object
+   * @Override - Function that returns a string that represents the current SingleValue object in JSON object format
+   * @returns Returns a string that represents the SingleValue as a Json Object
    */
   public getJsonValue(): string {
     let json_string = "{";
@@ -68,8 +68,8 @@ export class RangeValue extends NodeValue {
   }
 
   /**
-   * Override - Function that return a string that represent the current RangeValue object in JSON object format
-   * @returns Return a string that represent the RangeValue as a Json Object
+   * @Override - Function that returns a string that represents the current RangeValue object in JSON object format
+   * @returns Returns a string that represents the RangeValue as a Json Object
    */
   public getJsonValue(): string {
     let json_string = "{";
@@ -126,8 +126,8 @@ export class Network_Node {
   }
 
   /**
-   * Override - Function that return a string that represent the current node as a Json object: with name, values etc
-   * @returns Return a string that represent the current node as Json object
+   * @Override - Function that returns a string that represents the current node as a Json object: with name, values etc
+   * @returns Returns a string that represents the current node as Json object
    */
   public getJsonValue(): string {
     // Begin
@@ -150,9 +150,9 @@ export class Network_Node {
   // --------------------
 
   /**
-   * Override - Function that return a string that represent the
+   * @Override - Function that returns a string that represents the
    * dictionary of parents of the current node in Json array format
-   * @returns Return a string that represent the array of parents
+   * @returns Returns a string that represents the array of parents
    */
   private generateJsonParentsString(): string {
     let json_string = '"parents":[';
@@ -169,8 +169,8 @@ export class Network_Node {
   }
 
   /**
-   * Override - Function that return a string that represent the 2D CPT array of the current node in Json format
-   * @returns Return a string that represent the CPT in json format
+   * Override - Function that returns a string that represents the 2D CPT array of the current node in Json format
+   * @returns Returns a string that represents the CPT in json format
    */
   private generateJsonCPTString(): string {
     let json_string = '"cpt":[';
@@ -282,8 +282,8 @@ export class Network {
   }
 
   /**
-   * Override - Function that return a string that represent the current network using the json format
-   * @returns Return a string that represent the current network as json
+   * @Override - Function that returns a string that represents the current network using the json format
+   * @returns Returns a string that represents the current network as json
    */
   public getNetworkJson(): string {
     let json_string = '{"nodes": [';
@@ -304,8 +304,8 @@ export class Network {
   }
 
   /**
-   * Override - Function that return a string that represent the current network using the json format
-   * @returns Return a string that represent the current network as json
+   * @Override - Function that returns a string that represents the current network using the json format
+   * @returns Returns a string that represents the current network as json
    */
   private buildNetworkFromJson(json_string: string): void {
 
