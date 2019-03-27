@@ -1,4 +1,4 @@
-import * as jsbayes from "../../lib/jsbayes/jsbayes";
+import jsbayes from "jsbayes";
 
 // ---
 // Json Management Class
@@ -202,7 +202,7 @@ export class Network_Node {
 }
 
 export class Network {
-  private readonly network: jsbayes;
+  private readonly network: JGraph;
   private node_objects_dictionary: { [name: string]: Network_Node; } = {};
   private node_dictionary: {} = {};
 
