@@ -4,7 +4,7 @@ class StringValue extends AbstractValue {
     private value: string;
     private name: string;
 
-    constructor(value: string) {
+    constructor(value: string, name: string) {
         super();
         this.value = value;
         this.name = name;
