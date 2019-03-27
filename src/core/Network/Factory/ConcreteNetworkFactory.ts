@@ -9,7 +9,7 @@ import NetworkFactory from "./NetworkFactory";
 
 import jsbayes from "jsbayes";
 
-export default class ConcreteNetworkFactory implements NetworkFactory {
+class ConcreteNetworkFactory implements NetworkFactory {
   // --------------------------------
   // NETWORK CREATION STUFF
 
@@ -121,3 +121,5 @@ export default class ConcreteNetworkFactory implements NetworkFactory {
     return new ConcreateNetworkAdapter(network, nodeList);
   }// end of parseNetwork
 }// end of ConcreteNetworkFactory
+
+export { ConcreteNetworkFactory };
