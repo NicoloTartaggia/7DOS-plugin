@@ -1,17 +1,15 @@
-
-import kbn from 'grafana/app/core/utils/kbn';
+import kbn from "grafana/app/core/utils/kbn";
 
 export class AxesEditorCtrl {
-  panel: any;
-  panelCtrl: any;
-  unitFormats: any;
-  logScales: any;
-  xAxisModes: any;
-  xAxisStatOptions: any;
-  xNameSegment: any;
+  public unitFormats: any;
+  public logScales: any;
+  public xAxisModes: any;
+  public xAxisStatOptions: any;
+  public xNameSegment: any;
+  private panel: any;
+  private panelCtrl: any;
 
-  /** @ngInject **/
-  constructor(private $scope, private $q) {
+  constructor (private $scope, private $q) {
     this.panelCtrl = $scope.ctrl;
     this.panel = this.panelCtrl.panel;
     this.$scope.ctrl = this;
@@ -19,71 +17,70 @@ export class AxesEditorCtrl {
     this.unitFormats = kbn.getUnitFormats();
 
     this.logScales = {
-      linear: 1,
-      'log (base 2)': 2,
-      'log (base 10)': 10,
-      'log (base 32)': 32,
-      'log (base 1024)': 1024,
+      "linear": 1,
+      "log (base 10)": 10,
+      "log (base 1024)": 1024,
+      "log (base 2)": 2,
+      "log (base 32)": 32,
     };
 
     this.xAxisModes = {
-      Time: 'time',
-      Series: 'series',
-      Histogram: 'histogram',
+      Histogram: "histogram",
+      Series: "series",
+      Time: "time",
       // 'Data field': 'field',
     };
 
     this.xAxisStatOptions = [
-      { text: 'Avg', value: 'avg' },
-      { text: 'Min', value: 'min' },
-      { text: 'Max', value: 'max' },
-      { text: 'Total', value: 'total' },
-      { text: 'Count', value: 'count' },
-      { text: 'Current', value: 'current' },
+      {text: "Avg", value: "avg"},
+      {text: "Min", value: "min"},
+      {text: "Max", value: "max"},
+      {text: "Total", value: "total"},
+      {text: "Count", value: "count"},
+      {text: "Current", value: "current"},
     ];
 
-    if (this.panel.xaxis.mode === 'custom') {
+    if (this.panel.xaxis.mode === "custom") {
       if (!this.panel.xaxis.name) {
-        this.panel.xaxis.name = 'specify field';
+        this.panel.xaxis.name = "specify field";
       }
     }
   }
 
-  setUnitFormat(axis, subItem) {
+  public setUnitFormat (axis, subItem) {
     axis.format = subItem.value;
     this.panelCtrl.render();
   }
 
-  render() {
+  public render () {
     this.panelCtrl.render();
   }
 
-  xAxisModeChanged() {
+  public xAxisModeChanged () {
     this.panelCtrl.processor.setPanelDefaultsForNewXAxisMode();
     this.panelCtrl.onDataReceived(this.panelCtrl.dataList);
   }
 
-  xAxisValueChanged() {
+  public xAxisValueChanged () {
     this.panelCtrl.onDataReceived(this.panelCtrl.dataList);
   }
 
-  getDataFieldNames(onlyNumbers) {
-    var props = this.panelCtrl.processor.getDataFieldNames(this.panelCtrl.dataList, onlyNumbers);
-    var items = props.map(prop => {
-      return { text: prop, value: prop };
+  public getDataFieldNames (onlyNumbers) {
+    const props = this.panelCtrl.processor.getDataFieldNames(this.panelCtrl.dataList, onlyNumbers);
+    const items = props.map((prop) => {
+      return {text: prop, value: prop};
     });
 
     return this.$q.when(items);
   }
 }
 
-/** @ngInject **/
-export function axesEditorComponent() {
-  'use strict';
+export function axesEditorComponent () {
+  "use strict";
   return {
-    restrict: 'E',
-    scope: true,
-    templateUrl: 'public/plugins/graph-panel-template-panel/partials/axes_editor.html',
     controller: AxesEditorCtrl,
+    restrict: "E",
+    scope: true,
+    templateUrl: "public/plugins/graph-panel-template-panel/partials/axes_editor.html",
   };
 }

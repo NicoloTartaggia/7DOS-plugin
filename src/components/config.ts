@@ -1,9 +1,8 @@
-
 export class JsBayesAppConfigCtrl {
-  static templateUrl = 'components/config.html';
-  enabled: boolean;
-  appEditCtrl: any;
-  appModel: any;
+  public static templateUrl = "components/config.html";
+  public enabled: boolean;
+  public appEditCtrl: any;
+  public appModel: any;
 
   constructor() {}
 }

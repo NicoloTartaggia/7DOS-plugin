@@ -1,21 +1,15 @@
+import _ from "lodash";
 
-import _ from 'lodash';
-
-/**
- * Convert series into array of series values.
- * @param data Array of series
- */
-export function getSeriesValues(dataList: any[]): number[] {
+export function getSeriesValues (dataList: Array<any>): Array<number> {
   const VALUE_INDEX = 0;
-  let values = [];
+  const values = [];
 
   // Count histogam stats
-  for (let i = 0; i < dataList.length; i++) {
-    let series = dataList[i];
-    let datapoints = series.datapoints;
-    for (let j = 0; j < datapoints.length; j++) {
-      if (datapoints[j][VALUE_INDEX] !== null) {
-        values.push(datapoints[j][VALUE_INDEX]);
+  for (const current_data_list of dataList) {
+    const datapoints = current_data_list.datapoints;
+    for (const datapoint of datapoints) {
+      if (datapoint[VALUE_INDEX] !== null) {
+        values.push(datapoint[VALUE_INDEX]);
       }
     }
   }
@@ -29,11 +23,11 @@ export function getSeriesValues(dataList: any[]): number[] {
  * @param values
  * @param bucketSize
  */
-export function convertValuesToHistogram(values: number[], bucketSize: number): any[] {
-  let histogram = {};
+export function convertValuesToHistogram (values: Array<number>, bucketSize: number): Array<any> {
+  const histogram = {};
 
-  for (let i = 0; i < values.length; i++) {
-    let bound = getBucketBound(values[i], bucketSize);
+  for (const current_value of values) {
+    const bound = getBucketBound(current_value, bucketSize);
     if (histogram[bound]) {
       histogram[bound] = histogram[bound] + 1;
     } else {
@@ -41,14 +35,14 @@ export function convertValuesToHistogram(values: number[], bucketSize: number): 
     }
   }
 
-  let histogam_series = _.map(histogram, (count, bound) => {
+  const histogam_series = _.map(histogram, (count, bound) => {
     return [Number(bound), count];
   });
 
   // Sort by Y axis values
-  return _.sortBy(histogam_series, point => point[0]);
+  return _.sortBy(histogam_series, (point) => point[0]);
 }
 
-function getBucketBound(value: number, bucketSize: number): number {
+function getBucketBound (value: number, bucketSize: number): number {
   return Math.floor(value / bucketSize) * bucketSize;
 }

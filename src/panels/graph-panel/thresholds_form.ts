@@ -1,20 +1,19 @@
-
-import coreModule from 'grafana/app/core/core_module';
+import coreModule from "grafana/app/core/core_module";
 
 export class ThresholdFormCtrl {
-  panelCtrl: any;
-  panel: any;
-  disabled: boolean;
+  public panelCtrl: any;
+  public panel: any;
+  public disabled: boolean;
 
   /** @ngInject */
-  constructor($scope) {
+  constructor ($scope) {
     this.panel = this.panelCtrl.panel;
 
     if (this.panel.alert) {
       this.disabled = true;
     }
 
-    var unbindDestroy = $scope.$on('$destroy', () => {
+    const unbindDestroy = $scope.$on("$destroy", () => {
       this.panelCtrl.editingThresholds = false;
       this.panelCtrl.render();
       unbindDestroy();
@@ -23,42 +22,42 @@ export class ThresholdFormCtrl {
     this.panelCtrl.editingThresholds = true;
   }
 
-  addThreshold() {
+  public addThreshold () {
     this.panel.thresholds.push({
-      value: undefined,
-      colorMode: 'critical',
-      op: 'gt',
+      colorMode: "critical",
       fill: true,
       line: true,
+      op: "gt",
+      value: undefined,
     });
     this.panelCtrl.render();
   }
 
-  removeThreshold(index) {
+  public removeThreshold (index) {
     this.panel.thresholds.splice(index, 1);
     this.panelCtrl.render();
   }
 
-  render() {
+  public render () {
     this.panelCtrl.render();
   }
 
-  onFillColorChange(index) {
-    return newColor => {
+  public onFillColorChange (index) {
+    return (newColor) => {
       this.panel.thresholds[index].fillColor = newColor;
       this.render();
     };
   }
 
-  onLineColorChange(index) {
-    return newColor => {
+  public onLineColorChange (index) {
+    return (newColor) => {
       this.panel.thresholds[index].lineColor = newColor;
       this.render();
     };
   }
 }
 
-var template = `
+const template = `
 <div class="gf-form-group">
   <h5>Thresholds</h5>
   <p class="muted" ng-show="ctrl.disabled">
@@ -85,7 +84,8 @@ var template = `
         <label class="gf-form-label">Color</label>
         <div class="gf-form-select-wrapper">
           <select class="gf-form-input" ng-model="threshold.colorMode"
-                  ng-options="f for f in ['custom', 'critical', 'warning', 'ok']" ng-change="ctrl.render()" ng-disabled="ctrl.disabled">
+                  ng-options="f for f in ['custom', 'critical', 'warning', 'ok']"
+                  ng-change="ctrl.render()" ng-disabled="ctrl.disabled">
           </select>
         </div>
       </div>
@@ -128,15 +128,15 @@ var template = `
 </div>
 `;
 
-coreModule.directive('graphPanelThresholdForm', function() {
+coreModule.directive("graphPanelThresholdForm", function () {
   return {
-    restrict: 'E',
-    template: template,
-    controller: ThresholdFormCtrl,
     bindToController: true,
-    controllerAs: 'ctrl',
+    controller: ThresholdFormCtrl,
+    controllerAs: "ctrl",
+    restrict: "E",
     scope: {
-      panelCtrl: '=',
+      panelCtrl: "=",
     },
+    template,
   };
 });

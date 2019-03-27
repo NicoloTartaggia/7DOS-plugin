@@ -1,4 +1,4 @@
-import { getDataMinMax } from './time_series2';
+import { getDataMinMax } from "./time_series2";
 
 /**
  * Calculate tick step.
@@ -8,14 +8,14 @@ import { getDataMinMax } from './time_series2';
  * @param stop End value
  * @param count Ticks count
  */
-export function tickStep(start: number, stop: number, count: number): number {
-  let e10 = Math.sqrt(50),
-    e5 = Math.sqrt(10),
-    e2 = Math.sqrt(2);
+export function tickStep (start: number, stop: number, count: number): number {
+  const e10 = Math.sqrt(50);
+  const e5 = Math.sqrt(10);
+  const e2 = Math.sqrt(2);
 
-  let step0 = Math.abs(stop - start) / Math.max(0, count),
-    step1 = Math.pow(10, Math.floor(Math.log(step0) / Math.LN10)),
-    error = step0 / step1;
+  const step0 = Math.abs(stop - start) / Math.max(0, count);
+  let step1 = Math.pow(10, Math.floor(Math.log(step0) / Math.LN10));
+  const error = step0 / step1;
 
   if (error >= e10) {
     step1 *= 10;
@@ -28,7 +28,7 @@ export function tickStep(start: number, stop: number, count: number): number {
   return stop < start ? -step1 : step1;
 }
 
-export function getScaledDecimals(decimals, tick_size) {
+export function getScaledDecimals (decimals, tick_size) {
   return decimals - Math.floor(Math.log(tick_size) / Math.LN10);
 }
 
@@ -40,14 +40,14 @@ export function getScaledDecimals(decimals, tick_size) {
  * @param noTicks       Number of ticks
  * @param tickDecimals  Tick decimal precision
  */
-export function getFlotTickSize(min: number, max: number, noTicks: number, tickDecimals: number) {
-  var delta = (max - min) / noTicks,
-    dec = -Math.floor(Math.log(delta) / Math.LN10),
-    maxDec = tickDecimals;
+export function getFlotTickSize (min: number, max: number, noTicks: number, tickDecimals: number) {
+  const delta = (max - min) / noTicks;
+  let dec = -Math.floor(Math.log(delta) / Math.LN10);
+  const maxDec = tickDecimals;
 
-  var magn = Math.pow(10, -dec),
-    norm = delta / magn, // norm is between 1.0 and 10.0
-    size;
+  const magn = Math.pow(10, -dec);
+  const norm = delta / magn; // norm is between 1.0 and 10.0
+  let size;
 
   if (norm < 1.5) {
     size = 1;
@@ -73,18 +73,18 @@ export function getFlotTickSize(min: number, max: number, noTicks: number, tickD
  * Calculate axis range (min and max).
  * Implementation from Flot.
  */
-export function getFlotRange(panelMin, panelMax, datamin, datamax) {
+export function getFlotRange (panelMin, panelMax, datamin, datamax) {
   const autoscaleMargin = 0.02;
 
   let min = +(panelMin != null ? panelMin : datamin);
   let max = +(panelMax != null ? panelMax : datamax);
-  let delta = max - min;
+  const delta = max - min;
 
   if (delta === 0.0) {
     // Grafana fix: wide Y min and max using increased wideFactor
     // when all series values are the same
-    var wideFactor = 0.25;
-    var widen = Math.abs(max === 0 ? 1 : max * wideFactor);
+    const wideFactor = 0.25;
+    const widen = Math.abs(max === 0 ? 1 : max * wideFactor);
 
     if (panelMin === null) {
       min -= widen;
@@ -96,7 +96,7 @@ export function getFlotRange(panelMin, panelMax, datamin, datamax) {
     }
   } else {
     // consider autoscaling
-    var margin = autoscaleMargin;
+    const margin = autoscaleMargin;
     if (margin != null) {
       if (panelMin == null) {
         min -= delta * margin;
@@ -121,17 +121,18 @@ export function getFlotRange(panelMin, panelMax, datamin, datamax) {
  * Calculate tick decimals.
  * Implementation from Flot.
  */
-export function getFlotTickDecimals(data, axis) {
-  let { datamin, datamax } = getDataMinMax(data);
-  let { min, max } = getFlotRange(axis.min, axis.max, datamin, datamax);
-  let noTicks = 3;
-  let tickDecimals, maxDec;
-  let delta = (max - min) / noTicks;
+export function getFlotTickDecimals (data, axis) {
+  const { datamin, datamax } = getDataMinMax(data);
+  const { min, max } = getFlotRange(axis.min, axis.max, datamin, datamax);
+  const noTicks = 3;
+  let tickDecimals;
+  const maxDec = null;
+  const delta = (max - min) / noTicks;
   let dec = -Math.floor(Math.log(delta) / Math.LN10);
 
-  let magn = Math.pow(10, -dec);
+  const magn = Math.pow(10, -dec);
   // norm is between 1.0 and 10.0
-  let norm = delta / magn;
+  const norm = delta / magn;
   let size;
 
   if (norm < 1.5) {
