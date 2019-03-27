@@ -2,10 +2,16 @@ import { AbstractValue } from "./AbstractValue";
 
 class StringValue extends AbstractValue {
     private value: string;
+    private name: string;
 
     constructor(value: string) {
         super();
         this.value = value;
+        this.name = name;
+    }
+
+    public getName() {
+        return this.name;
     }
 
     public isValueType(value: string): boolean {

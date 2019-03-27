@@ -2,10 +2,16 @@ import { AbstractValue } from "./AbstractValue";
 
 class BoolValue extends AbstractValue {
     private value: boolean;
+    private name: string;
 
-    constructor(value: boolean) {
+    constructor(value: boolean, name: string) {
         super();
         this.value = value;
+        this.name = name
+    }
+
+    public getName() {
+        return this.name;
     }
 
     public isValueType(value: string): boolean {
