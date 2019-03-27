@@ -40,11 +40,11 @@
   "dependencies": {
     "@akanass/rx-http-request": "^3.1.0",
     "@types/remarkable": "^1.7.3",
+    "jsbayes": "^0.1.0",
     "lodash": "^4.17.11",
     "rxjs": "^6.4.0",
     "tether-drop": "^1.4.2",
     "tinycolor2": "^1.4.1",
-    "tslint": "^5.14.0",
-    "jsbayes": "^0.1.0"
+    "tslint": "^5.14.0"
   }
 }

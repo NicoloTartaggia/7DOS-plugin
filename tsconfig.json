@@ -18,6 +18,7 @@
     "inlineSourceMap": false,
     "sourceMap": true,
     "noEmitOnError": false,
+    "interface-name": [true, "never-prefix"],
     "emitDecoratorMetadata": false,
     "experimentalDecorators": true,
     "noImplicitThis": false,
