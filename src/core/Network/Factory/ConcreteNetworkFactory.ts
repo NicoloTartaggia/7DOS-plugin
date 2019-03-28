@@ -1,10 +1,10 @@
-import {ConcreateNetworkAdapter} from "core/Network/Adapter/ConcreteNetworkAdapter";
-import {ConcreteNodeAdapter} from "core/node/ConcreteNodeAdapter";
-import {NodeAdapter} from "core/node/NodeAdapter";
-import {AbstractValue} from "core/node/Value/AbstractValue";
-import {BoolValue} from "core/node/Value/BoolValue";
-import {RangeValue} from "core/node/Value/RangeValue";
-import {StringValue} from "core/node/Value/StringValue";
+import {ConcreateNetworkAdapter} from "../Adapter/ConcreteNetworkAdapter";
+import {ConcreteNodeAdapter} from "../../node/ConcreteNodeAdapter";
+import {NodeAdapter} from "../../node/NodeAdapter";
+import {AbstractValue} from "../../node/Value/AbstractValue";
+import {BoolValue} from "../../node/Value/BoolValue";
+import {RangeValue} from "../../node/Value/RangeValue";
+import {StringValue} from "../../node/Value/StringValue";
 import NetworkFactory from "./NetworkFactory";
 
 import jsbayes from "jsbayes";
