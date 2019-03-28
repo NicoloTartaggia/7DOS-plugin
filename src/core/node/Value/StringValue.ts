@@ -6,6 +6,9 @@ class StringValue extends AbstractValue {
 
     constructor(value: string, name: string) {
         super();
+        if (value == null || name == null) {
+            throw new TypeError("invalid parameter");
+        }
         this.value = value;
         this.name = name;
     }
@@ -15,6 +18,9 @@ class StringValue extends AbstractValue {
     }
 
     public isValueType(value: string): boolean {
+        if (value == null) {
+            throw new TypeError("invalid parameter");
+        }
         if (this.value === value) {
             return true;
         } else {
