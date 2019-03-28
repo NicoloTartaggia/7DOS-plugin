@@ -11,7 +11,7 @@ import "grafana/vendor/flot/jquery.flot.selection.js";
 import "grafana/vendor/flot/jquery.flot.stack.js";
 import "grafana/vendor/flot/jquery.flot.stackpercent.js";
 import "grafana/vendor/flot/jquery.flot.time.js";
-import * as $ from "jquery";
+import $ from "jquery";
 import _ from "lodash";
 import moment from "moment";
 import GraphTooltip from "./graph_tooltip";

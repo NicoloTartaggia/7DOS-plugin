@@ -1,36 +1,37 @@
 {
   "compilerOptions": {
-    "moduleResolution": "node",
-    "outDir": "dist",
-    "target": "es6",
-    "rootDir": "./src",
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "./src",
+    "declaration": false,
+    "emitDecoratorMetadata": false,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "inlineSourceMap": false,
     "jsx": "react",
     "lib": [
       "es6",
       "dom"
     ],
+    "module": "esnext",
+    "moduleResolution": "node",
+    "noEmitOnError": false,
+    "noImplicitAny": false,
+    "noImplicitThis": false,
+    "noImplicitUseStrict": false,
+    "noUnusedLocals": true,
+    "outDir": "dist",
     "plugins": [
       { "name": "typescript-tslint-plugin" }
     ],
-    "module": "esnext",
-    "declaration": false,
-    "allowSyntheticDefaultImports": true,
-    "inlineSourceMap": false,
+    "rootDir": "./src",
     "sourceMap": true,
-    "noEmitOnError": false,
-    "emitDecoratorMetadata": false,
-    "experimentalDecorators": true,
-    "noImplicitThis": false,
-    "noImplicitUseStrict": false,
-    "noImplicitAny": false,
-    "noUnusedLocals": true,
-    "baseUrl": "./src"
+    "target": "es6",
   },
-  "typeRoots": [
-    "node_modules/@types"
-  ],
   "include": [
     "./src/**/*.ts",
     "node_modules/jsbayes/index.d.ts"
-  ]
+  ],
+  "typeRoots": [
+    "node_modules/@types"
+  ],
 }

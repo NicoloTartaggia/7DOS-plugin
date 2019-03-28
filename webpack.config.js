@@ -2,8 +2,12 @@ const path = require('path');
 const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const http = path.resolve(__dirname, 'node_modules/stream-http/index.js')
 
 module.exports = {
+  resolve: {
+    alias: { http, https: http }
+  },
   mode: 'development',
   target: 'web',
   context: __dirname + "/src",

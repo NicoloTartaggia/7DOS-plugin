@@ -1,5 +1,5 @@
 import _ from "lodash";
-
+import {InfluxClient, InfluxClientFactory } from "../../utils/InfluxClient";
 // import { metricsTabDirective } from "./metrics_tab";
 import {GraphCtrl} from "../graph-panel/module";
 import {Network, SingleValue} from "./JsonManager";
@@ -31,7 +31,9 @@ export class JsImportPanel extends GraphCtrl {
       "public/plugins/app-jsbayes/panels/import-json-panel/partials/optionTab_importEditJson.html");
     this.addEditorTab("Graphic-Network-Editor",
       "public/plugins/app-jsbayes/panels/import-json-panel/partials/optionTab_GraphicEditor.html");
-    // this.addEditorTab("Network-Connection-to-Grafana",
+    this.addEditorTab("Setup-Results-Influx",
+      "public/plugins/jsbayes-app/panels/import-json-panel/partials/optionTab_setupInflux.html");
+      // this.addEditorTab("Network-Connection-to-Grafana",
     // metricsTabDirective, 3);
   }
 
@@ -86,5 +88,11 @@ export class JsImportPanel extends GraphCtrl {
   }
 
   public link(scope, element) {
+  }
+
+  public async testDB(netId: string) {
+    const influxClient: InfluxClient = await InfluxClientFactory
+    .createInfluxClient("localhost", "8086", "myNetDB");
+    console.log("This should appear after the client at address" + influxClient.getAddress() + "has been initialized.");
   }
 }
