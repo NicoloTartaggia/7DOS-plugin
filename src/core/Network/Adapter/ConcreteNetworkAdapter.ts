@@ -1,7 +1,7 @@
 import { NetworkAdapter } from "core/network/adapter/NetworkAdapter";
 import { NodeAdapter } from "core/node/NodeAdapter";
 
-export class ConcreateNetworkAdapter implements NetworkAdapter {
+export class ConcreteNetworkAdapter implements NetworkAdapter {
     private graph: JGraph ;
     private readonly nodeList: Array<NodeAdapter>;
 

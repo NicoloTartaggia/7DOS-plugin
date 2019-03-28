@@ -1,5 +1,5 @@
-import {ConcreateNetworkAdapter} from "../Adapter/ConcreteNetworkAdapter";
+import {ConcreteNetworkAdapter} from "../Adapter/ConcreteNetworkAdapter";
 
 export default interface NetworkFactory {
-  parseNetwork(file_content: string): ConcreateNetworkAdapter;
+  parseNetwork(file_content: string): ConcreteNetworkAdapter;
 }

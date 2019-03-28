@@ -58,13 +58,13 @@ class ConcreteInfluxClient implements InfluxClient {
         while (true) {
             this.influx.writePoints([{
                 // tslint:disable-next-line: quotemark
-                measurement: 'perf',
-                tags: {
-                    host: "box1.example.com",
-                },
                 fields: {
                     cpu: 3,
                     mem: 1,
+                },
+                measurement: "perf",
+                tags: {
+                    host: "box1.example.com",
                 },
             }], {
                 database,
@@ -75,13 +75,13 @@ class ConcreteInfluxClient implements InfluxClient {
     public async writePoints({database = this.defaultDB}: {database?: string}): Promise <void> {
         console.log("scrivo...");
         this.influx.writePoints([{
-            measurement: "perf",
-            tags: {
-                host: "box1.example.com",
-            },
             fields: {
                 cpu: 3,
                 mem: 1,
+            },
+            measurement: "perf",
+            tags: {
+                host: "box1.example.com",
             },
         }], {
             database,

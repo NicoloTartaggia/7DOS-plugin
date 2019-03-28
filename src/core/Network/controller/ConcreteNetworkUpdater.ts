@@ -1,6 +1,6 @@
 import { NetworkAdapter } from "core/network/adapter/NetworkAdapter";
 
-export class concreateNetworkUpdater {
+export class concreteNetworkUpdater {
     private network: NetworkAdapter;
 
     public constructor(network: NetworkAdapter) {
@@ -8,6 +8,8 @@ export class concreateNetworkUpdater {
     }
 
     public updateNodeStatus(node: string, result: string) {
-        this.network.getNodeList.
+        // TODO
+        console.log(this.network);
+        // this.network.getNodeList.
     }
 }
