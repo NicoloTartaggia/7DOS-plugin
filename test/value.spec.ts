@@ -8,12 +8,7 @@ import { StringValue } from "../src/core/node/Value/StringValue";
 describe("BoolValue - constructor", () => {
     it("Undefined name parameters", () => {
         let str: string;
-        try {
-            const a: BoolValue = new BoolValue(true, str);
-            a.getName();
-        } catch (e) {
-            expect(e.message).to.equal("invalid parameter");
-        }
+        expect(() => new BoolValue(true, str)).to.throw(TypeError, "invalid parameter");
     });
     it("Undefined value parameter", () => {
         let str: boolean;
