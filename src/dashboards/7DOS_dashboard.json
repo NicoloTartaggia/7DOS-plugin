@@ -28,12 +28,12 @@
     "links": [],
     "panels": [
         {
-            "type": "text",
+            "type": "json-test-import-panel",
             "title": "Import Json Network",
             "gridPos": {
                 "x": 0,
                 "y": 0,
-                "w": 8,
+                "w": 24,
                 "h": 8
             },
             "id": 0,

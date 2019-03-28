@@ -1,11 +1,34 @@
 import _ from "lodash";
 import {InfluxClient, InfluxClientFactory } from "../../utils/InfluxClient";
-// import { metricsTabDirective } from "./metrics_tab";
-import {GraphCtrl} from "../graph-panel/module";
-import {Network, SingleValue} from "./JsonManager";
+//import { metricsTabDirective } from "./metrics_tab";
 
-export class JsImportPanel extends GraphCtrl {
+import {Network, SingleValue} from "./JsonManager";
+import {MetricsPanelCtrl} from "grafana/app/plugins/sdk";
+
+export class JsImportPanel extends MetricsPanelCtrl {
+  public static templateUrl: string = "panels/import-json-panel/partials/panelTemplate.html";
   public static scrollable: boolean = true;
+
+  //Test metric panel
+  public scope: any;
+  public datasource: any;
+  public $q: any;
+  public $timeout: any;
+  public contextSrv: any;
+  public datasourceSrv: any;
+  public timeSrv: any;
+  public templateSrv: any;
+  public timing: any;
+  public range: any;
+  public interval: any;
+  public intervalMs: any;
+  public resolution: any;
+  public timeInfo: any;
+  public skipDataOnInit: boolean;
+  public dataStream: any;
+  public dataSubscription: any;
+  public dataList: any;
+  public nextRefId: string;
 
   // Tests strings
   public message: string;
@@ -18,24 +41,37 @@ export class JsImportPanel extends GraphCtrl {
   // loaded network
   public loaded_network: Network;
 
-  constructor($scope, $injector, annotationsSrv) {
-    super($scope, $injector, annotationsSrv);
+  public panelDefaults = {
+    jsonContent: "",
+  };
+
+  constructor($scope, $injector) {
+    super($scope, $injector);
     _.defaults(this.panel, this.panelDefaults);
-    this.events.on("init-edit-mode", this.onInitJsonImportEditMode.bind(this));
+
+    this.events.on("init-edit-mode", this.onInitEditMode.bind(this));
   }
 
-  public onInitJsonImportEditMode() {
-    // const test = [this.editorTabs[0]];
-    // this.editorTabs = test;
+
+  public onInitEditMode() {
+
+    const test = [this.editorTabs[0]];
+    this.editorTabs = test;
     this.addEditorTab("JSON-Import-or-edit",
-      "public/plugins/app-jsbayes/panels/import-json-panel/partials/optionTab_importEditJson.html");
+      "public/plugins/app-jsbayes/panels/import-json-panel/partials/optionTab_importEditJson.html",
+      1);
     this.addEditorTab("Graphic-Network-Editor",
-      "public/plugins/app-jsbayes/panels/import-json-panel/partials/optionTab_GraphicEditor.html");
+      "public/plugins/app-jsbayes/panels/import-json-panel/partials/optionTab_GraphicEditor.html",
+      2);
+    this.addEditorTab("Network-Connection-to-Grafana",
+      "public/plugins/app-jsbayes/panels/import-json-panel/partials/optionTab_ConnectNetwork.html",
+      3);
     this.addEditorTab("Setup-Results-Influx",
-      "public/plugins/jsbayes-app/panels/import-json-panel/partials/optionTab_setupInflux.html");
-      // this.addEditorTab("Network-Connection-to-Grafana",
-    // metricsTabDirective, 3);
-  }
+      "public/plugins/app-jsbayes/panels/import-json-panel/partials/optionTab_setupInflux.html",
+      4);
+    this.events.emit("data-received", null);
+
+    }
 
   public onUpload(net) {
     console.log("On upload");
