@@ -1,5 +1,5 @@
 import angular from "angular";
-import * as $ from "jquery";
+import $ from "jquery";
 import _ from "lodash";
 import PerfectScrollbar from "perfect-scrollbar";
 

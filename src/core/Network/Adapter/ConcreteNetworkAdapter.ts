@@ -3,7 +3,7 @@ import { NodeAdapter } from "core/node/NodeAdapter";
 
 export class ConcreateNetworkAdapter implements NetworkAdapter {
     private graph: JGraph ;
-    private nodeList: Array<NodeAdapter>;
+    private readonly nodeList: Array<NodeAdapter>;
 
     public constructor(network: JGraph, nodeList: Array<NodeAdapter>) {
         this.graph = network;
