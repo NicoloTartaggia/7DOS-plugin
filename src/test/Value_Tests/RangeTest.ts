@@ -1,6 +1,6 @@
 import { expect } from "chai";
+import { RangeValue } from "core/node/Value/RangeValue";
 import "mocha";
-import { RangeValue } from "../../src/core/node/Value/RangeValue";
 
 // RangeValue -------------------------------------------------------------------------------
 describe("RangeValue - constructor", () => {
@@ -19,8 +19,8 @@ describe("RangeValue - constructor", () => {
     it("minRange === maxRange", () => {
         const name: string = "name1";
         const rangeV: RangeValue = new RangeValue(50, 50, name);
-        rangeV.getName();
-        expect(rangeV.getName()).to.equal(name);
+        rangeV.getValueName();
+        expect(rangeV.getValueName()).to.equal(name);
     });
 });
 
@@ -62,13 +62,13 @@ describe("RangeValue - isValueType", () => {
     });
 });
 
-describe("RangeValue - getName", () => {
+describe("RangeValue - getValueName", () => {
     it("Base case", () => {
         const name: string = "name9";
         const rangeV = new RangeValue(30, 70, name);
         rangeV.isValueType("true");
         rangeV.isValueType("false");
-        const result: string = rangeV.getName();
+        const result: string = rangeV.getValueName();
         expect(result).to.equal(name);
     });
 });

@@ -3,22 +3,16 @@ import { AbstractValue } from "./AbstractValue";
 class RangeValue extends AbstractValue {
     private minRange: number;
     private maxRange: number;
-    private name: string;
 
-    constructor(minRange: number, maxRange: number, name: string) {
-        super();
+    constructor(minRange: number, maxRange: number, name: string) {   
         if (minRange == null || maxRange == null || name == null) {
             throw new TypeError("invalid parameter");
         } else if (minRange > maxRange) {
             throw new TypeError("maxRange is less then minRange");
         }
+        super(name);
         this.minRange = minRange;
         this.maxRange = maxRange;
-        this.name = name;
-    }
-
-    public getName() {
-        return this.name;
     }
 
     public isValueType(value: string): boolean {

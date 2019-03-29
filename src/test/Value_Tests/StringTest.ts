@@ -1,6 +1,6 @@
 import { expect } from "chai";
+import { StringValue } from "core/node/Value/StringValue";
 import "mocha";
-import { StringValue } from "../../src/core/node/Value/StringValue";
 
 // StringValue -------------------------------------------------------------------------------
 describe("StringValue - constructor", () => {
@@ -47,13 +47,13 @@ describe("StringValue - isValueType", () => {
     });
 });
 
-describe("StringValue - getName", () => {
+describe("StringValue - getValueName", () => {
     it("Base case", () => {
         const name: string = "name8";
         const stringV = new StringValue("value8", name);
         stringV.isValueType("true");
         stringV.isValueType("false");
-        const result: string = stringV.getName();
+        const result: string = stringV.getValueName();
         expect(result).to.equal(name);
     });
 });

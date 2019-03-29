@@ -1,6 +1,6 @@
 import { expect } from "chai";
+import { BoolValue } from "core/node/Value/BoolValue";
 import "mocha";
-import { BoolValue } from "../../src/core/node/Value/BoolValue";
 
 // BoolValue -------------------------------------------------------------------------------
 describe("BoolValue - constructor", () => {
@@ -47,13 +47,13 @@ describe("BoolValue - isValueType", () => {
     });
 });
 
-describe("BoolValue - getName", () => {
+describe("BoolValue - getValueName", () => {
     it("Base case", () => {
         const name: string = "name8";
         const boolV = new BoolValue(true, name);
         boolV.isValueType("true");
         boolV.isValueType("false");
-        const result: string = boolV.getName();
+        const result: string = boolV.getValueName();
         expect(result).to.equal(name);
     });
 });
