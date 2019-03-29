@@ -1,6 +1,4 @@
-import {
-  InfluxDB, IPoint,
-} from "influx";
+import {InfluxDB, IPoint} from "influx";
 import WriteClient from "./WriteClient";
 
 export default class InfluxWriteClient implements WriteClient {
@@ -21,18 +19,19 @@ export default class InfluxWriteClient implements WriteClient {
     const dsn = "http://" + login + address + "/" + defaultDB;
     const influx: InfluxDB = new InfluxDB(dsn);
     await influx.getDatabaseNames()
-    .then((names) => {
-      if (!names.includes(defaultDB)) {
-        return influx.createDatabase(defaultDB);
-      }
-    })
-    .then(() => console.log("Database " + defaultDB + " created successfully."))
-    .catch(() => console.log("Couldn't create database. Check your connection!"));
+      .then((names) => {
+        if (!names.includes(defaultDB)) {
+          return influx.createDatabase(defaultDB);
+        }
+      })
+      .then(() => console.log("Database " + defaultDB + " created successfully."))
+      .catch(() => console.log("Couldn't create database. Check your connection!"));
     return new InfluxWriteClient(address, defaultDB, influx);
   }
-  /**
-   * Private fields
-   */
+
+  /*
+      Private fields
+  */
   private readonly address: string;
   private readonly defaultDB: string;
   private readonly influx: InfluxDB;
@@ -77,7 +76,7 @@ export default class InfluxWriteClient implements WriteClient {
       } catch (err) {
         console.log("Writing a batch of data to" + this.getAddress()
         + " has encountered the following error: " + err);
-      }
+    }
   }
   /**
    * @param point The point of data to be parsed and written to the server.
@@ -90,12 +89,12 @@ export default class InfluxWriteClient implements WriteClient {
     const pointInfo: IPoint = this.parsePointData(point);
     try {
       await this.influx.writePoints([
-          pointInfo,
+        pointInfo,
       ]);
       } catch (err) {
         console.log("Writing a point of data to" + this.getAddress()
         + " has encountered the following error: " + err);
-      }
+    }
   }
 
   public parseBatchData(batch: Array<object>): {name: string, points: Array<IPoint>} {

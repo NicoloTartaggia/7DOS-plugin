@@ -1,5 +1,4 @@
 import _ from "lodash";
-import {InfluxClient, InfluxClientFactory } from "../../utils/InfluxClient";
 // import { metricsTabDirective } from "./metrics_tab";
 import {GraphCtrl} from "../graph-panel/module";
 import {Network, SingleValue} from "./JsonManager";
@@ -88,11 +87,5 @@ export class JsImportPanel extends GraphCtrl {
   }
 
   public link(scope, element) {
-  }
-
-  public async testDB(netId: string) {
-    const influxClient: InfluxClient = await InfluxClientFactory
-    .createInfluxClient("localhost", "8086", "myNetDB");
-    console.log("This should appear after the client at address" + influxClient.getAddress() + "has been initialized.");
   }
 }
