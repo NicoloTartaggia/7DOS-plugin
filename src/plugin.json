@@ -18,8 +18,8 @@
     {
       "type": "panel",
       "name": "7DOS - JSON Test Import Panel"
-    },
-    { "type": "page", "name": "Import JSON Network", "component": "importNetCtrl", "role": "Editor", "addToNav": true}
+    }
+
   ],
   "dependencies": {
     "grafanaVersion": "4.6.x",

@@ -3,9 +3,9 @@ import {InfluxClient, InfluxClientFactory } from "../../utils/InfluxClient";
 //import { metricsTabDirective } from "./metrics_tab";
 
 import {Network, SingleValue} from "./JsonManager";
-import {MetricsPanelCtrl} from "grafana/app/plugins/sdk";
+import {PanelCtrl} from "grafana/app/plugins/sdk";
 
-export class JsImportPanel extends MetricsPanelCtrl {
+export class JsImportPanel extends PanelCtrl {
   public static templateUrl: string = "panels/import-json-panel/partials/panelTemplate.html";
   public static scrollable: boolean = true;
 
@@ -54,9 +54,6 @@ export class JsImportPanel extends MetricsPanelCtrl {
 
 
   public onInitEditMode() {
-
-    const test = [this.editorTabs[0]];
-    this.editorTabs = test;
     this.addEditorTab("JSON-Import-or-edit",
       "public/plugins/app-jsbayes/panels/import-json-panel/partials/optionTab_importEditJson.html",
       1);
