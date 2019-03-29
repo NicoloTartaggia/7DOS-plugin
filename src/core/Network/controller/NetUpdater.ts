@@ -7,12 +7,10 @@ export class concreteNetworkUpdater {
     public constructor(network: NetworkAdapter) {
         this.network = network;
         this.reader = new NetReader(this.network.getNodeList());
+        this.reader.toString();
     }
 
     public updateNet() {
-
-        
-
         // TODO
         console.log(this.network);
         // this.network.getNodeList.
