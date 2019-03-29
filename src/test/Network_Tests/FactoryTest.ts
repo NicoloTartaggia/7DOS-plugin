@@ -1,6 +1,6 @@
-import {ConcreteNetworkFactory} from "../../core/network/Factory/ConcreteNetworkFactory";
+import {ConcreteNetworkFactory} from "../../core/Network/Factory/ConcreteNetworkFactory";
 
-import {ConcreteNetworkAdapter} from "../../core/network/Adapter/ConcreteNetworkAdapter";
+import {ConcreteNetworkAdapter} from "../../core/Network/Adapter/ConcreteNetworkAdapter";
 
 import {expect} from "chai";
 

@@ -14,6 +14,7 @@ branches:
 
 stages:
   - lint
+  - mocha-test
   - build
 
 jobs:
@@ -21,6 +22,10 @@ jobs:
     - stage: lint
       script:
         - npm run tslint
+
+    - stage: mocha-test
+      script:
+        - npm run test
 
     - stage: build
       script:
