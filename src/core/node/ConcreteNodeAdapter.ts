@@ -27,11 +27,20 @@ export class ConcreteNodeAdapter {
   }
 
   public findValue(currentValue: string): AbstractValue {
-    this.values.forEach((element) => {
-      if (element.isValueType(currentValue)) {
-        return element;
+    if (currentValue == null) {
+      throw new TypeError("invalid parameter");
+    }
+
+    for (const element of this.values) {
+      try {
+        if (element.isValueType(currentValue)) {
+          return element;
+        }
+      } catch (e) {
+        console.log(e);
+        throw e;
       }
-    });
+    }
     return null;
   }
 }

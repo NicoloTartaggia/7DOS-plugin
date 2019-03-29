@@ -6,7 +6,7 @@
   "scripts": {
     "build": "webpack",
     "tslint": "tslint -c tslint.json 'src/**/*.ts'",
-    "test": "mocha --require ts-node/register test/**/*.ts"
+    "test": "mocha --require ts-node/register src/test/**/*.ts"
   },
   "keywords": [],
   "author": "7DOS",
