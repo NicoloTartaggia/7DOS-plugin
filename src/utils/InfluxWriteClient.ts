@@ -36,7 +36,7 @@ export default class InfluxWriteClient implements WriteClient {
   private readonly defaultDB: string;
   private readonly influx: InfluxDB;
   /**
-   * @param address The complete address of the server to which the client makes requests, 
+   * @param address The complete address of the server to which the client makes requests,
    * including the port.
    * @param defaultDB The default database the client writes to.
    * @param influx The InfluxDB instance assigned to the client.
