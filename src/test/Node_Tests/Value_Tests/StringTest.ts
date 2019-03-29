@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import "mocha";
-import { StringValue } from "../../core/node/Value/StringValue";
+import { StringValue } from "../../../core/node/Value/StringValue";
 
 // StringValue -------------------------------------------------------------------------------
 describe("StringValue - constructor", () => {

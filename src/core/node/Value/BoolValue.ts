@@ -11,7 +11,6 @@ class BoolValue extends AbstractValue {
         this.value = value;
     }
 
-
     public isValueType(value: string): boolean {
         if (value == null) {
             throw new TypeError("invalid parameter");

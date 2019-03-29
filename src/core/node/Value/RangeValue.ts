@@ -4,7 +4,7 @@ class RangeValue extends AbstractValue {
     private minRange: number;
     private maxRange: number;
 
-    constructor(minRange: number, maxRange: number, name: string) {   
+    constructor(minRange: number, maxRange: number, name: string) {
         if (minRange == null || maxRange == null || name == null) {
             throw new TypeError("invalid parameter");
         } else if (minRange > maxRange) {

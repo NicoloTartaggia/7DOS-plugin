@@ -1,16 +1,15 @@
 import _ from "lodash";
 
 // import { metricsTabDirective } from "./metrics_tab";
-import {GraphCtrl} from "../graph-panel/module";
+// import {GraphCtrl} from "../graph-panel/module";
 
-import {Network, SingleValue} from "./JsonManager";
 import {PanelCtrl} from "grafana/app/plugins/sdk";
 
 export class JsImportPanel extends PanelCtrl {
   public static templateUrl: string = "panels/import-json-panel/partials/panelTemplate.html";
   public static scrollable: boolean = true;
 
-  //Test metric panel
+  // Test metric panel
   public scope: any;
   public datasource: any;
   public $q: any;
@@ -39,8 +38,6 @@ export class JsImportPanel extends PanelCtrl {
   public node_name: string;
   public observe_value: string;
   public samples: number = 1000;
-  // loaded network
-  public loaded_network: Network;
 
   public panelDefaults = {
     jsonContent: "",
@@ -52,7 +49,6 @@ export class JsImportPanel extends PanelCtrl {
 
     this.events.on("init-edit-mode", this.onInitEditMode.bind(this));
   }
-
 
   public onInitEditMode() {
     this.addEditorTab("JSON-Import-or-edit",
@@ -74,7 +70,7 @@ export class JsImportPanel extends PanelCtrl {
   public onUpload(net) {
     console.log("On upload");
     try {
-      this.loaded_network = new Network(JSON.stringify(net));
+      // this.loaded_network = new Network(JSON.stringify(net));
     } catch (e) {
       this.message = "Upload fallito!";
       this.result = "Errore nella lettura del JSON, probabilmente non valido...";
@@ -89,7 +85,7 @@ export class JsImportPanel extends PanelCtrl {
 
   public onSubmit() { // Currently not used
     console.log("onSubmit() called");
-    console.log("Node name:" + this.node_name);
+    /*console.log("Node name:" + this.node_name);
     console.log("observe value:" + this.observe_value);
     console.log("Samples:" + this.samples);
     this.message = "Calculating...";
@@ -104,7 +100,7 @@ export class JsImportPanel extends PanelCtrl {
       alert("Sample result:" + result / this_ref.samples);
     });
     this.message = "Done!";
-    console.log("Out-Done");
+    console.log("Out-Done");*/
   }
 
   public downloadNetwork(filename, id) {
