@@ -68,3 +68,6 @@ export default class InfluxReadClient implements ReadClient {
     return queryRes;
   }
 }
+
+// TODO REMOVE
+InfluxReadClient.createReaderClient("localhost", "8086");

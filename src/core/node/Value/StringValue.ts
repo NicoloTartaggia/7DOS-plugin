@@ -3,7 +3,7 @@ import { AbstractValue } from "./AbstractValue";
 class StringValue extends AbstractValue {
     private value: string;
 
-    constructor(value: string, name: string) { 
+    constructor(value: string, name: string) {
         if (value == null || name == null) {
             throw new TypeError("invalid parameter");
         }

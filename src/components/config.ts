@@ -1,17 +1,17 @@
 export class JsBayesAppConfigCtrl {
+  public static templateUrl: string;
   public enabled: boolean;
   public appEditCtrl: any;
   public appModel: any;
-  static templateUrl: string;
   public $location: any;
 
   constructor($location) {
     this.$location = $location;
   }
 
-  redirect() {
-    console.info("ciao");
-    //this.$location.url("");  //da fare? se si, come?
+  public redirect() {
+    console.info("redirect() not done");
+    // this.$location.url("");  //da fare? se si, come?
   }
 }
 
