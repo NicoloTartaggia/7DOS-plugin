@@ -48,7 +48,7 @@ class ConcreteNetworkFactory implements NetworkFactory {
     }
   }
 
-  public parseNetwork (file_content: string): ConcreateNetworkAdapter {
+  public parseNetwork (file_content: string): ConcreteNetworkAdapter {
     const network: JGraph = jsbayes.newGraph();
     const nodeList: Array<NodeAdapter> = new Array<NodeAdapter>();
     const node_dictionary: { [node_name: string]: JNode; } = {};
@@ -118,7 +118,7 @@ class ConcreteNetworkFactory implements NetworkFactory {
     }
     // --------------------------------
     // Build and return the ConcreateNetworkAdapter
-    return new ConcreateNetworkAdapter(network, nodeList);
+    return new ConcreteNetworkAdapter(network, nodeList);
   }// end of parseNetwork
 }// end of ConcreteNetworkFactory
 
