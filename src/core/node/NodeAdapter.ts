@@ -1,2 +1,2 @@
-export class NodeAdapter {
+export interface NodeAdapter {
 }

@@ -5,8 +5,11 @@ export class ConcreteNodeAdapter {
   private node: JNode;
 
   constructor(node: JNode, values: Array<AbstractValue>) {
-      this.node = node;
-      this.values = values;
+    if (node == null || values == null) {
+      throw new TypeError("invalid parameter");
+    }
+    this.node = node;
+    this.values = values;
   }
 
   public getName(): string {
@@ -14,10 +17,30 @@ export class ConcreteNodeAdapter {
   }
 
   public getStates(): Array<string> {
-    return this.node.values;
+// tslint:disable-next-line: prefer-object-spread
+    return Object.assign([], this.node.values); // deep copy of array
   }
 
   public getValues(): Array<AbstractValue> {
-    return this.values;
+// tslint:disable-next-line: prefer-object-spread
+    return Object.assign([], this.values);
+  }
+
+  public findValue(currentValue: string): AbstractValue {
+    if (currentValue == null) {
+      throw new TypeError("invalid parameter");
+    }
+
+    for (const element of this.values) {
+      try {
+        if (element.isValueType(currentValue)) {
+          return element;
+        }
+      } catch (e) {
+        console.log(e);
+        throw e;
+      }
+    }
+    return null;
   }
 }
