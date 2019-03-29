@@ -1,7 +1,6 @@
 import { NodeAdapter } from "core/node/NodeAdapter";
 
-export interface ConcreateNetworkAdapter {
-     ConcreateNetworkAdapter(network: JGraph, nodeList: Array<NodeAdapter>);
+export interface NetworkAdapter {
      observeNode(node: string, value: string): void;
      unbserveNode(node: string): void;
      sampleNetwork(sampleNum: number): void;
