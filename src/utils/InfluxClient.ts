@@ -1,4 +1,5 @@
 import { InfluxDB} from "influx";
+import {Tags} from "influx/lib/src/results";
 
 export class InfluxClientFactory {
   public static async createInfluxClient(host: string, port: string, defaultDB: string,
@@ -23,11 +24,11 @@ export class InfluxClientFactory {
 
 export interface InfluxClient {
   getAddress(): string;
-  getUser(): string;
 }
 
 export interface InfluxClientReader extends InfluxClient {
-  query(database: string, query: string): Array<string>;
+  readField(database: string, query: string):
+    Promise<Array<{name: string, tags: Tags, rows: Array<any>}>>;
 }
 
 export interface InfluxClientWriter extends InfluxClient {
