@@ -1,6 +1,7 @@
+import { NodeAdapter } from "./NodeAdapter";
 import { AbstractValue } from "./Value/AbstractValue";
 
-export class ConcreteNodeAdapter {
+export class ConcreteNodeAdapter implements NodeAdapter {
   private values: Array<AbstractValue>;
   private node: JNode;
 
