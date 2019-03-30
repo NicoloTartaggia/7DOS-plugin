@@ -1,7 +1,8 @@
-import _ from "lodash";
+import { metricsTabDirective } from "./metrics_tab";
 
-import {PanelCtrl} from "grafana/app/plugins/sdk";
-import {metricsTabDirective} from "./metrics_tab";
+import { PanelCtrl } from "grafana/app/plugins/sdk";
+
+import _ from "lodash";
 
 export class JsImportPanel extends PanelCtrl {
   public static templateUrl: string = "panels/import-json-panel/partials/panelTemplate.html";

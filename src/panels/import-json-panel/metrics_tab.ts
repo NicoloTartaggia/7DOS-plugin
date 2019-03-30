@@ -5,11 +5,11 @@ import _ from "lodash";
 
 // Services & utils
 import config from "grafana/app/core/config";
-//import {coreModule} from "grafana/app/core/core";
+// import {coreModule} from "grafana/app/core/core";
 
 // Types
-import { DashboardModel } from "grafana/app/features/dashboard/model";
 import {coreModule} from "grafana/app/core/core";
+import { DashboardModel } from "grafana/app/features/dashboard/model";
 
 export class MetricsTabCtrl {
   public dsName: string;
