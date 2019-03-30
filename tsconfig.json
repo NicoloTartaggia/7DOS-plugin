@@ -19,6 +19,7 @@
     "noImplicitThis": false,
     "noImplicitUseStrict": false,
     "noUnusedLocals": true,
+    "forceConsistentCasingInFileNames": true,
     "outDir": "dist",
     "plugins": [
       { "name": "typescript-tslint-plugin" }
