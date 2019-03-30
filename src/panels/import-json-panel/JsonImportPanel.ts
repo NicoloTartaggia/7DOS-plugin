@@ -63,7 +63,7 @@ export class JsImportPanel extends PanelCtrl {
       4);
     this.events.emit("data-received", null);
 
-    }
+  }
 
   public onUpload(net) {
     console.log("On upload");

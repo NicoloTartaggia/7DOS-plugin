@@ -10,9 +10,9 @@ export default class InfluxWriteClient implements WriteClient {
    * @param credentials OPTIONAL: The credentials needed to connect to the server.
    * @returns A fully configured InfluxWriteClient.
    */
-  public static async makeInfluxWriteClient(host: string, port: string, defaultDB: string,
-                                            credentials?: [string, string])
-  : Promise<InfluxWriteClient> {
+  public static async makeInfluxWriteClient (host: string, port: string, defaultDB: string,
+                                             credentials?: [string, string])
+    : Promise<InfluxWriteClient> {
     const address: string = host + ":" + port;
     const login: string = credentials ?
       credentials[0] + ":" + credentials[1] + "@" :
@@ -51,7 +51,7 @@ export default class InfluxWriteClient implements WriteClient {
    * @param defaultDB The default database the client writes to.
    * @param influx The InfluxDB instance assigned to the client.
    */
-  private constructor(address: string, defaultDB: string, influx: InfluxDB) {
+  private constructor (address: string, defaultDB: string, influx: InfluxDB) {
     this.address = address;
     this.defaultDB = defaultDB;
     this.influx = influx;
@@ -60,14 +60,14 @@ export default class InfluxWriteClient implements WriteClient {
   /**
    * @returns The address of the server the client is connected to.
    */
-  public getAddress(): string {
+  public getAddress (): string {
     return this.address;
   }
 
   /**
    * @returns The default database the client writes to.
    */
-  public getDefaultDB(): string {
+  public getDefaultDB (): string {
     return this.defaultDB;
   }
 
@@ -76,18 +76,18 @@ export default class InfluxWriteClient implements WriteClient {
    * @param database OPTIONAL: the database to write the data to;
    * unless specified, it's the default database for the client.
    */
-  public async writeBatchData(batch: Array<object>,
-                              { database = this.defaultDB }: { database?: string })
+  public async writeBatchData (batch: Array<object>,
+                               {database = this.defaultDB}: { database?: string })
     : Promise<void> {
-      const batchInfo: Array<IPoint> = this.parseBatchData(batch);
-      await this.influx.writeMeasurement(
-            batchInfo[0].measurement,
-            batchInfo,
-            {
-              database,
-            },
-        ).catch((err) =>
-        console.log("Writing a batch of data to" + this.getAddress()
+    const batchInfo: Array<IPoint> = this.parseBatchData(batch);
+    await this.influx.writeMeasurement(
+      batchInfo[0].measurement,
+      batchInfo,
+      {
+        database,
+      },
+    ).catch((err) =>
+      console.log("Writing a batch of data to" + this.getAddress()
         + " has encountered the following error: " + err));
   }
 
@@ -96,24 +96,24 @@ export default class InfluxWriteClient implements WriteClient {
    * @param database OPTIONAL: the database to write the data to;
    * unless specified, it's the default database for the client.
    */
-  public async writePointData(point: object,
-                              { database = this.defaultDB }: { database?: string })
+  public async writePointData (point: object,
+                               {database = this.defaultDB}: { database?: string })
     : Promise<void> {
     const pointInfo: IPoint = this.parsePointData(point);
     await this.influx.writePoints([
-        pointInfo,
-      ], {
-        database,
-      }).catch((err) =>
+      pointInfo,
+    ], {
+      database,
+    }).catch((err) =>
       console.log("Writing a batch of data to" + this.getAddress()
-      + " has encountered the following error: " + err));
+        + " has encountered the following error: " + err));
   }
 
   /**
    * @param batch Contains the batch of data to be parsed for writing on Influx.
    * @returns An array of points of data.
    */
-  public parseBatchData(batch: Array<object>): Array<IPoint> {
+  public parseBatchData (batch: Array<object>): Array<IPoint> {
     return new Array<IPoint>();
   }
 
@@ -121,7 +121,7 @@ export default class InfluxWriteClient implements WriteClient {
    * @param batch Contains the batch of data to be parsed for writing on Influx.
    * @returns A point of data.
    */
-  public parsePointData(point: object): IPoint {
+  public parsePointData (point: object): IPoint {
     return {measurement: "yourname", fields: {vcpu: 2}};
   }
 }
