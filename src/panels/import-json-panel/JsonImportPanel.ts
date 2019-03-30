@@ -1,9 +1,7 @@
 import _ from "lodash";
 
-// import { metricsTabDirective } from "./metrics_tab";
-// import {GraphCtrl} from "../graph-panel/module";
-
 import {PanelCtrl} from "grafana/app/plugins/sdk";
+import {metricsTabDirective} from "./metrics_tab";
 
 export class JsImportPanel extends PanelCtrl {
   public static templateUrl: string = "panels/import-json-panel/partials/panelTemplate.html";
@@ -58,8 +56,7 @@ export class JsImportPanel extends PanelCtrl {
       "public/plugins/app-jsbayes/panels/import-json-panel/partials/optionTab_GraphicEditor.html",
       2);
     this.addEditorTab("Network-Connection-to-Grafana",
-      "public/plugins/app-jsbayes/panels/import-json-panel/partials/optionTab_ConnectNetwork.html",
-      3);
+      metricsTabDirective, 3);
     this.addEditorTab("Setup-Results-Influx",
       "public/plugins/app-jsbayes/panels/import-json-panel/partials/optionTab_setupInflux.html",
       4);
