@@ -3,6 +3,7 @@ import { InputFlux } from "./flux/InputFlux";
 
 export class NetReader {
     private inputFlux: Map<NodeAdapter, InputFlux>;
+
     public constructor(nodeList: Array<NodeAdapter>) {
         for (const node of nodeList) {
             this.inputFlux.set(node, null);

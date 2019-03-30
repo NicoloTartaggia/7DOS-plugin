@@ -2,8 +2,9 @@ import { NetworkAdapter } from "../../Adapter/NetworkAdapter";
 import { NetReader } from "../reader/NetReader";
 
 export class ConcreteNetworkUpdater {
-    private network: NetworkAdapter;
+    private readonly network: NetworkAdapter;
     private reader: NetReader;
+
     public constructor(network: NetworkAdapter) {
         this.network = network;
         this.reader = new NetReader(this.network.getNodeList());
