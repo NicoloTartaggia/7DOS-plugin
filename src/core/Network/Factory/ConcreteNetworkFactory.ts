@@ -5,6 +5,7 @@ import {AbstractValue} from "../../node/Value/AbstractValue";
 import {BoolValue} from "../../node/Value/BoolValue";
 import {RangeValue} from "../../node/Value/RangeValue";
 import {StringValue} from "../../node/Value/StringValue";
+import {ConcreteNetworkAdapter} from "../Adapter/ConcreteNetworkAdapter";
 import NetworkFactory from "./NetworkFactory";
 
 import jsbayes from "jsbayes";
