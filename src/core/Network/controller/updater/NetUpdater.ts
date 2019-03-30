@@ -1,5 +1,5 @@
-import { NetworkAdapter } from "../Adapter/NetworkAdapter";
-import { NetReader } from "./reader/NetReader";
+import { NetworkAdapter } from "../../Adapter/NetworkAdapter";
+import { NetReader } from "../reader/NetReader";
 
 export class ConcreteNetworkUpdater {
     private network: NetworkAdapter;
