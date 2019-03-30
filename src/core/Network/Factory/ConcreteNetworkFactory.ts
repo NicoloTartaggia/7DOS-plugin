@@ -6,6 +6,7 @@ import {AbstractValue} from "../../node/Value/AbstractValue";
 import {BoolValue} from "../../node/Value/BoolValue";
 import {RangeValue} from "../../node/Value/RangeValue";
 import {StringValue} from "../../node/Value/StringValue";
+import {ConcreteNetworkAdapter} from "../Adapter/ConcreteNetworkAdapter";
 import NetworkFactory from "./NetworkFactory";
 
 import jsbayes from "jsbayes";
@@ -118,7 +119,7 @@ class ConcreteNetworkFactory implements NetworkFactory {
       nodeList.push(new ConcreteNodeAdapter(node_dictionary[node_name], node_values_array));
     }
     // --------------------------------
-    // Build and return the ConcreateNetworkAdapter
+    // Build and return the ConcreteNetworkAdapter
     return new ConcreteNetworkAdapter(network, nodeList);
   }// end of parseNetwork
 }// end of ConcreteNetworkFactory

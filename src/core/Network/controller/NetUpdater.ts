@@ -1,7 +1,7 @@
 import { NetworkAdapter } from "../Adapter/NetworkAdapter";
 import { NetReader } from "./reader/NetReader";
 
-export class concreteNetworkUpdater {
+export class ConcreteNetworkUpdater {
     private network: NetworkAdapter;
     private reader: NetReader;
     public constructor(network: NetworkAdapter) {
