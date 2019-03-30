@@ -3,7 +3,7 @@ import {InputFlux} from "./InputFlux";
 export  class InfluxInputFlux implements InputFlux {
   private query: string;
 
-  constructor(query: string){
+  constructor(query: string) {
     this.query = query;
   }
 
