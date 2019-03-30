@@ -1,8 +1,7 @@
 language: node_js
 node_js:
   - 6
-script: make test-coveralls
-sudo: false
+
 cache: npm
 
 before_install:
