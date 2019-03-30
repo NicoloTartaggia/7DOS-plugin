@@ -1,5 +1,4 @@
 import {ConcreteNodeAdapter} from "../../node/ConcreteNodeAdapter";
-import {ConcreteNetworkAdapter} from "../Adapter/ConcreteNetworkAdapter";
 
 import {NodeAdapter} from "../../node/NodeAdapter";
 import {AbstractValue} from "../../node/Value/AbstractValue";
@@ -73,6 +72,10 @@ class ConcreteNetworkFactory implements NetworkFactory {
     // Begin to parse every node in the JSON file
     for (const node of (json_file).nodes) {
       const name = node.name;
+      // Check that the node doesn't exist already
+      if (Object.keys(node_dictionary).indexOf(name) >= 0) {
+        throw new Error("The node " + name + " already exist in the network!");
+      }
       // Create structures for current node
       node_parents_dictionary[name] = new Array<string>();
       node_values_dictionary[name] = new Array<AbstractValue>();
@@ -94,7 +97,8 @@ class ConcreteNetworkFactory implements NetworkFactory {
     for (const node of (json_file).nodes) {
       const name = node.name;
       for (const parent of node.parents) {
-        if (ConcreteNetworkFactory.nodeExist(parent, node_dictionary)) {
+        if (ConcreteNetworkFactory.nodeExist(parent, node_dictionary)
+        && node_parents_dictionary[name].indexOf(parent) < 0) {
           // Set parent for JNode
           ConcreteNetworkFactory.setNodeParent(node_dictionary[name], node_dictionary[parent]);
           // Insert parent in the list of current node parents

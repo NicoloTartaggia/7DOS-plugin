@@ -1,5 +1,5 @@
 import { NodeAdapter } from "core/node/NodeAdapter";
-import { InputFlux } from "./InputFlux";
+import { InputFlux } from "./flux/InputFlux";
 
 export class NetReader {
     private inputFlux: Map<NodeAdapter, InputFlux>;
