@@ -1,4 +1,4 @@
-import { CalcResult } from "./CalcResult";
+import { CalcResult } from "./calcResult";
 
 interface Iterator<T> {
     next(): T;
