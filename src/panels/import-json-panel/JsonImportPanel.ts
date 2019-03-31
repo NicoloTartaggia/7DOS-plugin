@@ -1,6 +1,6 @@
-import { metricsTabDirective } from "./metrics_tab";
+import {metricsTabDirective} from "./metrics_tab";
 
-import { PanelCtrl } from "grafana/app/plugins/sdk";
+import {PanelCtrl} from "grafana/app/plugins/sdk";
 
 import _ from "lodash";
 
@@ -42,14 +42,14 @@ export class JsImportPanel extends PanelCtrl {
     jsonContent: "",
   };
 
-  constructor($scope, $injector) {
+  constructor ($scope, $injector) {
     super($scope, $injector);
     _.defaults(this.panel, this.panelDefaults);
 
     this.events.on("init-edit-mode", this.onInitEditMode.bind(this));
   }
 
-  public onInitEditMode() {
+  public onInitEditMode () {
     this.addEditorTab("JSON-Import-or-edit",
       "public/plugins/app-jsbayes/panels/import-json-panel/partials/optionTab_importEditJson.html",
       1);
@@ -65,7 +65,7 @@ export class JsImportPanel extends PanelCtrl {
 
   }
 
-  public onUpload(net) {
+  public onUpload (net) {
     console.log("On upload");
     try {
       // this.loaded_network = new Network(JSON.stringify(net));
@@ -81,7 +81,7 @@ export class JsImportPanel extends PanelCtrl {
 
   }
 
-  public onSubmit() { // Currently not used
+  public onSubmit () { // Currently not used
     console.log("onSubmit() called");
     /*console.log("Node name:" + this.node_name);
     console.log("observe value:" + this.observe_value);
@@ -101,7 +101,7 @@ export class JsImportPanel extends PanelCtrl {
     console.log("Out-Done");*/
   }
 
-  public downloadNetwork(filename, id) {
+  public downloadNetwork (filename, id) {
     const element = document.createElement("a");
     const text = (document.getElementById(id) as HTMLInputElement).value;
     element.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(text));
@@ -115,6 +115,6 @@ export class JsImportPanel extends PanelCtrl {
     document.body.removeChild(element);
   }
 
-  public link(scope, element) {
+  public link (scope, element) {
   }
 }

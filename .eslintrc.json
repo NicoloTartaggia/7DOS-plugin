@@ -20,7 +20,11 @@
                 },
                 "FunctionExpression": {
                     "parameters": "first"
-                }
+                },
+                "CallExpression": {
+                    "arguments": 1
+                },
+                "SwitchCase": 1
             }
         ]
     }

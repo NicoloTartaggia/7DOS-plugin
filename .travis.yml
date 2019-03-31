@@ -21,6 +21,7 @@ jobs:
   include:
     - stage: lint
       script:
+        - npm run eslint
         - npm run tslint
 
     - stage: mocha-test

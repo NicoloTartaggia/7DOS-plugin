@@ -1,11 +1,11 @@
-import { NodeAdapter } from "./NodeAdapter";
-import { AbstractValue } from "./Value/AbstractValue";
+import {NodeAdapter} from "./NodeAdapter";
+import {AbstractValue} from "./Value/AbstractValue";
 
 export class ConcreteNodeAdapter implements NodeAdapter {
   private values: Array<AbstractValue>;
   private node: JNode;
 
-  constructor(node: JNode, values: Array<AbstractValue>) {
+  constructor (node: JNode, values: Array<AbstractValue>) {
     if (node == null || values == null) {
       throw new TypeError("invalid parameter");
     }
@@ -13,21 +13,21 @@ export class ConcreteNodeAdapter implements NodeAdapter {
     this.values = values;
   }
 
-  public getName(): string {
+  public getName (): string {
     return this.node.name;
   }
 
-  public getStates(): Array<string> {
-// tslint:disable-next-line: prefer-object-spread
+  public getStates (): Array<string> {
+    // tslint:disable-next-line: prefer-object-spread
     return Object.assign([], this.node.values); // deep copy of array
   }
 
-  public getValues(): Array<AbstractValue> {
-// tslint:disable-next-line: prefer-object-spread
+  public getValues (): Array<AbstractValue> {
+    // tslint:disable-next-line: prefer-object-spread
     return Object.assign([], this.values);
   }
 
-  public findValue(currentValue: string): AbstractValue {
+  public findValue (currentValue: string): AbstractValue {
     if (currentValue == null) {
       throw new TypeError("invalid parameter");
     }
