@@ -1,4 +1,4 @@
-import {CalcResultItem} from "./calcResultItem";
+import {CalcResultItem} from "./CalcResultItem";
 
 export class CalcResult {
   private readonly name: string;

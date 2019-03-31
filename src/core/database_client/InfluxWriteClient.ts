@@ -1,5 +1,5 @@
 import {InfluxDB, IPoint} from "influx";
-import {CalcResult} from "../calculation_result/calcResult";
+import {CalcResult} from "../calculation_result/CalcResult";
 import WriteClient from "./WriteClient";
 
 export default class InfluxWriteClient implements WriteClient {
