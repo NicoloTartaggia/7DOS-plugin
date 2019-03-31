@@ -1,0 +1,29 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "7DOS | Eslint+TSLint",
+            "type": "shell",
+            "command": "npm run eslint && npm run tslint",
+            "problemMatcher": []
+        },
+        {
+            "label": "7DOS | Eslint+TSLint & Build",
+            "type": "shell",
+            "command": "npm run eslint && npm run tslint && npm run build",
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+        },
+        {
+            "label": "7DOS | Run test",
+            "type": "shell",
+            "command": "npm run test",
+            "problemMatcher": []
+        },
+    ]
+}
