@@ -1,19 +1,26 @@
+import { CalcResult } from "core/calculation_result/CalcResult";
+import { CalcResultItem } from "core/calculation_result/CalcResultItem";
+import { CalcResults } from "core/calculation_result/CalcResults";
+import { FluxResult } from "core/fluxReadResult/FluxResult";
+import { FluxResults } from "core/fluxReadResult/FluxResults";
 import {NetworkAdapter} from "../../adapter/NetworkAdapter";
-import {NetReader} from "../reader/NetReader";
 
-export class ConcreteNetworkUpdater {
+export class NetUpdater {
   private readonly network: NetworkAdapter;
-  private reader: NetReader;
 
   public constructor (network: NetworkAdapter) {
     this.network = network;
-    this.reader = new NetReader(this.network.getNodeList());
-    this.reader.toString();
   }
 
-  public updateNet () {
+  public updateNet (FluxResults: FluxResults): CalcResults {
     // TODO
-    console.log(this.network);
-    // this.network.getNodeList.
+    const iterator: IterableIterator<FluxResult> = FluxResults.buildIterator();
+    iterator.next;
+    this.network.getNodeList();
+    // TODO ciclo che itera tutti i FluxResult e fissa gli observe
+    return  new CalcResults(
+              new Array<CalcResult>(
+                new CalcResult("test", new Array<CalcResultItem>(
+                  new CalcResultItem("valueTest", 0.2)))));
   }
 }
