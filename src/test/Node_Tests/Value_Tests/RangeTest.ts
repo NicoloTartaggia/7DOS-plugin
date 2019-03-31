@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import "mocha";
-import { RangeValue } from "../../../core/node/Value/RangeValue";
+import { RangeValue } from "../../../core/node/values/RangeValue";
 
 // RangeValue -------------------------------------------------------------------------------
 describe("RangeValue - constructor", () => {

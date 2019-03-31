@@ -1,4 +1,4 @@
-import {NetworkAdapter} from "../../Adapter/NetworkAdapter";
+import {NetworkAdapter} from "../../adapter/NetworkAdapter";
 import {NetReader} from "../reader/NetReader";
 
 export class ConcreteNetworkUpdater {

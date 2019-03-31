@@ -1,4 +1,4 @@
-import {AbstractValue} from "./Value/AbstractValue";
+import {AbstractValue} from "./values/AbstractValue";
 
 export interface NodeAdapter {
   getName (): string;
