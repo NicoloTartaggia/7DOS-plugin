@@ -12,7 +12,7 @@ export default class InfluxWriteClient implements WriteClient {
    * @returns A fully configured InfluxWriteClient.
    */
   public static async makeInfluxWriteClient (host: string, port: string, defaultDB: string,
-                                             credentials?: [string, string])
+                                credentials?: [string, string])
     : Promise<InfluxWriteClient> {
     const address: string = host + ":" + port;
     const login: string = credentials ?
@@ -114,7 +114,7 @@ export default class InfluxWriteClient implements WriteClient {
    * @param batch Contains the batch of data to be parsed for writing on Influx.
    * @returns An array of points of data.
    */
-  public parseBatchData (batch: Array<CalcResult>): Array<IPoint> {
+  private parseBatchData (batch: Array<CalcResult>): Array<IPoint> {
     const batchRes: Array<IPoint> = new Array<IPoint>();
     batch.forEach((item) => {
       const pointTemp: IPoint = this.parsePointData(item);
@@ -127,7 +127,7 @@ export default class InfluxWriteClient implements WriteClient {
    * @param point Contains the batch of data to be parsed for writing on Influx.
    * @returns A point of data.
    */
-  public parsePointData (point: CalcResult): IPoint {
+  private parsePointData (point: CalcResult): IPoint {
     const pointRes: IPoint = {
       fields: {},
       measurement: point.getName(),
