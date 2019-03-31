@@ -1,5 +1,5 @@
 /*
-  TODO: 
+  TODO:
   1) rendere tutto un modulo in modo da importare una volta sola
   2) sistemate i tipi nell'interfaccia
 */

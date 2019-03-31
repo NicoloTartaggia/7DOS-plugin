@@ -53,18 +53,18 @@ export default class InfluxReadClient implements ReadClient {
    * @param query The query to execute.
    * @returns A Promise of nested arrays representing the results of the query.
    */
-  public async readField (database: string,
-                          query: string): Promise<Array<{name: string, tags: Tags, rows: Array<any>}>> {
+  public async readField (database: string, query: string):
+    Promise<Array<{ name: string, tags: Tags, rows: Array<any> }>> {
     const queryOptions: IQueryOptions = {};
     queryOptions.database = database;
     const tempRes = await this.influx.query(query, queryOptions)
-      .then((rows) => rows.groups())
-      .catch((err) =>
+    .then((rows) => rows.groups())
+    .catch((err) =>
         console.log("Query to " + this.getAddress()
-          + " has encountered the following error: " + err));
+        + " has encountered the following error: " + err));
     const queryRes: void | Array<{ name: string, tags: Tags, rows: Array<any> }> = tempRes
-      ? tempRes
-      : null;
+    ? tempRes
+    : null;
     return queryRes;
   }
 }

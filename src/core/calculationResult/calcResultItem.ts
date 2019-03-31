@@ -9,7 +9,7 @@ export class CalcResultItem {
   public getValueName(): string {
     return this.valueName;
   }
-  public getProbName(): number {
+  public getProbValue(): number {
     return this.probValue;
   }
 
