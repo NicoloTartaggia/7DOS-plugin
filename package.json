@@ -19,6 +19,9 @@
       ".ts",
       ".tsx"
     ],
+    "exclude": [
+      "src/test/**"
+    ],
     "all": true
   },
   "devDependencies": {
