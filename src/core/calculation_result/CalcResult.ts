@@ -1,15 +1,15 @@
 import {CalcResultItem} from "./CalcResultItem";
 
 export class CalcResult {
-  private readonly name: string;
+  private readonly nodeName: string;
   private readonly items: Array<CalcResultItem>;
 
-  public constructor(name: string, items: Array<CalcResultItem>) {
-    this.name = name;
+  public constructor(nodeName: string, items: Array<CalcResultItem>) {
+    this.nodeName = name;
     this.items = items;
   }
-  public getName(): string {
-    return this.name;
+  public getNodeName(): string {
+    return this.nodeName;
   }
   public getValueProbs(): Array<CalcResultItem> {
     return this.items;

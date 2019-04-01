@@ -1,13 +1,16 @@
+import { NodeAdapter } from "core/node/NodeAdapter";
+
 export class FluxResult {
-  private nodeName: string;
+  private node: NodeAdapter;
   private currentValue: string;
 
-  public constructor(nodeName: string, currentValue: string) {
-
+  public constructor(nodeName: NodeAdapter, currentValue: string) {
+    this.currentValue = currentValue;
+    this.node = nodeName;
   }
 
-  public getNodeName(): string {
-    return this.nodeName;
+  public getNode(): NodeAdapter {
+    return this.node;
   }
   public getCurrentValue(): string {
     return this.currentValue;

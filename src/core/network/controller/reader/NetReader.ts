@@ -1,6 +1,6 @@
-import { FluxResult } from "core/fluxReadResult/FluxResult";
-import { FluxResults } from "core/fluxReadResult/FluxResults";
-import {NodeAdapter} from "core/node/NodeAdapter";
+import { FluxResult } from "../../../../core/fluxReadResult/FluxResult";
+import { FluxResults } from "../../../../core/fluxReadResult/FluxResults";
+import {NodeAdapter} from "../../../../core/node/NodeAdapter";
 import {InputFlux} from "./flux/InputFlux";
 
 export class NetReader {
@@ -14,6 +14,15 @@ export class NetReader {
 
   public read(): FluxResults {
     // TODO: Funzione di read per un NodeAdapter
-    return new FluxResults(new Array<FluxResult> (new FluxResult("test", "true")));
+  /*
+    CICLO
+
+      chiama client read
+      mi ritorna il valore
+      lo collego
+
+    fine ciclo
+*/
+    return new FluxResults(new Array<FluxResult> (new FluxResult(null, "true")));
   }
 }
