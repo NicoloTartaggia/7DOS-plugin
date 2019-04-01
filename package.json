@@ -20,7 +20,9 @@
       ".tsx"
     ],
     "exclude": [
-      "src/test/**"
+      "src/panels/graph-panel/**",
+      "src/test/**",
+      "webpack.config.js"
     ],
     "all": true
   },
