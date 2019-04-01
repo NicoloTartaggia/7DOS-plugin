@@ -112,8 +112,7 @@ class ConcreteNetworkFactory implements NetworkFactory {
       const validate = ajv.compile(json_schema);
       const valid = validate(json_file);
       if (!valid) {
-        console.log(validate.errors);
-        throw new Error("JSON doesn't validate the schema!");
+        throw new Error("JSON doesn't validate the schema!" + validate.errors);
       }
     }
     // --------------------------------

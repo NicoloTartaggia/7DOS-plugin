@@ -37,7 +37,7 @@
                     "rangeMax":100
                 }
             ],
-            "parents":["Example"],
+            "parents":["Example", "Example3"],
             "cpt":[[0.8,0.2]]
         },
         {
@@ -62,7 +62,82 @@
                     "rangeMax":100
                 }
             ],
-            "parents":["Example2"],
+            "parents":["Example5"],
+            "cpt":[[0.8,0.2]]
+        },
+        {
+            "name":"Example4",
+            "values":[
+                {
+                    "name":"Low Range",
+                    "type":"range",
+                    "rangeMin":0,
+                    "rangeMax":10
+                },
+                {
+                    "name":"Normal Range",
+                    "type":"range",
+                    "rangeMin":11,
+                    "rangeMax":80
+                },
+                {
+                    "name":"Alert Range",
+                    "type":"range",
+                    "rangeMin":81,
+                    "rangeMax":100
+                }
+            ],
+            "parents":["Example"],
+            "cpt":[[0.8,0.2]]
+        },
+        {
+            "name":"Example5",
+            "values":[
+                {
+                    "name":"Low Range",
+                    "type":"range",
+                    "rangeMin":0,
+                    "rangeMax":10
+                },
+                {
+                    "name":"Normal Range",
+                    "type":"range",
+                    "rangeMin":11,
+                    "rangeMax":80
+                },
+                {
+                    "name":"Alert Range",
+                    "type":"range",
+                    "rangeMin":81,
+                    "rangeMax":100
+                }
+            ],
+            "parents":["Example2", "Example4", "Example6"],
+            "cpt":[[0.8,0.2]]
+        },
+        {
+            "name":"Example6",
+            "values":[
+                {
+                    "name":"Low Range",
+                    "type":"range",
+                    "rangeMin":0,
+                    "rangeMax":10
+                },
+                {
+                    "name":"Normal Range",
+                    "type":"range",
+                    "rangeMin":11,
+                    "rangeMax":80
+                },
+                {
+                    "name":"Alert Range",
+                    "type":"range",
+                    "rangeMin":81,
+                    "rangeMax":100
+                }
+            ],
+            "parents":["Example4"],
             "cpt":[[0.8,0.2]]
         }
     ]
