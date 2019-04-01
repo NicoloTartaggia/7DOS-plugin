@@ -9,8 +9,8 @@
             "url": "https://github.com/NicoloTartaggia/7DOS-plugin/"
         },
         "logos": {
-            "small": "../../img/logo-small.png",
-            "large": "../../img/logo-big.png"
+            "small": "img/logo-small.png",
+            "large": "img/logo-big.png"
         }
     },
 
