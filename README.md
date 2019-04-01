@@ -36,7 +36,9 @@ npm run build
 ## Development team
 We are Computer Science students at [University of Padua](https://www.unipd.it/). 
 The plugin have been developed for Software Engineering 
-course.<br/>
+course.
+
+
 7DOS is composed of seven members:
 - [Nicolò Tartaggia](https://github.com/NicoloTartaggia)
 - [Andrea Trevisin](https://github.com/knowbot)
