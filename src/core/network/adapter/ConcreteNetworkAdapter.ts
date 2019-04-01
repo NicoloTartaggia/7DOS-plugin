@@ -6,6 +6,9 @@ export class ConcreteNetworkAdapter implements NetworkAdapter {
   private readonly nodeList: Array<NodeAdapter>;
 
   public constructor (network: JGraph, nodeList: Array<NodeAdapter>) {
+    if (network == null || nodeList == null) {
+      throw new TypeError("invalid parameter");
+    }
     this.graph = network;
     this.nodeList = nodeList;
   }

@@ -1,4 +1,20 @@
+import { NetUpdater } from "../../../../core/network/controller/updater/NetUpdater";
+
 import {expect} from "chai";
+
+describe("NetUpdater - constructor", () => {
+  it(" TODO ", () => {
+    new NetUpdater(null);
+    expect(true).to.equal(true);
+  });
+});
+
+describe("NetUpdater - updateNet", () => {
+  it(" TODO ", () => {
+    expect(true).to.equal(true);
+  });
+});
+
 describe("NetUpdater - iterator Test", () => {
   it("iterator Test", () => {
    /* const s: NetUpdater = new NetUpdater();
@@ -8,6 +24,6 @@ describe("NetUpdater - iterator Test", () => {
     let flux:FluxResults=new FluxResults(arrayTest);
     s.updateNet(flux);
     */
-    expect(2).to.equal(2);
+   expect(true).to.equal(true);
   });
 });
