@@ -36,10 +36,10 @@ We are Computer Science students at [University of Padua](https://www.unipd.it/)
 The plugin have been developed for Software Engineering 
 course.<br/>
 7DOS is composed of seven members:<br/>
-[Nicolò Tartaggia](https://github.com/NicoloTartaggia)<br/>
-[Andrea Trevisin](https://github.com/knowbot)<br/>
-[Michele Roverato](https://github.com/ScrappyCocco)<br/>
-[Giacomo Barzon](https://github.com/Giacomobarzon97)<br/>
-[Marco Costantino](https://github.com/UdrK)<br/>
-[Lorenzo Busin](https://github.com/lorenzobusin)<br/>
+[Nicolò Tartaggia](https://github.com/NicoloTartaggia) <br/>
+[Andrea Trevisin](https://github.com/knowbot) <br/>
+[Michele Roverato](https://github.com/ScrappyCocco) <br/>
+[Giacomo Barzon](https://github.com/Giacomobarzon97) <br/>
+[Marco Costantino](https://github.com/UdrK) <br/>
+[Lorenzo Busin](https://github.com/lorenzobusin) <br/>
 [Giovanni Sorice](https://github.com/GiovanniSorice)
