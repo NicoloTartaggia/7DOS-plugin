@@ -58,6 +58,7 @@
     "stream-http": "github:node-influx/stream-http",
     "tether-drop": "^1.4.2",
     "tinycolor2": "^1.4.1",
-    "tslint": "^5.14.0"
+    "tslint": "^5.14.0",
+    "coveralls": "3.0.3"
   }
 }
