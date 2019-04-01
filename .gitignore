@@ -36,3 +36,5 @@ profile.cov
 .tscache
 
 package-lock\.json
+
+\.nyc_output/
