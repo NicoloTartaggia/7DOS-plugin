@@ -7,8 +7,8 @@
     "build": "webpack",
     "eslint": "eslint -c .eslintrc.json src/**/*.ts",
     "tslint": "tslint -c tslint.json 'src/**/*.ts'",
-    "test": "mocha --require ts-node/register src/test/**/*.ts",
-    "coverage": "nyc mocha --require source-map-support/register --require ts-node/register --require mocha-lcov-reporter src/test/**/*.ts && nyc report --reporter=text-lcov | coveralls"
+    "test": "mocha --require ts-node/register --recursive \"src/test/**/*.ts\"",
+    "coverage": "nyc mocha --require source-map-support/register --require ts-node/register --require mocha-lcov-reporter --recursive \"src/test/**/*.ts\" && nyc report --reporter=text-lcov | coveralls"
   },
   "keywords": [],
   "author": "7DOS",
