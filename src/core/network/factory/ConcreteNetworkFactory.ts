@@ -8,6 +8,7 @@ import {StringValue} from "../../node/values/StringValue";
 import {ConcreteNetworkAdapter} from "../adapter/ConcreteNetworkAdapter";
 import NetworkFactory from "./NetworkFactory";
 
+import Ajv from "ajv";
 import jsbayes from "jsbayes";
 
 class ConcreteNetworkFactory implements NetworkFactory {
@@ -24,6 +25,33 @@ class ConcreteNetworkFactory implements NetworkFactory {
 
   private static setNodeCpt (node: JNode, cpt: Array<Array<number>>): void {
     node.setCpt(cpt);
+  }
+
+  /**
+   * n5.addParent(n1)
+   * @param main_node Main node: n5
+   * @param parent Node to add as parent: n1
+   * @param parents Dictionary of all network parents
+   */
+  private static checkCanBeParent (main_node: string,
+                                   parent: string,
+                                   parents: { [node_name: string]: Array<string>; }): boolean {
+    if (main_node === parent) {
+      return false;
+    }
+    // Check if n1 is already in n5's list
+    if (Object.keys(parents).indexOf(main_node) >= 0 && parents[main_node].indexOf(parent) >= 0) {
+      return false;
+    }
+    if (Object.keys(parents).indexOf(parent) >= 0 && parents[parent].indexOf(main_node) >= 0) {
+      return false;
+    }
+    for (const current_parent of parents[parent]) {
+      if (!ConcreteNetworkFactory.checkCanBeParent(main_node, current_parent, parents)) {
+        return false;
+      }
+    }
+    return true;
   }
 
   // --------------------------------
@@ -49,7 +77,7 @@ class ConcreteNetworkFactory implements NetworkFactory {
     }
   }
 
-  public parseNetwork (file_content: string): ConcreteNetworkAdapter {
+  public parseNetwork (file_content: string, json_schema_content: string = null): ConcreteNetworkAdapter {
     const network: JGraph = jsbayes.newGraph();
     const nodeList: Array<NodeAdapter> = new Array<NodeAdapter>();
     const node_dictionary: { [node_name: string]: JNode; } = {};
@@ -68,6 +96,25 @@ class ConcreteNetworkFactory implements NetworkFactory {
       json_file = JSON.parse(file_content);
     } catch (e) {
       throw new Error("Bad Json Content! Error:" + e.toString());
+    }
+
+    // --------------------------------
+    // JSON schema validation
+    if (json_schema_content !== null) {
+      let json_schema;
+      try {
+        json_schema = JSON.parse(json_schema_content);
+      } catch (e) {
+        throw new Error("Bad Json Content! Error:" + e.toString());
+      }
+
+      const ajv = new Ajv();
+      const validate = ajv.compile(json_schema);
+      const valid = validate(json_file);
+      if (!valid) {
+        console.log(validate.errors);
+        throw new Error("JSON doesn't validate the schema!");
+      }
     }
     // --------------------------------
     // Begin to parse every node in the JSON file
@@ -98,21 +145,32 @@ class ConcreteNetworkFactory implements NetworkFactory {
     for (const node of (json_file).nodes) {
       const name = node.name;
       for (const parent of node.parents) {
-        if (ConcreteNetworkFactory.nodeExist(parent, node_dictionary)
-        && node_parents_dictionary[name].indexOf(parent) < 0) {
-          // Set parent for JNode
-          ConcreteNetworkFactory.setNodeParent(node_dictionary[name], node_dictionary[parent]);
-          // Insert parent in the list of current node parents
-          node_parents_dictionary[name].push(parent);
-        } else {
+        if (!ConcreteNetworkFactory.nodeExist(parent, node_dictionary)) {
           throw new Error("Node " + parent + " not found in the network!");
         }
+        if (!ConcreteNetworkFactory.checkCanBeParent(name, parent, node_parents_dictionary)) {
+          throw new Error("Circular parenthood");
+        }
+        // Set parent for JNode
+        ConcreteNetworkFactory.setNodeParent(node_dictionary[name], node_dictionary[parent]);
+        // Insert parent in the list of current node parents
+        node_parents_dictionary[name].push(parent);
       }
     }
 
     // For each node i read his CPT table
     for (const node of (json_file).nodes) {
       const name = node.name;
+      // Check that cpt sum is 1
+      for (const cpt_line of node.cpt) {
+        let sum = 0;
+        for (const prob of cpt_line) {
+          sum += prob;
+        }
+        if (sum > 1) {
+          throw new Error("The cpt sum of a line is > 1!");
+        }
+      }
       // TODO CHECK CORRECT SIZE USING node_parents_dictionary[name]
       ConcreteNetworkFactory.setNodeCpt(node_dictionary[name], node.cpt);
     }
@@ -128,4 +186,4 @@ class ConcreteNetworkFactory implements NetworkFactory {
   }// end of parseNetwork
 }// end of ConcreteNetworkFactory
 
-export { ConcreteNetworkFactory };
+export {ConcreteNetworkFactory};

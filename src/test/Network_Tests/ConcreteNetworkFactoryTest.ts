@@ -7,8 +7,10 @@ import {expect} from "chai";
 describe("ConcreteNetworkFactory - parseNetwork", () => {
   it("Correct network", () => {
     const json = require("./CorrectNetwork.json");
+    const jsonSchema = require("../../core/network/factory/network_structure.schema.json");
     const jsonString: string = JSON.stringify(json);
-    const s: ConcreteNetworkAdapter = new ConcreteNetworkFactory().parseNetwork(jsonString);
+    const jsonSchemaString: string = JSON.stringify(jsonSchema);
+    const s: ConcreteNetworkAdapter = new ConcreteNetworkFactory().parseNetwork(jsonString, jsonSchemaString);
     expect(s.getNodeList().length).to.equal(2);
   });
   it("Null check", () => {
@@ -52,13 +54,13 @@ describe("ConcreteNetworkFactory - parseNetwork", () => {
   it("Direct circular parenthood", () => {
     let json = require("./DCircularParenthood.json");
     const jsonString = JSON.stringify(json);
-    new ConcreteNetworkFactory().parseNetwork(jsonString);
     expect(() => new ConcreteNetworkFactory().parseNetwork(jsonString)).to.throw(Error, "Circular parenthood");
   });
   it("Indirect circular parenthood", () => {
+    console.log("-----------------------------------");
+    console.log("Indirect circular parenthood");
     let json = require("./ICircularParenthood.json");
     const jsonString = JSON.stringify(json);
-    new ConcreteNetworkFactory().parseNetwork(jsonString);
     expect(() => new ConcreteNetworkFactory().parseNetwork(jsonString)).to.throw(Error, "Circular parenthood");
   });
   it("Two nodes with same name", () => {
