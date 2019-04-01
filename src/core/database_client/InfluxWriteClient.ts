@@ -1,44 +1,13 @@
 import {InfluxDB, IPoint} from "influx";
 import {CalcResult} from "../calculation_result/CalcResult";
-import {WriteClient, WriteClientFactory} from "./WriteClient";
+import WriteClient from "./WriteClient";
 
-export class InfluxWriteClientFactory implements WriteClientFactory {
-
-  /**
-   * @param host The network address of the server to which the client must connect.
-   * @param port  The port through the server is listening for requests from the client.
-   * @param defaultDB  The name of the default database for the client to write to.
-   * @param credentials OPTIONAL: The credentials needed to connect to the server.
-   * @returns A fully configured InfluxWriteClient.
-   */
-  public makeWriteClient(host: string, port: string, defaultDB: string,
-                         credentials?: [string, string]): InfluxWriteClient {
-    const address: string = host + ":" + port;
-    const login: string = credentials ?
-      credentials[0] + ":" + credentials[1] + "@" :
-      "";
-    const dsn = "http://" + login + address;
-    const influx: InfluxDB = new InfluxDB(dsn + "/" + defaultDB);
-    try {
-      influx.getDatabaseNames()
-        .then((names) => {
-          if (!names.includes(defaultDB)) {
-            return influx.createDatabase(defaultDB);
-          }
-        });
-    } catch (err) {
-      console.log("Creating default database at: " + dsn + " has encountered the following error: " + err);
-    }
-    return new InfluxWriteClient(dsn, defaultDB, influx);
-  }
-}
-
-export class InfluxWriteClient implements WriteClient {
+export default class InfluxWriteClient implements WriteClient {
 
   /**
-   * @field The complete address of the server to which the client makes requests.
+   * @field The datasource name of the server to which the client makes requests.
    */
-  private readonly address: string;
+  private readonly dsn: string;
 
   /**
    * @field The default database the client writes to.
@@ -56,8 +25,8 @@ export class InfluxWriteClient implements WriteClient {
    * @param defaultDB The default database the client writes to.
    * @param influx The InfluxDB instance assigned to the client.
    */
-  constructor (address: string, defaultDB: string, influx: InfluxDB) {
-    this.address = address;
+  constructor (dsn: string, defaultDB: string, influx: InfluxDB) {
+    this.dsn = dsn;
     this.defaultDB = defaultDB;
     this.influx = influx;
   }
@@ -66,7 +35,7 @@ export class InfluxWriteClient implements WriteClient {
    * @returns The address of the server the client is connected to.
    */
   public getAddress (): string {
-    return this.address;
+    return this.dsn;
   }
 
   /**
@@ -133,7 +102,7 @@ export class InfluxWriteClient implements WriteClient {
   private parsePointData (point: CalcResult): IPoint {
     const pointRes: IPoint = {
       fields: {},
-      measurement: point.getNodeName(),
+      measurement: point.getName(),
     };
     point.getValueProbs().forEach((item) => {
       Object.defineProperty(pointRes, item.getValueName(), {value: item.getProbValue()});
