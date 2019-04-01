@@ -13,7 +13,7 @@ export class NetReader {
   }
 
   public read(): FluxResults {
-      // TODO: Funzione di read per un NodeAdapter
+    // TODO: Funzione di read per un NodeAdapter
     return new FluxResults(new Array<FluxResult> (new FluxResult("test", "true")));
   }
 }

@@ -12,15 +12,15 @@ export class NetUpdater {
     this.network = network;
   }
 
-  public updateNet (FluxResults: FluxResults): CalcResults {
+  public updateNet (fluxResults: FluxResults): CalcResults {
     // TODO
-    const iterator: IterableIterator<FluxResult> = FluxResults.buildIterator();
-    iterator.next;
+    const iterator: IterableIterator<FluxResult> = fluxResults.buildIterator();
+    iterator.next();
     this.network.getNodeList();
     // TODO ciclo che itera tutti i FluxResult e fissa gli observe
     return  new CalcResults(
-              new Array<CalcResult>(
-                new CalcResult("test", new Array<CalcResultItem>(
-                  new CalcResultItem("valueTest", 0.2)))));
+      new Array<CalcResult>(
+        new CalcResult("test", new Array<CalcResultItem>(
+          new CalcResultItem("valueTest", 0.2)))));
   }
 }
