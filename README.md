@@ -9,7 +9,9 @@ variables and their conditional dependencies via a
 directed acyclic graph (DAG). Bayesian networks are ideal
 for taking an event that occurred and predicting the 
 likelihood that any one of several possible known causes
-was the contributing factor. <br/> More details in [Wikipedia.](https://en.wikipedia.org/wiki/Bayesian_network)
+was the contributing factor.
+
+More details in [Wikipedia.](https://en.wikipedia.org/wiki/Bayesian_network)
 
 ## The plugin
 Our plugin gets flows of information from one or more 
@@ -35,11 +37,11 @@ npm run build
 We are Computer Science students at [University of Padua](https://www.unipd.it/). 
 The plugin have been developed for Software Engineering 
 course.<br/>
-7DOS is composed of seven members:<br/>
-[Nicolò Tartaggia](https://github.com/NicoloTartaggia) <br/>
-[Andrea Trevisin](https://github.com/knowbot) <br/>
-[Michele Roverato](https://github.com/ScrappyCocco) <br/>
-[Giacomo Barzon](https://github.com/Giacomobarzon97) <br/>
-[Marco Costantino](https://github.com/UdrK) <br/>
-[Lorenzo Busin](https://github.com/lorenzobusin) <br/>
-[Giovanni Sorice](https://github.com/GiovanniSorice)
+7DOS is composed of seven members:
+- [Nicolò Tartaggia](https://github.com/NicoloTartaggia)
+- [Andrea Trevisin](https://github.com/knowbot)
+- [Michele Roverato](https://github.com/ScrappyCocco)
+- [Giacomo Barzon](https://github.com/Giacomobarzon97)
+- [Marco Costantino](https://github.com/UdrK)
+- [Lorenzo Busin](https://github.com/lorenzobusin)
+- [Giovanni Sorice](https://github.com/GiovanniSorice)
