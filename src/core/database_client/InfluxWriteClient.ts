@@ -19,16 +19,15 @@ export class InfluxWriteClientFactory implements WriteClientFactory {
       "";
     const dsn = "http://" + login + address;
     const influx: InfluxDB = new InfluxDB(dsn + "/" + defaultDB);
-    const ready = (async () => influx.getDatabaseNames()
-      .then((names) => {
-        if (!names.includes(defaultDB)) {
-          return influx.createDatabase(defaultDB);
-        }
-      })
-      .then(() => console.log("Database " + defaultDB + " created successfully."))
-      .catch(() => console.log("Couldn't create database. Check your connection!")));
-    if (!ready) {
-      throw new Error("Error while creating default database at " + dsn);
+    try {
+      influx.getDatabaseNames()
+        .then((names) => {
+          if (!names.includes(defaultDB)) {
+            return influx.createDatabase(defaultDB);
+          }
+        });
+    } catch (err) {
+      console.log("Creating default database at: " + dsn + " has encountered the following error: " + err);
     }
     return new InfluxWriteClient(dsn, defaultDB, influx);
   }
@@ -85,10 +84,9 @@ export class InfluxWriteClient implements WriteClient {
   public async writeBatchData (batch: Array<CalcResult>,
                                {database = this.defaultDB}: { database?: string })
     : Promise<void> {
-    const batchInfo: Array<IPoint> = this.parseBatchData(batch);
-    await this.influx.writeMeasurement(
-      batchInfo[0].measurement,
-      batchInfo,
+    const batchData: Array<IPoint> = this.parseBatchData(batch);
+    await this.influx.writePoints(
+      batchData,
       {
         database,
       },
