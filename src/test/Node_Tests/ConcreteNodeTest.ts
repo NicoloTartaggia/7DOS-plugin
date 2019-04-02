@@ -7,7 +7,7 @@ import { BoolValue } from "../../core/node/values/BoolValue";
 
 // ConcreteNode -------------------------------------------------------------------------------
 describe("ConcreteNodeAdapter - constructor", () => {
-    it("Undefined node parameter", () => {
+    it("Undefined node - TypeError", () => {
         let node: JNode;
         const values: Array<AbstractValue> = new Array<AbstractValue>();
 
