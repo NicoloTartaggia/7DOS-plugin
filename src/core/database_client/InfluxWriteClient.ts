@@ -1,5 +1,6 @@
 import {InfluxDB, IPoint} from "influx";
 import {CalcResult} from "../calculation_result/CalcResult";
+import {CalcResultAggregate} from "../calculation_result/CalcResultAggregate";
 import WriteClient from "./WriteClient";
 
 export default class InfluxWriteClient implements WriteClient {
@@ -50,7 +51,7 @@ export default class InfluxWriteClient implements WriteClient {
    * @param database OPTIONAL: the database to write the data to;
    * unless specified, it's the default database for the client.
    */
-  public async writeBatchData (batch: Array<CalcResult>,
+  public async writeBatchData (batch: CalcResultAggregate,
                                {database = this.defaultDB}: { database?: string })
     : Promise<void> {
     const batchData: Array<IPoint> = this.parseBatchData(batch);
@@ -88,12 +89,13 @@ export default class InfluxWriteClient implements WriteClient {
    * @param batch Contains the batch of data to be parsed for writing on Influx.
    * @returns An array of points of data.
    */
-  private parseBatchData (batch: Array<CalcResult>): Array<IPoint> {
+  private parseBatchData (batch: CalcResultAggregate): Array<IPoint> {
     const batchRes: Array<IPoint> = new Array<IPoint>();
-    batch.forEach((item) => {
+    const it: IterableIterator<CalcResult> = batch.createIterator();
+    for (const item of it) {
       const pointTemp: IPoint = this.parsePointData(item);
       batchRes.push(pointTemp);
-    });
+    }
     return batchRes;
   }
 

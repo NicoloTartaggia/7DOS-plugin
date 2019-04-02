@@ -13,7 +13,10 @@
     Andrea Trevisin, 30/04/19, created file and implemented interface WriteClient
 */
 
+import {CalcResult} from "../calculation_result/CalcResult";
+import {CalcResultAggregate} from "../calculation_result/CalcResultAggregate";
+
 export default interface WriteClient {
-  writeBatchData(batch: Array < object > , ...options): any;
-  writePointData(point: object, ...options): any;
+  writeBatchData(batch: CalcResultAggregate , ...options): any;
+  writePointData(point: CalcResult, ...options): any;
 }
