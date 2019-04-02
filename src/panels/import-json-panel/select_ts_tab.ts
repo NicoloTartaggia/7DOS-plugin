@@ -1,5 +1,6 @@
 import {RxHR} from "@akanass/rx-http-request/browser/index.js";
 
+import { NodeAdapter } from "core/node/NodeAdapter";
 import {coreModule} from "grafana/app/core/core";
 import {DashboardModel} from "grafana/app/features/dashboard/model";
 
@@ -27,7 +28,7 @@ export class SelectDB_Ctrl {
   public dashboard: DashboardModel;
 
   // Private class stuff - do not touch
-  private nodes: Array<string> = ["n1", "n2", "n3"];
+  private nodes: Array<NodeAdapter>;
   // private genericModel: any;
   private datasources: { [datasource_id: string]: Script_Found_Datasource; } = {};
   private databases: { [datasource_id: string]: { [database_name: string]: Script_Found_Database; } } = {};
@@ -48,6 +49,12 @@ export class SelectDB_Ctrl {
     this.panel.datasource = this.panel.datasource || null;
     this.panel.targets = this.panel.targets || [{}];
     this.dashboard = this.panelCtrl.dashboard;
+    this.panel.ts_tab_control = this;
+    if (this.panel.loaded_network !== undefined) {
+      this.nodes = this.panel.loaded_network.getNodeList();
+      console.info(this.nodes.length);
+    }
+
     console.log("SelectDB_Ctrl - Object build");
     console.log("SelectDB_Ctrl - Get datasources");
     this.getDatasources();
@@ -56,6 +63,15 @@ export class SelectDB_Ctrl {
   // ------------------------------------------------------
   // Get all database structure
   // ------------------------------------------------------
+
+  public refreshNetwork() {
+    if (this.panel.loaded_network !== undefined) {
+      this.nodes = this.panel.loaded_network.getNodeList();
+      console.info(this.nodes.length);
+    }
+    console.info("ohhhh");
+
+  }
 
   public loadData() {
     (document.getElementById("load-btn") as HTMLButtonElement).disabled = true;
@@ -202,13 +218,13 @@ export class SelectDB_Ctrl {
 
   public queryComposer(nodesIndex: number) {
     const nI = 0;   // used for tests, to be replaced with parameter nodesIndex
-    const node = this.nodes[nI]; // ^ used only here
+    const nodeName = this.nodes[nI].getName(); // ^ used only here
 
-    const datasource = this.datasources[this.selected_datasource[node]];
+    const datasource = this.datasources[this.selected_datasource[nodeName]];
     const url = datasource.url;
     const database = datasource.db;
-    const table = this.selected_table[node].name;
-    const field = this.selected_field[node];
+    const table = this.selected_table[nodeName].name;
+    const field = this.selected_field[nodeName];
     const query = url + "/query?db=" + database + "&q=SELECT " + field + " FROM " + table;
     console.log(query);
     this.queryIssuer(query);

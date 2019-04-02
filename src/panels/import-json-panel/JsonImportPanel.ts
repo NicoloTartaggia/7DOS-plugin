@@ -1,5 +1,5 @@
 import {PanelCtrl} from "grafana/app/plugins/sdk";
-import { SelectDB_Directive } from "./select_ts_tab";
+import { SelectDB_Directive, SelectDB_Ctrl } from "./select_ts_tab";
 
 import _ from "lodash";
 import {NetworkAdapter} from "../../core/network/adapter/NetworkAdapter";
@@ -47,6 +47,7 @@ export class JsImportPanel extends PanelCtrl {
   public netReader: NetReader;
   public netUpdater: NetUpdater;
   public netWriter: NetWriter;
+  public ts_tab_control:SelectDB_Ctrl;
   public panelDefaults = {
     jsonContent: "",
   };
@@ -91,6 +92,7 @@ export class JsImportPanel extends PanelCtrl {
     this.netWriter = new NetWriter();
 
     this.netManager = new NetManager(this.netReader, this.netUpdater, this.netWriter);
+    //this.ts_tab_control.refreshNetwork();
   }
 
   public onSubmit () { // Currently not used
