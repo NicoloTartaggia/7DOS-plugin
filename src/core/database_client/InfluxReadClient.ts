@@ -42,9 +42,10 @@ export default class InfluxReadClient implements ReadClient {
     queryOptions.database = database;
     const tempRes = await this.influx.query(query, queryOptions)
       .then((rows) => rows.groups())
-      .catch((err) =>
-        console.log("Query to " + this.getAddress()
-          + " has encountered the following error: " + err));
+      .catch((err) => {
+        throw new Error ("Query to " + this.getAddress()
+          + " has encountered the following error: " + err);
+      });
     const queryRes: void | Array<{ name: string, tags: Tags, rows: Array<any> }> = tempRes
       ? tempRes
       : null;

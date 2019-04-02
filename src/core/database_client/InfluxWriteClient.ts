@@ -54,14 +54,15 @@ export default class InfluxWriteClient implements WriteClient {
                                {database = this.defaultDB}: { database?: string })
     : Promise<void> {
     const batchData: Array<IPoint> = this.parseBatchData(batch);
-    await this.influx.writePoints(
+    this.influx.writePoints(
       batchData,
       {
         database,
       },
-    ).catch((err) =>
-      console.log("Writing a batch of data to" + this.getAddress()
-        + " has encountered the following error: " + err));
+    ).catch((err) => {
+      throw new Error ("Writing a batch of data to" + this.getAddress()
+        + " has encountered the following error: " + err);
+    });
   }
 
   /**
@@ -73,13 +74,14 @@ export default class InfluxWriteClient implements WriteClient {
                                {database = this.defaultDB}: { database?: string })
     : Promise<void> {
     const pointData: IPoint = this.parsePointData(point);
-    await this.influx.writePoints([
+    this.influx.writePoints([
       pointData,
     ], {
       database,
-    }).catch((err) =>
-      console.log("Writing a batch of data to" + this.getAddress()
-        + " has encountered the following error: " + err));
+    }).catch((err) => {
+      throw new Error ("Writing a point of data to" + this.getAddress()
+        + " has encountered the following error: " + err);
+    });
   }
 
   /**

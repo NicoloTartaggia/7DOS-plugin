@@ -6,7 +6,7 @@ import {NetworkAdapter} from "../../core/network/adapter/NetworkAdapter";
 import {NetManager} from "../../core/network/controller/NetManager";
 import {NetReader} from "../../core/network/controller/reader/NetReader";
 import {NetUpdater} from "../../core/network/controller/updater/NetUpdater";
-import {NetWriter} from "../../core/network/controller/writer/Netwriter";
+import {NetWriter} from "../../core/network/controller/writer/NetWriter";
 import {ConcreteNetworkFactory} from "../../core/network/factory/ConcreteNetworkFactory";
 
 export class JsImportPanel extends PanelCtrl {

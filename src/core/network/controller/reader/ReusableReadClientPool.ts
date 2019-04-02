@@ -20,11 +20,12 @@ export default class ReusableReadClientPool {
 
   public acquireReusable (dataSource: DataSource): ReadClient {
     let client: ReadClient = null;
+    const factory = new ConcreteReadClientFactory();
     if (dataSource.getUsername() != null) {
-      client = new ConcreteReadClientFactory().makeInfluxReadClient(
+      client = factory.makeInfluxReadClient(
         dataSource.getHost(), dataSource.getPort(), [dataSource.getUsername(), dataSource.getPassword()]);
     } else {
-      client = new ConcreteReadClientFactory().makeInfluxReadClient(dataSource.getHost(), dataSource.getPort());
+      client = factory.makeInfluxReadClient(dataSource.getHost(), dataSource.getPort());
     }
     // Check if already exist in the array
     const pos = this.read_clients.indexOf(client);

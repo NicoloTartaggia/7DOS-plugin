@@ -1,6 +1,6 @@
 import { NetReader } from "./reader/NetReader";
 import {  NetUpdater } from "./updater/NetUpdater";
-import { NetWriter } from "./writer/Netwriter";
+import { NetWriter } from "./writer/NetWriter";
 
 export class NetManager {
   private reader: NetReader;

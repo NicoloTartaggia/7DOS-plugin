@@ -25,8 +25,8 @@ export interface ReadClientFactory {
 }
 
 export class ConcreteReadClientFactory implements ReadClientFactory {
-  public makeInfluxReadClient (host: string, port: string,
-                               credentials?: [string, string]): InfluxReadClient {
+  public makeInfluxReadClient (host: string, port: string, credentials?: [string, string])
+    : InfluxReadClient {
     const address: string = host + ":" + port;
     const login: string = credentials
       ? credentials[0] + ":" + credentials[1] + "@"
@@ -35,5 +35,4 @@ export class ConcreteReadClientFactory implements ReadClientFactory {
     const influx: InfluxDB = new InfluxDB(dsn);
     return new InfluxReadClient(address, influx);
   }
-
 }
