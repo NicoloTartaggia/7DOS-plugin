@@ -73,10 +73,8 @@
     "nyc": "^13.3.0",
     "rxjs": "^6.4.0",
     "stream-http": "github:node-influx/stream-http",
-    "sync": "^0.2.5",
     "tether-drop": "^1.4.2",
     "tinycolor2": "^1.4.1",
-    "tslint": "^5.14.0",
-    "when": "^3.7.8"
+    "tslint": "^5.14.0"
   }
 }
