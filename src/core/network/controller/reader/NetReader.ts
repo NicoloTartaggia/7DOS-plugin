@@ -1,7 +1,7 @@
 import { InputResultAggregate } from "../../../../core/inputReadResult/InputResultAggregate";
 import {NodeAdapter} from "../../../../core/node/NodeAdapter";
 import { InputResult } from "../../../inputReadResult/InputResult";
-import {InputFlow} from "./flux/InputFlow";
+import {InputFlow} from "./flow/InputFlow";
 
 export class NetReader {
   private inputFlux: Map<NodeAdapter, InputFlow>;

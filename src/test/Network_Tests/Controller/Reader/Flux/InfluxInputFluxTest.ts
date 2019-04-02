@@ -1,16 +1,16 @@
-import { InfluxInputFlux } from "../../../../../core/network/controller/reader/flux/InfluxInputFlux";
+import { InfluxInputFlow } from "../../../../../core/network/controller/reader/flow/InfluxInputFlow";
 
 import {expect} from "chai";
 
-describe("InfluxInputFlux - constructor", () => {
+describe("InfluxInputFlow - constructor", () => {
     it(" TODO ", () => {
         // TODO
-        new InfluxInputFlux(null);
+        new InfluxInputFlow(null);
         expect(true).to.equal(true);
     });
 });
 
-describe("InfluxInputFlux - getResult", () => {
+describe("InfluxInputFlow - getResult", () => {
     it(" TODO ", () => {
         // TODO
         expect(true).to.equal(true);

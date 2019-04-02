@@ -1,6 +1,6 @@
 import {InputFlow} from "./InputFlow";
 
-export  class InfluxInputFlux implements InputFlow {
+export  class InfluxInputFlow implements InputFlow {
   private query: string;
 
   constructor(query: string) {
@@ -9,6 +9,6 @@ export  class InfluxInputFlux implements InputFlow {
 
   public getResult(): string {
     this.query.toString();
-    return "InfluxInputFlux-getResult() TODO";
+    return "InfluxInputFlow-getResult() TODO";
   }
 }

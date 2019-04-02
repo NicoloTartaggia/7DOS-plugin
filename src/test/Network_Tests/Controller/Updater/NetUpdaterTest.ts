@@ -21,8 +21,8 @@ describe("NetUpdater - iterator Test", () => {
     let arrayTest=new Array<InputResult> (new InputResult(new ConcreteNodeAdapter(jsbayes.newGraph().addNode("test",['true', 'false']),[new BoolValue(true,"testValue")]), "true"));
     arrayTest.push(new InputResult(new ConcreteNodeAdapter(jsbayes.newGraph().addNode("test2",['true', 'false']),[new BoolValue(true,"test2Value")]), "true"));
     
-    let flux:InputResultAggregate=new InputResultAggregate(arrayTest);
-    s.updateNet(flux);
+    let flow:InputResultAggregate=new InputResultAggregate(arrayTest);
+    s.updateNet(flow);
     */
    expect(true).to.equal(true);
   });
