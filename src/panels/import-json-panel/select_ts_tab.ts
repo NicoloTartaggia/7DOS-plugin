@@ -1,8 +1,8 @@
-import {RxHR} from "@akanass/rx-http-request/browser/index.js";
+import { RxHR } from "@akanass/rx-http-request/browser/index.js";
 
 import { NodeAdapter } from "core/node/NodeAdapter";
-import {coreModule} from "grafana/app/core/core";
-import {DashboardModel} from "grafana/app/features/dashboard/model";
+import { coreModule } from "grafana/app/core/core";
+import { DashboardModel } from "grafana/app/features/dashboard/model";
 
 class Script_Found_Datasource {
   public db: any;
@@ -49,11 +49,9 @@ export class SelectDB_Ctrl {
     this.panel.datasource = this.panel.datasource || null;
     this.panel.targets = this.panel.targets || [{}];
     this.dashboard = this.panelCtrl.dashboard;
-    this.panel.ts_tab_control = this;
-    if (this.panel.loaded_network !== undefined) {
-      this.nodes = this.panel.loaded_network.getNodeList();
-      console.info(this.nodes.length);
-    }
+
+    // Linking select_ts_tab to panel
+    this.panel.ts_tab_control = this.panelCtrl;
 
     console.log("SelectDB_Ctrl - Object build");
     console.log("SelectDB_Ctrl - Get datasources");
@@ -64,13 +62,13 @@ export class SelectDB_Ctrl {
   // Get all database structure
   // ------------------------------------------------------
 
+  // The button "query" calls this method when clicked. The nodes of network loaded are displayed
+  // on this tab. After that it's possible to associate a datasource.
   public refreshNetwork() {
-    if (this.panel.loaded_network !== undefined) {
-      this.nodes = this.panel.loaded_network.getNodeList();
-      console.info(this.nodes.length);
+    if (this.panelCtrl.loaded_network !== undefined) {
+      this.nodes = this.panelCtrl.loaded_network.getNodeList();
+      console.info("ciao");
     }
-    console.info("ohhhh");
-
   }
 
   public loadData() {

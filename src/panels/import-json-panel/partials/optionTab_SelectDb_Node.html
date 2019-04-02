@@ -4,7 +4,7 @@
         <p style="padding-bottom: 4em"></p>
     </div>
     <div class="gf-form" ng-repeat="value in ctrl.nodes">
-        <p style="padding-right: 0.5em">Node : {{value}} </p>
+        <p style="padding-right: 0.5em">Node : {{value.getName()}} </p>
         <select ng-change="ctrl.select_datasource('{{value}}')" ng-model="ctrl.selected_datasource[value]">
             <option value="">-- Choose a datasource --</option>
             <option ng-repeat="(datasource_id, object) in ctrl.datasources" value="{{object.id}}">{{object.name}} - {{object.url}}</option>

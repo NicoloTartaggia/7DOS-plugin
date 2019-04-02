@@ -1,13 +1,13 @@
-import {PanelCtrl} from "grafana/app/plugins/sdk";
-import {SelectDB_Ctrl, SelectDB_Directive} from "./select_ts_tab";
+import { PanelCtrl } from "grafana/app/plugins/sdk";
+import { SelectDB_Ctrl, SelectDB_Directive} from "./select_ts_tab";
 
 import _ from "lodash";
-import {NetworkAdapter} from "../../core/network/adapter/NetworkAdapter";
-import {NetManager} from "../../core/network/controller/NetManager";
-import {NetReader} from "../../core/network/controller/reader/NetReader";
-import {NetUpdater} from "../../core/network/controller/updater/NetUpdater";
-import {NetWriter} from "../../core/network/controller/writer/NetWriter";
-import {ConcreteNetworkFactory} from "../../core/network/factory/ConcreteNetworkFactory";
+import { NetworkAdapter } from "../../core/network/adapter/NetworkAdapter";
+import { NetManager } from "../../core/network/controller/NetManager";
+import { NetReader } from "../../core/network/controller/reader/NetReader";
+import { NetUpdater } from "../../core/network/controller/updater/NetUpdater";
+import { NetWriter } from "../../core/network/controller/writer/NetWriter";
+import { ConcreteNetworkFactory } from "../../core/network/factory/ConcreteNetworkFactory";
 
 export class JsImportPanel extends PanelCtrl {
   public static templateUrl: string = "panels/import-json-panel/partials/panelTemplate.html";
@@ -47,7 +47,9 @@ export class JsImportPanel extends PanelCtrl {
   public netReader: NetReader;
   public netUpdater: NetUpdater;
   public netWriter: NetWriter;
+
   public ts_tab_control: SelectDB_Ctrl;
+
   public panelDefaults = {
     jsonContent: "",
   };
@@ -78,6 +80,7 @@ export class JsImportPanel extends PanelCtrl {
     console.log("On upload");
     try {
       this.loaded_network = new ConcreteNetworkFactory().parseNetwork(JSON.stringify(net));
+      console.log(this.loaded_network.getNodeList().length);
     } catch (e) {
       this.message = "Upload fallito!";
       this.result = "Errore nella lettura del JSON, probabilmente non valido...";
@@ -92,7 +95,7 @@ export class JsImportPanel extends PanelCtrl {
     this.netWriter = new NetWriter();
 
     this.netManager = new NetManager(this.netReader, this.netUpdater, this.netWriter);
-    // this.ts_tab_control.refreshNetwork();
+    this.ts_tab_control.refreshNetwork();
   }
 
   public onSubmit () { // Currently not used
