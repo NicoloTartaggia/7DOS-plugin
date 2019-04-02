@@ -22,7 +22,12 @@ export class NetReader {
       if (node === null) {
         throw new Error("getNodeFromName() failed and returned null");
       } else {
-        return_array.push(new InputResult(node, value.getResult()));
+        console.log(value);
+        value.getResult().then((result_value) => {
+          return_array.push(new InputResult(node, result_value));
+        });
+        // can't do it, it's async
+        // return_array.push(new InputResult(node, value.getResult()));
       }
     }
     return new InputResultAggregate(return_array);

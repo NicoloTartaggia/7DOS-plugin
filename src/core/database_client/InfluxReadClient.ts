@@ -1,8 +1,6 @@
 import {InfluxDB, IQueryOptions} from "influx";
 import {Tags} from "influx/lib/src/results";
-import {InfluxInputFlow} from "../network/controller/reader/flow/InfluxInputFlow";
 import ReadClient from "./ReadClient";
-import {ConcreteReadClientFactory, ReadClientFactory} from "./ReadClientFactory";
 
 export default class InfluxReadClient implements ReadClient {
 
@@ -54,9 +52,13 @@ export default class InfluxReadClient implements ReadClient {
   }
 }
 
+/*
+EXAMPLE CODE
 const factory: ReadClientFactory = new ConcreteReadClientFactory();
+
 const client: ReadClient = factory.makeInfluxReadClient("localhost", "8086");
 const flux: InfluxInputFlow = new InfluxInputFlow(
   "telegraf", "SELECT Percent_DPC_Time from win_cpu order by time desc", client);
 console.log("hello");
-console.log(flux.getResult());
+flux.getResult().then((result) => console.log(result));
+ */
