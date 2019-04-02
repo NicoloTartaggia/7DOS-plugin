@@ -25,6 +25,11 @@ jobs:
         - npm run tslint
 
     - stage: mocha-test
+      services:
+        - docker
+      before_install:
+        - docker pull influxdb:1.7.4
+        - docker run -p 8086:8086 --rm influxdb
       script:
         - npm run test && npm run coverage
 
