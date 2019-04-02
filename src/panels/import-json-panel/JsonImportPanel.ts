@@ -88,7 +88,7 @@ export class JsImportPanel extends PanelCtrl {
     this.panel.jsonContent = JSON.stringify(net, null, "\t");
     this.events.emit("data-received", null);
     this.netUpdater = new NetUpdater(this.loaded_network);
-    this.netReader = new NetReader(this.loaded_network.getNodeList());
+    this.netReader = new NetReader(this.loaded_network);
     this.netWriter = new NetWriter();
 
     this.netManager = new NetManager(this.netReader, this.netUpdater, this.netWriter);

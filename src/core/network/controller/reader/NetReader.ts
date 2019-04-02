@@ -1,28 +1,44 @@
-import { InputResultAggregate } from "../../../../core/inputReadResult/InputResultAggregate";
-import {NodeAdapter} from "../../../../core/node/NodeAdapter";
-import { InputResult } from "../../../inputReadResult/InputResult";
+import {InputResult} from "../../../inputReadResult/InputResult";
+import {InputResultAggregate} from "../../../inputReadResult/InputResultAggregate";
+import {NodeAdapter} from "../../../node/NodeAdapter";
+import {NetworkAdapter} from "../../adapter/NetworkAdapter";
+import DataSource from "./Datasource";
+import {InfluxInputFlow} from "./flow/InfluxInputFlow";
 import {InputFlow} from "./flow/InputFlow";
+import ReusableReadClientPool from "./ReusableReadClientPool";
 
 export class NetReader {
-  private inputFlux: Map<NodeAdapter, InputFlow>;
+  private inputFlux: Map<string, InputFlow>;
+  private readonly node_list_ref: Array<NodeAdapter>;
 
-  public constructor (nodeList: Array<NodeAdapter>) {
-    for (const node of nodeList) {
-      this.inputFlux.set(node, null);
-    }
+  public constructor (network_ref: NetworkAdapter) {
+    this.node_list_ref = network_ref.getNodeList();
   }
 
-  public read(): InputResultAggregate {
-    // TODO: Funzione di read per un NodeAdapter
-  /*
-    CICLO
+  public read (): InputResultAggregate {
+    const return_array: Array<InputResult> = new Array<InputResult>();
+    for (const [key, value] of this.inputFlux) {
+      const node: NodeAdapter = this.getNodeFromName(key);
+      if (node === null) {
+        throw new Error("getNodeFromName() failed and returned null");
+      } else {
+        return_array.push(new InputResult(node, value.getResult()));
+      }
+    }
+    return new InputResultAggregate(return_array);
+  }
 
-      chiama client read
-      mi ritorna il valore
-      lo collego
+  public connectNode (node: string, dataSource: DataSource, query: string): void {
+    const client = ReusableReadClientPool.getInstance().acquireReusable(dataSource);
+    this.inputFlux[node] = new InfluxInputFlow(dataSource.getDatabase(), query, client);
+  }
 
-    fine ciclo
-*/
-    return new InputResultAggregate(new Array<InputResult> (new InputResult(null, "true")));
+  private getNodeFromName (name: string): NodeAdapter {
+    for (const node of this.node_list_ref) {
+      if (node.getName() === name) {
+        return node;
+      }
+    }
+    return null;
   }
 }

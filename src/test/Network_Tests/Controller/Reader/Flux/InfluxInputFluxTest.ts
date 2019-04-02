@@ -5,7 +5,8 @@ import {expect} from "chai";
 describe("InfluxInputFlow - constructor", () => {
     it(" TODO ", () => {
         // TODO
-        new InfluxInputFlow(null);
+        new InfluxInputFlow(null, "", null);
+        // new InfluxInputFlow(null, null, null);
         expect(true).to.equal(true);
     });
 });
