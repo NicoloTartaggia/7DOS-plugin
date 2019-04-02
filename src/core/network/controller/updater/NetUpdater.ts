@@ -1,8 +1,8 @@
 import { CalcResult } from "../../../../core/calculation_result/CalcResult";
 import { CalcResultItem } from "../../../../core/calculation_result/CalcResultItem";
-import { CalcResults } from "../../../../core/calculation_result/CalcResults";
-import { FluxResult } from "../../../../core/fluxReadResult/FluxResult";
-import { FluxResults } from "../../../../core/fluxReadResult/FluxResults";
+import { CalcResultAggregate } from "../../../calculation_result/CalcResultAggregate";
+import { InputResult } from "../../../inputReadResult/InputResult";
+import { InputResultAggregate } from "../../../inputReadResult/InputResultAggregate";
 import {NetworkAdapter} from "../../adapter/NetworkAdapter";
 
 export class NetUpdater {
@@ -12,11 +12,11 @@ export class NetUpdater {
     this.network = network;
   }
 
-  public updateNet (fluxResults: FluxResults): CalcResults {
-    const iterator: IterableIterator<FluxResult> = fluxResults.buildIterator();
-    let currentIt: IteratorResult<FluxResult> = iterator.next();
+  public updateNet (fluxResults: InputResultAggregate): CalcResultAggregate {
+    const iterator: IterableIterator<InputResult> = fluxResults.buildIterator();
+    let currentIt: IteratorResult<InputResult> = iterator.next();
 
-    // ciclo che itera tutti i FluxResult e fissa gli observe
+    // ciclo che itera tutti i InputResult e fissa gli observe
     while (!currentIt.done) {
       this.network.observeNode(
         currentIt.value.getNode().getName(),
@@ -24,6 +24,9 @@ export class NetUpdater {
           currentIt.value.getCurrentValue()).getValueName());
       currentIt = iterator.next();
     }
+
+    // TODO: Poter definire qunti sample fare
+    this.network.sampleNetwork(10000);
 
     /*
       ciclo che prende tutte le probs, crea i CalcResultItem per ogni stato del nodo
@@ -39,6 +42,6 @@ export class NetUpdater {
       }
       arrayCalcResult.push(new CalcResult(node.getName(), arrayCalcResultItem));
     }
-    return  new CalcResults(arrayCalcResult);
+    return  new CalcResultAggregate(arrayCalcResult);
   }
 }

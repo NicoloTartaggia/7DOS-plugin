@@ -1,23 +1,23 @@
-import { FluxResult } from "../../core/fluxReadResult/FluxResult";
+import { InputResult } from "../../core/inputReadResult/InputResult";
 
 import {expect} from "chai";
 
-describe("FluxResult - constructor", () => {
+describe("InputResult - constructor", () => {
     it(" TODO ", () => {
         // TODO
-        new FluxResult(null, null);
+        new InputResult(null, null);
         expect(true).to.equal(true);
     });
 });
 
-describe("FluxResult - getNode", () => {
+describe("InputResult - getNode", () => {
     it(" TODO ", () => {
         // TODO
         expect(true).to.equal(true);
     });
 });
 
-describe("FluxResult - getCurrentValue", () => {
+describe("InputResult - getCurrentValue", () => {
     it(" TODO ", () => {
         // TODO
         expect(true).to.equal(true);
