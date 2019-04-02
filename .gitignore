@@ -38,3 +38,5 @@ profile.cov
 package-lock\.json
 
 \.nyc_output/
+
+src/**/*.js
