@@ -1,6 +1,6 @@
 import { NodeAdapter } from "core/node/NodeAdapter";
 
-export class FluxResult {
+export class InputResult {
   private node: NodeAdapter;
   private currentValue: string;
 

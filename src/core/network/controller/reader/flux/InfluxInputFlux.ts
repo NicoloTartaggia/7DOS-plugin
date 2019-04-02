@@ -1,6 +1,6 @@
-import {InputFlux} from "./InputFlux";
+import {InputFlow} from "./InputFlow";
 
-export  class InfluxInputFlux implements InputFlux {
+export  class InfluxInputFlux implements InputFlow {
   private query: string;
 
   constructor(query: string) {

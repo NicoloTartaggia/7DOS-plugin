@@ -1,16 +1,16 @@
-import { FluxResults } from "../../core/fluxReadResult/FluxResults";
+import { InputResultAggregate } from "../../core/inputReadResult/InputResultAggregate";
 
 import {expect} from "chai";
 
-describe("FluxResults - constructor", () => {
+describe("InputResultAggregate - constructor", () => {
     it(" TODO ", () => {
         // TODO
-        new FluxResults(null);
+        new InputResultAggregate(null);
         expect(true).to.equal(true);
     });
 });
 
-describe("FluxResults - buildIterator", () => {
+describe("InputResultAggregate - buildIterator", () => {
     it(" TODO ", () => {
         // TODO
         expect(true).to.equal(true);

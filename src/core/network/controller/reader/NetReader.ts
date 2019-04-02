@@ -1,10 +1,10 @@
-import { FluxResult } from "../../../../core/fluxReadResult/FluxResult";
-import { FluxResults } from "../../../../core/fluxReadResult/FluxResults";
+import { InputResultAggregate } from "../../../../core/inputReadResult/InputResultAggregate";
 import {NodeAdapter} from "../../../../core/node/NodeAdapter";
-import {InputFlux} from "./flux/InputFlux";
+import { InputResult } from "../../../inputReadResult/InputResult";
+import {InputFlow} from "./flux/InputFlow";
 
 export class NetReader {
-  private inputFlux: Map<NodeAdapter, InputFlux>;
+  private inputFlux: Map<NodeAdapter, InputFlow>;
 
   public constructor (nodeList: Array<NodeAdapter>) {
     for (const node of nodeList) {
@@ -12,7 +12,7 @@ export class NetReader {
     }
   }
 
-  public read(): FluxResults {
+  public read(): InputResultAggregate {
     // TODO: Funzione di read per un NodeAdapter
   /*
     CICLO
@@ -23,6 +23,6 @@ export class NetReader {
 
     fine ciclo
 */
-    return new FluxResults(new Array<FluxResult> (new FluxResult(null, "true")));
+    return new InputResultAggregate(new Array<InputResult> (new InputResult(null, "true")));
   }
 }

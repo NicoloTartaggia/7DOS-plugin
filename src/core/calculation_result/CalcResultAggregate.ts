@@ -1,6 +1,6 @@
 import {CalcResult} from "./CalcResult";
 
-export class CalcResults {
+export class CalcResultAggregate {
   private collection: Array<CalcResult>;
 
   constructor (collection: Array<CalcResult>) {

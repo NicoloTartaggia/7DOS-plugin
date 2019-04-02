@@ -1,11 +1,11 @@
-import { CalcResults } from "../../core/calculation_result/CalcResults";
+import { CalcResultAggregate } from "../../core/calculation_result/CalcResultAggregate";
 
 import {expect} from "chai";
 
 describe("CalcResults - constructor", () => {
     it(" TODO ", () => {
         // TODO
-        new CalcResults(null);
+        new CalcResultAggregate(null);
         expect(true).to.equal(true);
     });
 });
