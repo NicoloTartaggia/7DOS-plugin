@@ -5,26 +5,9 @@ import ReadClient from "./ReadClient";
 export default class InfluxReadClient implements ReadClient {
 
   /**
-   * @param host The network address of the server to which the client must connect.
-   * @param port  The port through the server is listening for requests from the client.
-   * @param credentials OPTIONAL: The credentials needed to connect to the server.
-   * @returns A fully configured InfluxWriteClient.
+   * @field The complete dsn of the server to which the client makes requests, including the port.
    */
-  public static createReaderClient (host: string, port: string,
-                                    credentials?: [string, string]): InfluxReadClient {
-    const address: string = host + ":" + port;
-    const login: string = credentials
-      ? credentials[0] + ":" + credentials[1] + "@"
-      : "";
-    const dsn = "http://" + login + address + "/";
-    const influx: InfluxDB = new InfluxDB(dsn);
-    return new InfluxReadClient(address, influx);
-  }
-
-  /**
-   * @field The complete address of the server to which the client makes requests, including the port.
-   */
-  private readonly address: string;
+  private readonly dsn: string;
 
   /**
    * @field The InfluxDB instance assigned to the client.
@@ -32,20 +15,20 @@ export default class InfluxReadClient implements ReadClient {
   private readonly influx: InfluxDB;
 
   /**
-   * @param address The complete address of the server to which the client makes requests,
+   * @param dsn The complete dsn of the server to which the client makes requests,
    * including the port.
    * @param influx The InfluxDB instance assigned to the client.
    */
-  private constructor (address: string, influx: InfluxDB) {
-    this.address = address;
+  public constructor (dsn: string, influx: InfluxDB) {
+    this.dsn = dsn;
     this.influx = influx;
   }
 
   /**
-   * @returns The address of the server the client is connected to.
+   * @returns The dsn of the server the client is connected to.
    */
   public getAddress (): string {
-    return this.address;
+    return this.dsn;
   }
 
   /**
