@@ -3,6 +3,8 @@ import {metricsTabDirective} from "./metrics_tab";
 import {PanelCtrl} from "grafana/app/plugins/sdk";
 
 import _ from "lodash";
+import {NetworkAdapter} from "../../core/network/adapter/NetworkAdapter";
+import {ConcreteNetworkFactory} from "../../core/network/factory/ConcreteNetworkFactory";
 
 export class JsImportPanel extends PanelCtrl {
   public static templateUrl: string = "panels/import-json-panel/partials/panelTemplate.html";
@@ -37,7 +39,7 @@ export class JsImportPanel extends PanelCtrl {
   public node_name: string;
   public observe_value: string;
   public samples: number = 1000;
-
+  public loaded_network: NetworkAdapter;
   public panelDefaults = {
     jsonContent: "",
   };
@@ -56,8 +58,7 @@ export class JsImportPanel extends PanelCtrl {
     this.addEditorTab("Graphic-Network-Editor",
       "public/plugins/app-jsbayes/panels/import-json-panel/partials/optionTab_GraphicEditor.html",
       2);
-    this.addEditorTab("Network-Connection-to-Grafana",
-      metricsTabDirective, 3);
+    this.addEditorTab("Network-Connection-to-Grafana", metricsTabDirective, 3);
     this.addEditorTab("Setup-Results-Influx",
       "public/plugins/app-jsbayes/panels/import-json-panel/partials/optionTab_setupInflux.html",
       4);
@@ -68,7 +69,7 @@ export class JsImportPanel extends PanelCtrl {
   public onUpload (net) {
     console.log("On upload");
     try {
-      // this.loaded_network = new Network(JSON.stringify(net));
+      this.loaded_network = new ConcreteNetworkFactory().parseNetwork(JSON.stringify(net));
     } catch (e) {
       this.message = "Upload fallito!";
       this.result = "Errore nella lettura del JSON, probabilmente non valido...";

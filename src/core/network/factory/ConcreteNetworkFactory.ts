@@ -97,7 +97,6 @@ class ConcreteNetworkFactory implements NetworkFactory {
     } catch (e) {
       throw new Error("Bad Json Content! Error:" + e.toString());
     }
-
     // --------------------------------
     // JSON schema validation
     if (json_schema_content !== null) {
@@ -173,6 +172,7 @@ class ConcreteNetworkFactory implements NetworkFactory {
       // TODO CHECK CORRECT SIZE USING node_parents_dictionary[name]
       ConcreteNetworkFactory.setNodeCpt(node_dictionary[name], node.cpt);
     }
+
     // --------------------------------
     // Build the array nodeList: Array<NodeAdapter>
     for (const node_name of Object.keys(node_dictionary)) {
