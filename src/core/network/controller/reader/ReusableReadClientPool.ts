@@ -1,5 +1,5 @@
-import ReadClient from "../../../database_client/ReadClient";
-import {ConcreteReadClientFactory} from "../../../database_client/ReadClientFactory";
+import ReadClient from "../../../read_client/ReadClient";
+import {ConcreteReadClientFactory} from "../../../read_client/ReadClientFactory";
 import DataSource from "./Datasource";
 
 export default class ReusableReadClientPool {

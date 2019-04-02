@@ -46,6 +46,6 @@ describe("ConcreteNetworkAdapter - getNodeList", () => {
       const jsonString: string = JSON.stringify(json);
       const s: ConcreteNetworkAdapter = new ConcreteNetworkFactory().parseNetwork(jsonString, jsonSchemaString);
       const nodeOne = s.getNodeList()[1];
-      expect(JSON.stringify(nodeOne)).to.equal('{"node":{"name":"Example2","values":["Low Range","Normal Range","Alert Range"],"value":-1,"parents":[],"wasSampled":false,"cpt":[0.5992023928215353,0.2003988035892323,0.2003988035892323]},"values":[{"valueName":"Low Range","minRange":0,"maxRange":10},{"valueName":"Normal Range","minRange":11,"maxRange":80},{"valueName":"Alert Range","minRange":81,"maxRange":100}]}');
+      expect(JSON.stringify(nodeOne)).to.equal('{"node":{"name":"Example2","value":["Low Range","Normal Range","Alert Range"],"value":-1,"parents":[],"wasSampled":false,"cpt":[0.5992023928215353,0.2003988035892323,0.2003988035892323]},"value":[{"valueName":"Low Range","minRange":0,"maxRange":10},{"valueName":"Normal Range","minRange":11,"maxRange":80},{"valueName":"Alert Range","minRange":81,"maxRange":100}]}');
     });
 });

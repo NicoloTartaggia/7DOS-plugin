@@ -1,4 +1,4 @@
-import {ConcreteWriteClientFactory} from "../../core/database_client/WriteClientFactory";
+import {ConcreteWriteClientFactory} from "../../core/write_client/WriteClientFactory";
 
 import {expect} from "chai";
 

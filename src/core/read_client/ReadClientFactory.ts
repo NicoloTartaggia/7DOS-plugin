@@ -20,7 +20,7 @@ import {
 import InfluxReadClient from "./InfluxReadClient";
 import ReadClient from "./ReadClient";
 
-export interface ReadClientFactory {
+export default interface ReadClientFactory {
   makeInfluxReadClient (host: string, port: string, credentials?: [string, string]): ReadClient;
 }
 

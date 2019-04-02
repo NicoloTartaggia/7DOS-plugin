@@ -5,8 +5,8 @@ import { NetworkAdapter } from "../../../../core/network/adapter/NetworkAdapter"
 import { ConcreteNetworkFactory } from "../../../../core/network/factory/ConcreteNetworkFactory";
 import { InputResult } from "../../../../core/inputReadResult/InputResult";
 import { InputResultAggregate } from "../../../../core/inputReadResult/InputResultAggregate";
-import { AbstractValue } from "../../../../core/node/values/AbstractValue";
-import { StringValue } from "../../../../core/node/values/StringValue";
+import { AbstractValue } from "../../../../core/node/value/AbstractValue";
+import { StringValue } from "../../../../core/node/value/StringValue";
 import { NodeAdapter } from "../../../../core/node/NodeAdapter";
 import { ConcreteNodeAdapter } from "../../../../core/node/ConcreteNodeAdapter";
 
@@ -39,7 +39,7 @@ describe("NetUpdater - updateNet", () => {
     var n2 = g.addNode('n2', ['0', '1', '2']);
     n2.addParent(n1);
     
-    n1.cpt = [0.1, 0.8, 0.1]; //note 3 float values
+    n1.cpt = [0.1, 0.8, 0.1]; //note 3 float value
     n2.cpt = [ 
      [0.2, 0.2, 0.6], //[ P(n2=0|n1=0), P(n2=1|n1=0), P(n2=2|n1=0) ]
      [0.6, 0.2, 0.2], //[ P(n2=0|n1=1), P(n2=1|n1=1), P(n2=2|n1=1) ]

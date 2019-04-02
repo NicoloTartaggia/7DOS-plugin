@@ -1,4 +1,4 @@
-// import { WriteClientCreator } from ".../../core/database_client/WriteClientCreator";
+// import { WriteClientCreator } from ".../../core/write_client/WriteClientCreator";
 
 import {expect} from "chai";
 

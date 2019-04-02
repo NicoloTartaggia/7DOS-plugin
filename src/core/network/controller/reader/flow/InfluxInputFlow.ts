@@ -1,4 +1,4 @@
-import ReadClient from "../../../../database_client/ReadClient";
+import ReadClient from "../../../../read_client/ReadClient";
 import {InputFlow} from "./InputFlow";
 
 export class InfluxInputFlow implements InputFlow {

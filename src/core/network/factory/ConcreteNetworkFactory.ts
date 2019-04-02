@@ -1,10 +1,10 @@
 import {ConcreteNodeAdapter} from "../../node/ConcreteNodeAdapter";
 
 import {NodeAdapter} from "../../node/NodeAdapter";
-import {AbstractValue} from "../../node/values/AbstractValue";
-import {BoolValue} from "../../node/values/BoolValue";
-import {RangeValue} from "../../node/values/RangeValue";
-import {StringValue} from "../../node/values/StringValue";
+import {AbstractValue} from "../../node/value/AbstractValue";
+import {BoolValue} from "../../node/value/BoolValue";
+import {RangeValue} from "../../node/value/RangeValue";
+import {StringValue} from "../../node/value/StringValue";
 import {ConcreteNetworkAdapter} from "../adapter/ConcreteNetworkAdapter";
 import NetworkFactory from "./NetworkFactory";
 

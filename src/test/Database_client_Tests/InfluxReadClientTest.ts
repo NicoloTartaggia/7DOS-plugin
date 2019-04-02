@@ -1,4 +1,4 @@
-// import InfluxReadClient from "../../core/database_client/InfluxReadClient";
+// import InfluxReadClient from "../../core/write_client/InfluxReadClient";
 
 import {expect} from "chai";
 
