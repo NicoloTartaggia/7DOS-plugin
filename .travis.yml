@@ -29,7 +29,7 @@ jobs:
         - docker
       before_install:
         - docker pull influxdb:1.7.4
-        - docker run -p 8086:8086 --rm influxdb
+        - docker run -p 8086:8086 --detach --rm influxdb:1.7.4
       script:
         - npm run test && npm run coverage
 
