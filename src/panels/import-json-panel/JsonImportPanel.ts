@@ -4,6 +4,10 @@ import {PanelCtrl} from "grafana/app/plugins/sdk";
 
 import _ from "lodash";
 import {NetworkAdapter} from "../../core/network/adapter/NetworkAdapter";
+import { NetManager } from "../../core/network/controller/NetManager";
+import { NetReader } from "../../core/network/controller/reader/NetReader";
+import { NetUpdater } from "../../core/network/controller/updater/NetUpdater";
+import { NetWriter } from "../../core/network/controller/writer/Netwriter";
 import {ConcreteNetworkFactory} from "../../core/network/factory/ConcreteNetworkFactory";
 
 export class JsImportPanel extends PanelCtrl {
@@ -40,6 +44,10 @@ export class JsImportPanel extends PanelCtrl {
   public observe_value: string;
   public samples: number = 1000;
   public loaded_network: NetworkAdapter;
+  public netManager: NetManager;
+  public netReader: NetReader;
+  public netUpdater: NetUpdater;
+  public netWriter: NetWriter;
   public panelDefaults = {
     jsonContent: "",
   };
@@ -79,7 +87,11 @@ export class JsImportPanel extends PanelCtrl {
     this.result = "Rete pronta!";
     this.panel.jsonContent = JSON.stringify(net, null, "\t");
     this.events.emit("data-received", null);
+    this.netUpdater = new NetUpdater(this.loaded_network);
+    this.netReader = new NetReader(this.loaded_network.getNodeList());
+    this.netWriter = new NetWriter();
 
+    this.netManager = new NetManager(this.netReader, this.netUpdater, this.netWriter);
   }
 
   public onSubmit () { // Currently not used

@@ -1,14 +1,20 @@
 import { NetReader } from "./reader/NetReader";
 import {  NetUpdater } from "./updater/NetUpdater";
+import { NetWriter } from "./writer/Netwriter";
 
 export class NetManager {
   private reader: NetReader;
   private updater: NetUpdater;
+  private writer: NetWriter;
+
   // TODO aggiungere writer
-  public constructor() {
+  public constructor(reader: NetReader, updater: NetUpdater, writer: NetWriter) {
+    this.reader = reader;
+    this.updater = updater;
+    this.writer = writer;
   }
   public updateNet() {
     // TODO aggiungere chiamata ulteriore a writer
-    this.updater.updateNet(this.reader.read());
+    this.writer.write(this.updater.updateNet(this.reader.read()));
   }
 }
