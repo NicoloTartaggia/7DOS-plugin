@@ -10,4 +10,5 @@ export interface NetworkAdapter {
   getNodeProbs (nodeName: string): Array<number>;
 
   getNodeList (): Array<NodeAdapter>;
+
 }
