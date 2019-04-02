@@ -21,7 +21,7 @@ import InfluxReadClient from "./InfluxReadClient";
 import ReadClient from "./ReadClient";
 
 export interface ReadClientFactory {
-  makeInfluxReadClient(host: string, port: string, credentials?: [string, string]): ReadClient;
+  makeInfluxReadClient (host: string, port: string, credentials?: [string, string]): ReadClient;
 }
 
 export class ConcreteReadClientFactory implements ReadClientFactory {

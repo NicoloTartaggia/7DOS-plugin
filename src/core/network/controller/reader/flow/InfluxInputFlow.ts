@@ -13,6 +13,7 @@ export class InfluxInputFlow implements InputFlow {
   }
 
   public getResult (): string {
+    // TODO
     console.log("pre");
     this.client.readField(this.database_name, this.query).then((result) => {
       console.log(result[0].rows[0].Percent_DPC_Time);

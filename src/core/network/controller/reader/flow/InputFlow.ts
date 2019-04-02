@@ -1,3 +1,3 @@
 export interface InputFlow {
-  getResult(): string;
+  getResult (): string;
 }
