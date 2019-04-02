@@ -39,4 +39,4 @@ package-lock\.json
 
 \.nyc_output/
 
-src/**/*.js
+src/core/**/*.js
