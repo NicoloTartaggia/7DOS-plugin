@@ -77,7 +77,7 @@ export class JsImportPanel extends PanelCtrl {
     }
     this.message = "Upload riuscito con successo!";
     this.result = "Rete pronta!";
-    this.panel.jsonContent = JSON.stringify(net);
+    this.panel.jsonContent = JSON.stringify(net, null, "\t");
     this.events.emit("data-received", null);
 
   }
