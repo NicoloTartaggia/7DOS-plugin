@@ -9,31 +9,19 @@ import WriteClient from "./WriteClient";
     per creare un client è sufficiente invocare il metodo static chooseClient, che in base al tipo fornito invoca
     la factory corretta e ne res
 */
-export class WriteClientCreator {
-  public static chooseClient(type: string, options): WriteClient {
-    let factory: WriteClientFactory;
-    switch (type) {
-      case "influx":
-        factory = new InfluxClientFactory();
-        return factory.makeWriteClient(options.url, options.defaultDB, options.credentials);
-      default:
-        throw new Error("Cannot instance a client of type: " + type);
-    }
-  }
+export interface WriteClientFactory {
+  makeInfluxWriteClient(url: string, defaultDB: string, credentials?: [string, string]): WriteClient;
 }
 
-interface WriteClientFactory {
-  makeWriteClient(...options): WriteClient;
-}
-
-class InfluxClientFactory implements WriteClientFactory {
+export class ConcreteWriteClientFactory implements WriteClientFactory {
   /**
    * @param url The URL of the server to which the client wants to connect.
    * @param defaultDB  The name of the default database for the client to write to.
    * @param credentials OPTIONAL: The credentials needed to connect to the server.
    * @returns A fully configured InfluxWriteClient.
    */
-  public makeWriteClient(url: string, defaultDB: string, credentials?: [string, string]): InfluxWriteClient {
+  public makeInfluxWriteClient(url: string, defaultDB: string, credentials?: [string, string])
+    : InfluxWriteClient {
     const login: string = credentials ?
       credentials[0] + ":" + credentials[1] + "@" :
       "";
