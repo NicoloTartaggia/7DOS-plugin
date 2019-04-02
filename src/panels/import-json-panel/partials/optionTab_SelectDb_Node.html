@@ -1,0 +1,32 @@
+<div class="gf-form-group">
+    <div class="gf-form">
+        <button type="button" id="load-btn" ng-click="ctrl.loadData()" class="btn btn-inverse" ng-model="load" >Load data</button>
+        <p style="padding-bottom: 4em"></p>
+    </div>
+    <div class="gf-form" ng-repeat="value in ctrl.nodes">
+        <p style="padding-right: 0.5em">Node : {{value}} </p>
+        <select ng-change="ctrl.select_datasource('{{value}}')" ng-model="ctrl.selected_datasource[value]">
+            <option value="">-- Choose a datasource --</option>
+            <option ng-repeat="(datasource_id, object) in ctrl.datasources" value="{{object.id}}">{{object.name}} - {{object.url}}</option>
+        </select>
+        <select ng-change="ctrl.select_database('{{value}}')"
+                ng-options="database_name for (database_name, object) in ctrl.databases[ctrl.selected_datasource[value]] track by database_name"
+                ng-model="ctrl.selected_database[value]">
+            <option value="">-- Choose a database --</option>
+        </select>
+        <select ng-change="ctrl.select_table('{{value}}')"
+                ng-options="table.name for table in ctrl.selected_database[value].tables track by table.name"
+                ng-model="ctrl.selected_table[value]">
+            <option value="">-- Choose a measurement --</option>
+        </select>
+        <select ng-change="ctrl.select_field('{{value}}')"
+                ng-options="field for field in ctrl.selected_database[value].tables[ctrl.selected_table[value].name].fields track by field"
+                ng-model="ctrl.selected_field[value]">
+            <option value="">-- Choose a field --</option>
+        </select>
+    </div>
+    <div class="gf-form">
+        <button type="button" id="query-btn" ng-click="ctrl.queryComposer()" class="btn btn-inverse" ng-model="load" >Query</button>
+        <p style="padding-bottom: 4em"></p>
+    </div>
+</div>

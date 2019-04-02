@@ -1,6 +1,5 @@
-import {metricsTabDirective} from "./metrics_tab";
-
 import {PanelCtrl} from "grafana/app/plugins/sdk";
+import { SelectDB_Directive } from "./select_ts_tab";
 
 import _ from "lodash";
 import {NetworkAdapter} from "../../core/network/adapter/NetworkAdapter";
@@ -8,7 +7,7 @@ import { NetManager } from "../../core/network/controller/NetManager";
 import { NetReader } from "../../core/network/controller/reader/NetReader";
 import { NetUpdater } from "../../core/network/controller/updater/NetUpdater";
 import { NetWriter } from "../../core/network/controller/writer/Netwriter";
-import {ConcreteNetworkFactory} from "../../core/network/factory/ConcreteNetworkFactory";
+import { ConcreteNetworkFactory } from "../../core/network/factory/ConcreteNetworkFactory";
 
 export class JsImportPanel extends PanelCtrl {
   public static templateUrl: string = "panels/import-json-panel/partials/panelTemplate.html";
@@ -66,7 +65,7 @@ export class JsImportPanel extends PanelCtrl {
     this.addEditorTab("Graphic-Network-Editor",
       "public/plugins/app-jsbayes/panels/import-json-panel/partials/optionTab_GraphicEditor.html",
       2);
-    this.addEditorTab("Network-Connection-to-Grafana", metricsTabDirective, 3);
+    this.addEditorTab("Network-Connection-to-Grafana", SelectDB_Directive, 3);
     this.addEditorTab("Setup-Results-Influx",
       "public/plugins/app-jsbayes/panels/import-json-panel/partials/optionTab_setupInflux.html",
       4);
