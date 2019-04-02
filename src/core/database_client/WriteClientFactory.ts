@@ -21,24 +21,22 @@ import InfluxWriteClient from "./InfluxWriteClient";
 import WriteClient from "./WriteClient";
 
 export interface WriteClientFactory {
-  makeInfluxWriteClient(host: string, port: string, defaultDB: string, credentials?: [string, string]): WriteClient;
+  makeInfluxWriteClient(url: string, defaultDB: string, credentials?: [string, string]): WriteClient;
 }
 
 export class ConcreteWriteClientFactory implements WriteClientFactory {
   /**
-   * @param host The network address of the server to which the client must connect.
-   * @param port  The port through the server is listening for requests from the client.
+   * @param url The URL of the server to which the client wants to connect.
    * @param defaultDB  The name of the default database for the client to write to.
    * @param credentials OPTIONAL: The credentials needed to connect to the server.
    * @returns A fully configured InfluxWriteClient.
    */
-  public makeInfluxWriteClient(host: string, port: string, defaultDB: string, credentials?: [string, string])
+  public makeInfluxWriteClient(url: string, defaultDB: string, credentials?: [string, string])
     : InfluxWriteClient {
-    const address: string = host + ":" + port;
     const login: string = credentials ?
       credentials[0] + ":" + credentials[1] + "@" :
       "";
-    const dsn = "http://" + login + address;
+    const dsn = this.injectLogin(url, login);
     const influx: InfluxDB = new InfluxDB(dsn + "/" + defaultDB);
     try {
       influx.getDatabaseNames()
@@ -51,5 +49,15 @@ export class ConcreteWriteClientFactory implements WriteClientFactory {
       console.log("Creating default database at: " + dsn + " has encountered the following error: " + err);
     }
     return new InfluxWriteClient(dsn, defaultDB, influx);
+  }
+
+  /**
+   * @param url: The URL of the server
+   * @param login: String containing the login credentials ("user:password@")
+   * @returns a DSN (datasource name) that includes the login credentials
+   */
+  private injectLogin(url: string, login: string): string {
+    const index: number = url.indexOf("//") + 1;
+    return [url.slice(0, index), login, url.slice(index)].join("");
   }
 }
