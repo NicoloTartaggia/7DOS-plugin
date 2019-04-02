@@ -27,7 +27,7 @@ class ConcreteNetworkFactory implements NetworkFactory {
     if (cpt.length === 1) {
       node.setCpt(cpt[0]);
     } else {
-        node.setCpt(cpt);
+      node.setCpt(cpt);
     }
   }
 
@@ -189,7 +189,7 @@ class ConcreteNetworkFactory implements NetworkFactory {
         }
         ConcreteNetworkFactory.setNodeCpt(node_dictionary[name], node.cpt);
       } else {
-          throw new Error("Incorrect cpt's number of rows");
+        throw new Error("Incorrect cpt's number of rows");
       }
 
     }
@@ -208,7 +208,7 @@ class ConcreteNetworkFactory implements NetworkFactory {
 
 export {ConcreteNetworkFactory};
 
-    /*
+/*
     let arrayCpt: number[] = [];
     for (let c of cpt) {
       for (let cin of c) {
