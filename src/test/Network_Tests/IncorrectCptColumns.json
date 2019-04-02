@@ -1,0 +1,19 @@
+{
+    "nodes":[
+        {
+            "name":"Example",
+            "values":[
+                {
+                    "name":"Example of string value",
+                    "type":"string","value":"Value1?"
+                },
+                {
+                    "name":"Another example of string value",
+                    "type":"string","value":"Value2?"
+                }
+            ],
+            "parents":[],
+            "cpt":[[0.3,0.3,0.4]]
+        }
+    ]
+}

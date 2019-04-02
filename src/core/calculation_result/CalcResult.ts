@@ -5,7 +5,7 @@ export class CalcResult {
   private readonly items: Array<CalcResultItem>;
 
   public constructor(nodeName: string, items: Array<CalcResultItem>) {
-    this.nodeName = name;
+    this.nodeName = nodeName;
     this.items = items;
   }
   public getNodeName(): string {

@@ -2,7 +2,7 @@ import { CalcResultItem } from "../../core/calculation_result/CalcResultItem";
 
 import {expect} from "chai";
 
-describe("CalcResult - constructor", () => {
+describe("CalcResultItem - constructor", () => {
     it(" TODO ", () => {
         // TODO
         new CalcResultItem(null, null);
@@ -10,14 +10,14 @@ describe("CalcResult - constructor", () => {
     });
 });
 
-describe("CalcResult - getValueName", () => {
+describe("CalcResultItem - getValueName", () => {
     it(" TODO ", () => {
         // TODO
         expect(true).to.equal(true);
     });
 });
 
-describe("CalcResult - getProbValue", () => {
+describe("CalcResultItem - getProbValue", () => {
     it(" TODO ", () => {
         // TODO
         expect(true).to.equal(true);

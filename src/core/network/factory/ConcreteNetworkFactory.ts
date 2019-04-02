@@ -24,7 +24,11 @@ class ConcreteNetworkFactory implements NetworkFactory {
   }
 
   private static setNodeCpt (node: JNode, cpt: Array<Array<number>>): void {
-    node.setCpt(cpt);
+    if (cpt.length === 1) {
+      node.setCpt(cpt[0]);
+    } else {
+        node.setCpt(cpt);
+    }
   }
 
   /**
@@ -158,6 +162,9 @@ class ConcreteNetworkFactory implements NetworkFactory {
 
     // For each node i read his CPT table
     for (const node of (json_file).nodes) {
+      if (node.cpt.length === 0) {
+        throw new Error("Empty cpt");
+      }
       const name = node.name;
       // Check that cpt sum is 1
       for (const cpt_line of node.cpt) {
@@ -169,8 +176,22 @@ class ConcreteNetworkFactory implements NetworkFactory {
           throw new Error("The cpt sum of a line is > 1!");
         }
       }
-      // TODO CHECK CORRECT SIZE USING node_parents_dictionary[name]
-      ConcreteNetworkFactory.setNodeCpt(node_dictionary[name], node.cpt);
+      let numberOfRows: number = 1;
+      for (const parName of node_parents_dictionary[name]) {
+        const par = node_dictionary[parName];
+        numberOfRows *= par.values.length;
+      }
+      if (numberOfRows === node.cpt.length) {
+        for (const row of node.cpt) {
+          if (row.length !== node.values.length) {
+            throw new Error("Incorrect cpt's number of columns");
+          }
+        }
+        ConcreteNetworkFactory.setNodeCpt(node_dictionary[name], node.cpt);
+      } else {
+          throw new Error("Incorrect cpt's number of rows");
+      }
+
     }
 
     // --------------------------------
@@ -186,3 +207,13 @@ class ConcreteNetworkFactory implements NetworkFactory {
 }// end of ConcreteNetworkFactory
 
 export {ConcreteNetworkFactory};
+
+    /*
+    let arrayCpt: number[] = [];
+    for (let c of cpt) {
+      for (let cin of c) {
+        arrayCpt.push(cin);
+      }
+    }
+    node.setCpt(arrayCpt);
+    node.setCpt(cpt);*/

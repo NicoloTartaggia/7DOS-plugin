@@ -1,0 +1,43 @@
+{
+    "nodes":[
+        {
+            "name":"n1",
+            "values":[
+                {
+                    "name":"value1",
+                    "type":"string","value":"0"
+                },
+                {
+                    "name":"value2",
+                    "type":"string","value":"1"
+                },
+                {
+                    "name":"value3",
+                    "type":"string","value":"2"
+                }
+            ],
+            "parents":[],
+            "cpt":[[0.1, 0.8, 0.1]]
+        },
+        {
+            "name":"n2",
+            "values":[
+                {
+                    "name":"value1",
+                    "type":"string","value":"0"
+                },
+                {
+                    "name":"value2",
+                    "type":"string","value":"1"
+                },
+                {
+                    "name":"value3",
+                    "type":"string","value":"2"
+                }
+            ],
+            "parents":["n1"],
+            "cpt":[[0.2, 0.2, 0.6],[0.6, 0.2, 0.2],[0.2, 0.6, 0.2]]
+        }
+    ]
+}
+

@@ -30,11 +30,6 @@ describe("ConcreteNetworkFactory - parseNetwork", () => {
     const jsonString = '{"nodes": {[)}}';
     expect(() => new ConcreteNetworkFactory().parseNetwork(jsonString, jsonSchemaString)).to.throw(Error, "Bad Json Content!");
   });
-  it("Incorrect cpt probabilities", () => {
-    let json = require("../IncorrectCpt.json");
-    const jsonString = JSON.stringify(json);
-    expect(() => new ConcreteNetworkFactory().parseNetwork(jsonString, jsonSchemaString)).to.throw(Error);
-  });
   it("MinRange > MaxRange", () => {
     let json = require("../InvertedMinMax.json");
     const jsonString = JSON.stringify(json);
@@ -64,5 +59,25 @@ describe("ConcreteNetworkFactory - parseNetwork", () => {
     let json = require("../IncorrectName.json");
     const jsonString = JSON.stringify(json);
     expect(() => new ConcreteNetworkFactory().parseNetwork(jsonString, jsonSchemaString)).to.throw(Error, "The node Example2 already exist in the network!");
+  });
+  it("Incorrect cpt probabilities", () => {
+    let json = require("../IncorrectCpt.json");
+    const jsonString = JSON.stringify(json);
+    expect(() => new ConcreteNetworkFactory().parseNetwork(jsonString, jsonSchemaString)).to.throw(Error);
+  });
+  it("Empty Cpt", () => {
+    let json = require("../EmptyCpt.json");
+    const jsonString = JSON.stringify(json);
+    expect(() => new ConcreteNetworkFactory().parseNetwork(jsonString, jsonSchemaString)).to.throw(Error, "Empty cpt");
+  });
+  it("Incorrect Cpt Rows", () => {
+    let json = require("../IncorrectCptRows.json");
+    const jsonString = JSON.stringify(json);
+    expect(() => new ConcreteNetworkFactory().parseNetwork(jsonString, jsonSchemaString)).to.throw(Error, "Incorrect cpt's number of rows");
+  });
+  it("Incorrect Cpt Columns", () => {
+    let json = require("../IncorrectCptColumns.json");
+    const jsonString = JSON.stringify(json);
+    expect(() => new ConcreteNetworkFactory().parseNetwork(jsonString, jsonSchemaString)).to.throw(Error, "Incorrect cpt's number of columns");
   });
 });

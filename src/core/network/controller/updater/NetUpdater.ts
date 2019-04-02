@@ -9,6 +9,9 @@ export class NetUpdater {
   private readonly network: NetworkAdapter;
 
   public constructor (network: NetworkAdapter) {// TODO rimettere il NetworkAdapter
+    if (network == null) {
+      throw new TypeError("invalid parameter");
+    }
     this.network = network;
   }
 
@@ -33,15 +36,17 @@ export class NetUpdater {
       e crea l'effettivo calcResult del nodo
      */
     const arrayCalcResult = new Array<CalcResult>();
+
     for (const node of this.network.getNodeList()) {
-      const probs: Array<number> = this.network.getNodeProbs(node.getName());
+      const name: string = node.getName();
+      const probs: Array<number> = this.network.getNodeProbs(name);
       const arrayCalcResultItem = new Array<CalcResultItem>();
       const statesNode = node.getStates();
       for (let i = 0; i < statesNode.length; i++) {
         arrayCalcResultItem.push(new CalcResultItem(statesNode[i], probs[i]));
       }
-      arrayCalcResult.push(new CalcResult(node.getName(), arrayCalcResultItem));
+      arrayCalcResult.push(new CalcResult(name, arrayCalcResultItem));
     }
-    return  new CalcResultAggregate(arrayCalcResult);
+    return new CalcResultAggregate(arrayCalcResult);
   }
 }
