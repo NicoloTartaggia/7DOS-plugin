@@ -25,6 +25,9 @@ export class NetUpdater {
       currentIt = iterator.next();
     }
 
+    // TODO: Poter definire qunti sample fare
+    this.network.sampleNetwork(10000);
+
     /*
       ciclo che prende tutte le probs, crea i CalcResultItem per ogni stato del nodo
       e crea l'effettivo calcResult del nodo
