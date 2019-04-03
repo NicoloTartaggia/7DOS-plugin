@@ -17,6 +17,29 @@ export class ConcreteNetworkAdapter implements NetworkAdapter {
    * @Override - Function that fixes a specific values (state) for a node in the network
    */
   public observeNode (node: string, value: string): void {
+    if (node == null || value == null) {
+      throw new Error("invalid parameter");
+    }
+    let isPresent: boolean = false;
+    let valueIsCorrect: boolean = false;
+    for (const jn of this.graph.nodes) {
+      if (jn.name === node) {
+        isPresent = true;
+        for (const val of jn.values) {
+          if (val === value) {
+            valueIsCorrect = true;
+            break;
+          }
+        }
+        break;
+      }
+    }
+    if (isPresent === false) {
+      throw new Error("Node " + node + " isn't present in the network");
+    }
+    if (valueIsCorrect === false) {
+      throw new Error("Node " + node + " hasn't a value called " + value);
+    }
     this.graph.observe(node, value);
   }
 
@@ -24,6 +47,19 @@ export class ConcreteNetworkAdapter implements NetworkAdapter {
    * @Override - Function that remove the node from the observed nodes
    */
   public unobserveNode (node: string): void {
+    if (node == null) {
+      throw new Error("invalid parameter");
+    }
+    let isPresent: boolean = false;
+    for (const jn of this.graph.nodes) {
+      if (jn.name === node) {
+        isPresent = true;
+        break;
+      }
+    }
+    if (isPresent === false) {
+      throw new Error("Node " + node + " isn't present in the network");
+    }
     this.graph.unobserve(node);
   }
 
@@ -52,6 +88,7 @@ export class ConcreteNetworkAdapter implements NetworkAdapter {
    * @returns Return a Array<NodeAdapter> that represent the NodeList
    */
   public getNodeList (): Array<NodeAdapter> {
-    return this.nodeList;
+  // tslint:disable-next-line: prefer-object-spread
+    return Object.assign([], this.nodeList); // returns deep copy
   }
 }
