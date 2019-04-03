@@ -7,23 +7,23 @@ import { BoolValue } from "../../core/node/value/BoolValue";
 
 // ConcreteNode -------------------------------------------------------------------------------
 describe("ConcreteNodeAdapter - constructor", () => {
-    it("Undefined node - TypeError", () => {
+    it("Undefined node - Error", () => {
         let node: JNode;
         const values: Array<AbstractValue> = new Array<AbstractValue>();
 
-        expect(() => new ConcreteNodeAdapter(node, values)).to.throw(TypeError, "invalid parameter");
+        expect(() => new ConcreteNodeAdapter(node, values)).to.throw(Error, "invalid parameter");
     });
-    it("Undefined values parameter", () => {
+    it("Undefined values - Error", () => {
         const graph: JGraph = jsbayes.newGraph();
         const n1: JNode = graph.addNode("n1", ["true", "false"]);
         let values: Array<AbstractValue>;
 
-        expect(() => new ConcreteNodeAdapter(n1, values)).to.throw(TypeError, "invalid parameter");
+        expect(() => new ConcreteNodeAdapter(n1, values)).to.throw(Error, "invalid parameter");
     });
 });
 
 describe("ConcreteNodeAdapter - getStates", () => {
-    it("Same list comparison", () => {
+    it("List - Same list", () => {
         const graph: JGraph = jsbayes.newGraph();
         const n1: JNode = graph.addNode("n1", ["true", "false"]);
 
@@ -31,7 +31,7 @@ describe("ConcreteNodeAdapter - getStates", () => {
         const states: Array<string> = concreteNode.getStates();
         expect(states.toLocaleString()).to.equal("true,false");
     });
-    it("Reverse returned list comparison with original", () => {
+    it("List, reversing of returned list - Same list", () => {
         const graph: JGraph = jsbayes.newGraph();
         const n1: JNode = graph.addNode("n1", ["true", "false"]);
 
@@ -41,7 +41,7 @@ describe("ConcreteNodeAdapter - getStates", () => {
 
         expect(concreteNode.getStates().toLocaleString()).to.equal("true,false");
     });
-    it("Other list comparison", () => {
+    it("List, comparison with other list - false", () => {
         const graph: JGraph = jsbayes.newGraph();
         const n1: JNode = graph.addNode("n1", ["true", "false"]);
 
@@ -53,7 +53,7 @@ describe("ConcreteNodeAdapter - getStates", () => {
  });
 
 describe("ConcreteNodeAdapter - getValues", () => {
-    it("Same list comparison", () => {
+    it("List - Same list", () => {
         const graph: JGraph = jsbayes.newGraph();
         const n1: JNode = graph.addNode("n1", ["true", "false"]);
 
@@ -68,7 +68,7 @@ describe("ConcreteNodeAdapter - getValues", () => {
         expect(values[1].getValueName()).to.equal("boolvalue-2");
         expect(values[2].getValueName()).to.equal("boolvalue-3");
     });
-    it("Reverse returned list comparison with original", () => {
+    it("List, reversing of returned list - Same list", () => {
         const graph: JGraph = jsbayes.newGraph();
         const n1: JNode = graph.addNode("n1", ["true", "false"]);
 
@@ -85,7 +85,7 @@ describe("ConcreteNodeAdapter - getValues", () => {
         expect(newValues[1].getValueName()).to.equal("boolvalue-2");
         expect(newValues[2].getValueName()).to.equal("boolvalue-3");
     });
-    it("Other list comparison", () => {
+    it("List, comparison with other list - false", () => {
         const graph: JGraph = jsbayes.newGraph();
         const n1: JNode = graph.addNode("n1", ["true", "false"]);
 
@@ -105,7 +105,7 @@ describe("ConcreteNodeAdapter - getValues", () => {
 });
 
 describe("ConcreteNodeAdapter - findValue", () => {
-    it("Look for a value present in the array", () => {
+    it("Value present in the array - The value", () => {
         const graph: JGraph = jsbayes.newGraph();
         const n1: JNode = graph.addNode("n1", ["true", "false"]);
 
@@ -118,7 +118,7 @@ describe("ConcreteNodeAdapter - findValue", () => {
         const value: AbstractValue = concreteNode.findValue("true");
         expect(value.getValueName()).to.equal("boolvalue-2");
     });
-    it("Look for a value not present in the array", () => {
+    it("Value not present in the array - Null", () => {
         const graph: JGraph = jsbayes.newGraph();
         const n1: JNode = graph.addNode("n1", ["true", "false"]);
 
@@ -131,7 +131,7 @@ describe("ConcreteNodeAdapter - findValue", () => {
         const value: AbstractValue = concreteNode.findValue("valorechenonce");
         expect(value).to.equal(null);
     });
-    it("Look for a null value", () => {
+    it("Null - Error", () => {
         const graph: JGraph = jsbayes.newGraph();
         const n1: JNode = graph.addNode("n1", ["true", "false"]);
 
@@ -143,6 +143,6 @@ describe("ConcreteNodeAdapter - findValue", () => {
         const concreteNode = new ConcreteNodeAdapter(n1, concreteNodeValues);
         let str: string;
 
-        expect(() => concreteNode.findValue(str)).to.throw(TypeError, "invalid parameter");
+        expect(() => concreteNode.findValue(str)).to.throw(Error, "invalid parameter");
     });
 });

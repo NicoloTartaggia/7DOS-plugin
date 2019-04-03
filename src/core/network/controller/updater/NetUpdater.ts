@@ -10,12 +10,15 @@ export class NetUpdater {
 
   public constructor (network: NetworkAdapter) {// TODO rimettere il NetworkAdapter
     if (network == null) {
-      throw new TypeError("invalid parameter");
+      throw new Error("invalid parameter");
     }
     this.network = network;
   }
 
   public updateNet (fluxResults: InputResultAggregate): CalcResultAggregate {
+    if (fluxResults == null || fluxResults.collection.length === 0) {
+      throw new Error("invalid parameter");
+    }
     const iterator: IterableIterator<InputResult> = fluxResults.buildIterator();
     let currentIt: IteratorResult<InputResult> = iterator.next();
 

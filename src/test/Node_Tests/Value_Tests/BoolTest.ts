@@ -4,51 +4,51 @@ import { BoolValue } from "../../../core/node/value/BoolValue";
 
 // BoolValue -------------------------------------------------------------------------------
 describe("BoolValue - constructor", () => {
-    it("Undefined name parameters", () => {
+    it("Undefined name - Error", () => {
         let str: string;
-        expect(() => new BoolValue(true, str)).to.throw(TypeError, "invalid parameter");
+        expect(() => new BoolValue(true, str)).to.throw(Error, "invalid parameter");
     });
-    it("Undefined value parameter", () => {
+    it("Undefined value - Error", () => {
         let str: boolean;
-        expect(() => new BoolValue(str, "name1")).to.throw(TypeError, "invalid parameter");
+        expect(() => new BoolValue(str, "name1")).to.throw(Error, "invalid parameter");
     });
 });
 
 describe("BoolValue - isValueType", () => {
-    it("Correct inputs", () => {
+    it("Correct inputs - True", () => {
         const boolV = new BoolValue(true, "name2");
         const result: boolean = boolV.isValueType("true");
         expect(result).to.equal(true);
     });
-    it("Wrong value parameter", () => {
+    it("Wrong value - False", () => {
         const boolV = new BoolValue(false, "name3");
         const result: boolean = boolV.isValueType("true");
         expect(result).to.equal(false);
     });
-    it("Randomic value parameter", () => {
+    it("Randomic value - False", () => {
         const boolV = new BoolValue(false, "name4");
         const result: boolean = boolV.isValueType("brzcld");
         expect(result).to.equal(false);
     });
-    it("Empty value parameter", () => {
+    it("Empty value - False", () => {
         const boolV = new BoolValue(true, "name5");
         const result: boolean = boolV.isValueType("");
         expect(result).to.equal(false);
     });
-    it("Correct but upper case value parameter", () => {
+    it("Correct but upper case value - True", () => {
         const boolV = new BoolValue(true, "name6");
         const result: boolean = boolV.isValueType("True");
         expect(result).to.equal(true);
     });
-    it("Undefined value parameter", () => {
+    it("Undefined value - Error", () => {
         const boolV = new BoolValue(true, "name7");
         let str: string;
-        expect(() => boolV.isValueType(str)).to.throw(TypeError, "invalid parameter");
+        expect(() => boolV.isValueType(str)).to.throw(Error, "invalid parameter");
     });
 });
 
 describe("BoolValue - getValueName", () => {
-    it("Base case", () => {
+    it("Name - Same name", () => {
         const name: string = "name8";
         const boolV = new BoolValue(true, name);
         boolV.isValueType("true");

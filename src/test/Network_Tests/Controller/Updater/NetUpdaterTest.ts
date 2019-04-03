@@ -14,7 +14,7 @@ import jsbayes = require("jsbayes");
 import { CalcResult } from "core/result/calculation_result/CalcResult";
 
 describe("NetUpdater - constructor", () => {
-  it("Undefined network - TypeError", () => {
+  it("Undefined network - Error", () => {
     let network: NetworkAdapter;
     expect(() => new NetUpdater(network)).to.throw(TypeError, "invalid parameter");
   });
@@ -23,7 +23,7 @@ describe("NetUpdater - constructor", () => {
 describe("NetUpdater - updateNet", () => {
   const jsonSchema = require("../../../../core/network/factory/network_structure.schema.json");
   const jsonSchemaString: string = JSON.stringify(jsonSchema);
-  it("Correct network", () => {
+  it("Correct InputResultAggregate - Correct probValues", () => {
     const json = require("../../TestNetwork.json");
     const jsonString: string = JSON.stringify(json);
 
@@ -69,6 +69,24 @@ describe("NetUpdater - updateNet", () => {
     expect(probs[5]).to.be.at.least(0.58);
     expect(probs[5]).to.be.at.most(0.62);
   });
+  it("Undefined InputResultAggregate - TypeError", () => {
+    const json = require("../../TestNetwork.json");
+    const jsonString: string = JSON.stringify(json);
+
+    const network: NetworkAdapter = new ConcreteNetworkFactory().parseNetwork(jsonString, jsonSchemaString);
+    let results: InputResultAggregate;
+    const networkUpdater: NetUpdater = new NetUpdater(network);
+    expect(()=> networkUpdater.updateNet(results)).to.throw(TypeError, "invalid parameter");
+  });
+  it("Empty InputResultAggregate - Error", () => {
+    const json = require("../../TestNetwork.json");
+    const jsonString: string = JSON.stringify(json);
+
+    const network: NetworkAdapter = new ConcreteNetworkFactory().parseNetwork(jsonString, jsonSchemaString);
+    const arrayResult: Array<InputResult> = new Array<InputResult>();
+    let results: InputResultAggregate = new InputResultAggregate(arrayResult);
+    const networkUpdater: NetUpdater = new NetUpdater(network);
+    expect(()=> networkUpdater.updateNet(results)).to.throw(TypeError, "invalid parameter");
+  });
 });
 
-// let i: number = 0; i<it.next().getValueProbs.length; i+=1
