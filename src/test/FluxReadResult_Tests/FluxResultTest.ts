@@ -1,4 +1,4 @@
-import { InputResult } from "../../core/inputReadResult/InputResult";
+import { InputResult } from "../../core/result/input_result/InputResult";
 
 import {expect} from "chai";
 

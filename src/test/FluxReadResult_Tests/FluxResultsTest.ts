@@ -1,4 +1,4 @@
-import { InputResultAggregate } from "../../core/inputReadResult/InputResultAggregate";
+import { InputResultAggregate } from "../../core/result/input_result/InputResultAggregate";
 
 import {expect} from "chai";
 

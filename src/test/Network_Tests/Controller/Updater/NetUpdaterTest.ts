@@ -3,15 +3,15 @@ import { NetUpdater } from "../../../../core/network/controller/updater/NetUpdat
 import {expect} from "chai";
 import { NetworkAdapter } from "../../../../core/network/adapter/NetworkAdapter";
 import { ConcreteNetworkFactory } from "../../../../core/network/factory/ConcreteNetworkFactory";
-import { InputResult } from "../../../../core/inputReadResult/InputResult";
-import { InputResultAggregate } from "../../../../core/inputReadResult/InputResultAggregate";
+import { InputResult } from "../../../../core/result/input_result/InputResult";
+import { InputResultAggregate } from "../../../../core/result/input_result/InputResultAggregate";
 import { AbstractValue } from "../../../../core/node/value/AbstractValue";
 import { StringValue } from "../../../../core/node/value/StringValue";
 import { NodeAdapter } from "../../../../core/node/NodeAdapter";
 import { ConcreteNodeAdapter } from "../../../../core/node/ConcreteNodeAdapter";
 
 import jsbayes = require("jsbayes");
-import { CalcResult } from "core/calculation_result/CalcResult";
+import { CalcResult } from "core/result/calculation_result/CalcResult";
 
 describe("NetUpdater - constructor", () => {
   it("Undefined network - TypeError", () => {

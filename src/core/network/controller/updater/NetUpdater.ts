@@ -1,8 +1,8 @@
-import { CalcResult } from "../../../../core/calculation_result/CalcResult";
-import { CalcResultItem } from "../../../../core/calculation_result/CalcResultItem";
-import { CalcResultAggregate } from "../../../calculation_result/CalcResultAggregate";
-import { InputResult } from "../../../inputReadResult/InputResult";
-import { InputResultAggregate } from "../../../inputReadResult/InputResultAggregate";
+import { CalcResult } from "../../../result/calculation_result/CalcResult";
+import { CalcResultAggregate } from "../../../result/calculation_result/CalcResultAggregate";
+import { CalcResultItem } from "../../../result/calculation_result/CalcResultItem";
+import { InputResult } from "../../../result/input_result/InputResult";
+import { InputResultAggregate } from "../../../result/input_result/InputResultAggregate";
 import {NetworkAdapter} from "../../adapter/NetworkAdapter";
 
 export class NetUpdater {
