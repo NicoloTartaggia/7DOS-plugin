@@ -1,9 +1,9 @@
 define([
-  'jquery',
-  'grafana/app/core/core',
+  "jquery",
+  "grafana/app/core/core",
 ],
-function ($, core) {
-  'use strict';
+function($, core) {
+  "use strict";
 
   var appEvents = core.appEvents;
 
@@ -20,17 +20,17 @@ function ($, core) {
 
     this.findHoverIndexFromDataPoints = function(posX, series, last) {
       var ps = series.datapoints.pointsize;
-      var initial = last*ps;
+      var initial = last * ps;
       var len = series.datapoints.points.length;
       for (var j = initial; j < len; j += ps) {
         // Special case of a non stepped line, highlight the very last point just before a null point
         if ((!series.lines.steps && series.datapoints.points[initial] != null && series.datapoints.points[j] == null)
             //normal case
             || series.datapoints.points[j] > posX) {
-          return Math.max(j - ps,  0)/ps;
+          return Math.max(j - ps,  0) / ps;
         }
       }
-      return j/ps - 1;
+      return j / ps - 1;
     };
 
     this.findHoverIndexFromData = function(posX, series) {
@@ -53,8 +53,8 @@ function ($, core) {
     };
 
     this.renderAndShow = function(absoluteTime, innerHtml, pos, xMode) {
-      if (xMode === 'time') {
-        innerHtml = '<div class="graph-tooltip-time">'+ absoluteTime + '</div>' + innerHtml;
+      if (xMode === "time") {
+        innerHtml = '<div class="graph-tooltip-time">' + absoluteTime + "</div>" + innerHtml;
       }
       $tooltip.html(innerHtml).place_tt(pos.pageX + 20, pos.pageY);
     };
@@ -62,7 +62,7 @@ function ($, core) {
     this.getMultiSeriesPlotHoverInfo = function(seriesList, pos) {
       var value, i, series, hoverIndex, hoverDistance, pointTime, yaxis;
       // 3 sub-arrays, 1st for hidden series, 2nd for left yaxis, 3rd for right yaxis.
-      var results = [[],[],[]];
+      var results = [[], [], []];
 
       //now we know the current X (j) position for X and Y values
       var last_value = 0; //needed for stacked values
@@ -90,14 +90,14 @@ function ($, core) {
 
         // Take the closest point before the cursor, or if it does not exist, the closest after
         if (! minDistance
-            || (hoverDistance >=0 && (hoverDistance < minDistance || minDistance < 0))
+            || (hoverDistance >= 0 && (hoverDistance < minDistance || minDistance < 0))
             || (hoverDistance < 0 && hoverDistance > minDistance)) {
           minDistance = hoverDistance;
           minTime = pointTime;
         }
 
         if (series.stack) {
-          if (panel.tooltip.value_type === 'individual') {
+          if (panel.tooltip.value_type === "individual") {
             value = series.data[hoverIndex][1];
           } else if (!series.stack) {
             value = series.data[hoverIndex][1];
@@ -130,12 +130,12 @@ function ($, core) {
           label: series.aliasEscaped,
           time: pointTime,
           distance: hoverDistance,
-          index: i
+          index: i,
         });
       }
 
       // Contat the 3 sub-arrays
-      results = results[0].concat(results[1],results[2]);
+      results = results[0].concat(results[1], results[2]);
 
       // Time of the point closer to pointer
       results.time = minTime;
@@ -143,7 +143,7 @@ function ($, core) {
       return results;
     };
 
-    elem.mouseleave(function () {
+    elem.mouseleave(function() {
       if (panel.tooltip.shared) {
         var plot = elem.data().plot;
         if (plot) {
@@ -151,19 +151,19 @@ function ($, core) {
           plot.unhighlight();
         }
       }
-      appEvents.emit('graph-hover-clear');
+      appEvents.emit("graph-hover-clear");
     });
 
-    elem.bind("plothover", function (event, pos, item) {
+    elem.bind("plothover", function(event, pos, item) {
       self.show(pos, item);
 
       // broadcast to other graph panels that we are hovering!
       pos.panelRelY = (pos.pageY - elem.offset().top) / elem.height();
-      appEvents.emit('graph-hover', {pos: pos, panel: panel});
+      appEvents.emit("graph-hover", {pos: pos, panel: panel});
     });
 
-    elem.bind("plotclick", function (event, pos, item) {
-      appEvents.emit('graph-click', {pos: pos, panel: panel, item: item});
+    elem.bind("plotclick", function(event, pos, item) {
+      appEvents.emit("graph-click", {pos: pos, panel: panel, item: item});
     });
 
     this.clear = function(plot) {
@@ -210,9 +210,9 @@ function ($, core) {
       }
 
       if (seriesList[0].hasMsResolution) {
-        tooltipFormat = 'YYYY-MM-DD HH:mm:ss.SSS';
+        tooltipFormat = "YYYY-MM-DD HH:mm:ss.SSS";
       } else {
-        tooltipFormat = 'YYYY-MM-DD HH:mm:ss';
+        tooltipFormat = "YYYY-MM-DD HH:mm:ss";
       }
 
       if (allSeriesMode) {
@@ -220,7 +220,7 @@ function ($, core) {
 
         var seriesHoverInfo = self.getMultiSeriesPlotHoverInfo(plotData, pos);
 
-        seriesHtml = '';
+        seriesHtml = "";
 
         absoluteTime = dashboard.formatDate(seriesHoverInfo.time, tooltipFormat);
 
@@ -243,9 +243,9 @@ function ($, core) {
             continue;
           }
 
-          var highlightClass = '';
+          var highlightClass = "";
           if (item && hoverInfo.index === item.seriesIndex) {
-            highlightClass = 'graph-tooltip-list-item--highlight';
+            highlightClass = "graph-tooltip-list-item--highlight";
           }
 
           series = seriesList[hoverInfo.index];
@@ -253,23 +253,20 @@ function ($, core) {
           value = series.formatValue(hoverInfo.value);
 
           seriesHtml += '<div class="graph-tooltip-list-item ' + highlightClass + '"><div class="graph-tooltip-series-name">';
-          seriesHtml += '<i class="fa fa-minus" style="color:' + hoverInfo.color +';"></i> ' + hoverInfo.label + ':</div>';
-          seriesHtml += '<div class="graph-tooltip-value">' + value + '</div></div>';
+          seriesHtml += '<i class="fa fa-minus" style="color:' + hoverInfo.color + ';"></i> ' + hoverInfo.label + ":</div>";
+          seriesHtml += '<div class="graph-tooltip-value">' + value + "</div></div>";
           plot.highlight(hoverInfo.index, hoverInfo.hoverIndex);
         }
 
         self.renderAndShow(absoluteTime, seriesHtml, pos, xMode);
-      }
-      // single series tooltip
-      else if (item) {
+      } else if (item) {
         series = seriesList[item.seriesIndex];
         group = '<div class="graph-tooltip-list-item"><div class="graph-tooltip-series-name">';
-        group += '<i class="fa fa-minus" style="color:' + item.series.color +';"></i> ' + series.aliasEscaped + ':</div>';
+        group += '<i class="fa fa-minus" style="color:' + item.series.color + ';"></i> ' + series.aliasEscaped + ":</div>";
 
-        if (panel.stack && panel.tooltip.value_type === 'individual') {
+        if (panel.stack && panel.tooltip.value_type === "individual") {
           value = item.datapoint[1] - item.datapoint[2];
-        }
-        else {
+        } else {
           value = item.datapoint[1];
         }
 
@@ -277,12 +274,10 @@ function ($, core) {
 
         absoluteTime = dashboard.formatDate(item.datapoint[0], tooltipFormat);
 
-        group += '<div class="graph-tooltip-value">' + value + '</div>';
+        group += '<div class="graph-tooltip-value">' + value + "</div>";
 
         self.renderAndShow(absoluteTime, group, pos, xMode);
-      }
-      // no hit
-      else {
+      } else {
         $tooltip.detach();
       }
     };

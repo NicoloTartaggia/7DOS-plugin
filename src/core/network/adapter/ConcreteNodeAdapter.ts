@@ -1,5 +1,5 @@
+import {AbstractValue} from "../value/value-module";
 import {NodeAdapter} from "./NodeAdapter";
-import {AbstractValue} from "./value/value-module";
 
 export class ConcreteNodeAdapter implements NodeAdapter {
   private readonly values: Array<AbstractValue>;

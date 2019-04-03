@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import "mocha";
-import { BoolValue } from "../../../core/node/value/BoolValue";
+import { BoolValue } from "../../../core/network/value/BoolValue";
 
 // BoolValue -------------------------------------------------------------------------------
 describe("BoolValue - constructor", () => {

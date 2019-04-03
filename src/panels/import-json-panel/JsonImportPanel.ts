@@ -1,12 +1,13 @@
 import { PanelCtrl } from "grafana/app/plugins/sdk";
+import {ConcreteWriteClientFactory} from "../../core/write_client/WriteClientFactory";
 import { SelectDB_Ctrl, SelectDB_Directive} from "./select_ts_tab";
 
 import _ from "lodash";
+import { NetManager } from "../../core/net_manager/NetManager";
+import { NetReader } from "../../core/net_manager/reader/NetReader";
+import { NetUpdater } from "../../core/net_manager/updater/NetUpdater";
+import {NetWriter, SingleNetWriter} from "../../core/net_manager/writer/NetWriter";
 import { NetworkAdapter } from "../../core/network/adapter/NetworkAdapter";
-import { NetManager } from "../../core/network/controller/NetManager";
-import { NetReader } from "../../core/network/controller/reader/NetReader";
-import { NetUpdater } from "../../core/network/controller/updater/NetUpdater";
-import { NetWriter } from "../../core/network/controller/writer/NetWriter";
 import { ConcreteNetworkFactory } from "../../core/network/factory/ConcreteNetworkFactory";
 
 export class JsImportPanel extends PanelCtrl {
@@ -76,7 +77,7 @@ export class JsImportPanel extends PanelCtrl {
 
   }
 
-  public onUpload (net) {
+  public async onUpload (net) {
     console.log("On upload");
     try {
       this.loaded_network = new ConcreteNetworkFactory().parseNetwork(JSON.stringify(net));
@@ -92,8 +93,8 @@ export class JsImportPanel extends PanelCtrl {
     this.events.emit("data-received", null);
     this.netUpdater = new NetUpdater(this.loaded_network);
     this.netReader = new NetReader(this.loaded_network);
-    this.netWriter = new NetWriter();
-
+    this.netWriter = new SingleNetWriter(await new ConcreteWriteClientFactory()
+      .makeInfluxWriteClient("localhost", "8086", "myDB"));
     this.netManager = new NetManager(this.netReader, this.netUpdater, this.netWriter);
     this.ts_tab_control.refreshNetwork();
   }

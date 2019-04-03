@@ -1,6 +1,6 @@
 import { ConcreteNetworkAdapter } from "../../../core/network/adapter/ConcreteNetworkAdapter";
 import { ConcreteNetworkFactory } from "../../../core/network/factory/ConcreteNetworkFactory";
-import { NodeAdapter } from "core/node/NodeAdapter";
+import { NodeAdapter } from "core/network/adapter/NodeAdapter";
 
 import jsbayes = require("jsbayes");
 

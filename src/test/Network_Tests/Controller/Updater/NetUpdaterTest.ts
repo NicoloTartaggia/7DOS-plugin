@@ -1,17 +1,17 @@
-import { NetUpdater } from "../../../../core/network/controller/updater/NetUpdater";
+import { NetUpdater } from "../../../../core/net_manager/updater/NetUpdater";
 
 import {expect} from "chai";
 import { NetworkAdapter } from "../../../../core/network/adapter/NetworkAdapter";
 import { ConcreteNetworkFactory } from "../../../../core/network/factory/ConcreteNetworkFactory";
-import { InputResult } from "../../../../core/inputReadResult/InputResult";
-import { InputResultAggregate } from "../../../../core/inputReadResult/InputResultAggregate";
-import { AbstractValue } from "../../../../core/node/value/AbstractValue";
-import { StringValue } from "../../../../core/node/value/StringValue";
-import { NodeAdapter } from "../../../../core/node/NodeAdapter";
-import { ConcreteNodeAdapter } from "../../../../core/node/ConcreteNodeAdapter";
+import { InputResult } from "../../../../core/net_manager/result/input_result/InputResult";
+import { InputResultAggregate } from "../../../../core/net_manager/result/input_result/InputResultAggregate";
+import { AbstractValue } from "../../../../core/network/value/AbstractValue";
+import { StringValue } from "../../../../core/network/value/StringValue";
+import { NodeAdapter } from "../../../../core/network/adapter/NodeAdapter";
+import { ConcreteNodeAdapter } from "../../../../core/network/adapter/ConcreteNodeAdapter";
 
 import jsbayes = require("jsbayes");
-import { CalcResult } from "core/calculation_result/CalcResult";
+import { CalcResult } from "core/net_manager/result/calculation_result/CalcResult";
 
 describe("NetUpdater - constructor", () => {
   it("Undefined network - Error", () => {
