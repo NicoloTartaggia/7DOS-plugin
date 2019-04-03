@@ -100,11 +100,41 @@ describe("ConcreteNetworkAdapter - unobserveNode", () => {
 });
 
 describe("ConcreteNetworkAdapter - sampleNetwork", () => {
-    // TODO
+    const jsonSchema = require("../../../core/network/factory/network_structure.schema.json");
+    const jsonSchemaString: string = JSON.stringify(jsonSchema);
+    it("Undefined number of samples - Error", () => {
+      const json = require("../CorrectNetwork.json");
+      const jsonString: string = JSON.stringify(json);
+      const s: ConcreteNetworkAdapter = new ConcreteNetworkFactory().parseNetwork(jsonString, jsonSchemaString);
+      let undNumber: number;
+      expect(()=>s.sampleNetwork(undNumber)).to.throw(Error, "invalid parameter");
+    });
+    it("Less than zero number of samples - Error", () => {
+        const json = require("../CorrectNetwork.json");
+        const jsonString: string = JSON.stringify(json);
+        const s: ConcreteNetworkAdapter = new ConcreteNetworkFactory().parseNetwork(jsonString, jsonSchemaString);
+        let negNumber: number = -50;
+        expect(()=>s.sampleNetwork(negNumber)).to.throw(Error, "invalid parameter");
+      });
 });
 
 describe("ConcreteNetworkAdapter - getNodeProbs", () => {
-    // TODO
+    const jsonSchema = require("../../../core/network/factory/network_structure.schema.json");
+    const jsonSchemaString: string = JSON.stringify(jsonSchema);
+    it("Undefined node name - Error", () => {
+      const json = require("../CorrectNetwork.json");
+      const jsonString: string = JSON.stringify(json);
+      const s: ConcreteNetworkAdapter = new ConcreteNetworkFactory().parseNetwork(jsonString, jsonSchemaString);
+      let undName: string;
+      expect(()=>s.getNodeProbs(undName)).to.throw(Error, "invalid parameter");
+    });
+    it("Incorrect node name - Error", () => {
+        const json = require("../CorrectNetwork.json");
+        const jsonString: string = JSON.stringify(json);
+        const s: ConcreteNetworkAdapter = new ConcreteNetworkFactory().parseNetwork(jsonString, jsonSchemaString);
+        let incName: string = "IncorrectName";
+        expect(()=>s.getNodeProbs(incName)).to.throw(Error, "Node IncorrectName isn't present in the network");
+      });
 });
 
 describe("ConcreteNetworkAdapter - getNodeList", () => {

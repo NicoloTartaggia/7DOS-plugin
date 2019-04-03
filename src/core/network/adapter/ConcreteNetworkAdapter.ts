@@ -67,6 +67,9 @@ export class ConcreteNetworkAdapter implements NetworkAdapter {
    * @Override - Function that makes the number of sample specified in sampleNum
    */
   public sampleNetwork (sampleNum: number): void {
+    if (sampleNum == null || sampleNum <= 0) {
+      throw new Error("invalid parameter");
+    }
     this.graph.sample(sampleNum);
   }
 
@@ -75,12 +78,15 @@ export class ConcreteNetworkAdapter implements NetworkAdapter {
    * @returns Return a Array<number> that represent the probs of a specific node
    */
   public getNodeProbs (nodeName: string): Array<number> {
+    if (nodeName == null) {
+      throw new Error("invalid parameter");
+    }
     for (const node of this.graph.nodes) {
       if (node.name === nodeName) {
         return node.probs();
       }
     }
-    return null;
+    throw new Error("Node " + nodeName + " isn't present in the network");
   }
 
   /**
