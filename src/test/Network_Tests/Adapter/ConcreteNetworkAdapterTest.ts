@@ -7,26 +7,25 @@ import jsbayes = require("jsbayes");
 import {expect} from "chai";
 
 describe("ConcreteNetworkAdapter - constructor", () => {
-    it("Undefined graph parameter", () => {
+    it("Undefined graph - Error", () => {
         let graph: JGraph;
         let list: Array<NodeAdapter> = new Array<NodeAdapter>();
 
-        expect(() => new ConcreteNetworkAdapter(graph, list)).to.throw(TypeError, "invalid parameter");
+        expect(() => new ConcreteNetworkAdapter(graph, list)).to.throw(Error, "invalid parameter");
     });
-    it("Undefined list parameter", () => {
+    it("Undefined list - Error", () => {
         let graph: JGraph = jsbayes.newGraph();
         let list: Array<NodeAdapter>;
 
-        expect(() => new ConcreteNetworkAdapter(graph, list)).to.throw(TypeError, "invalid parameter");
+        expect(() => new ConcreteNetworkAdapter(graph, list)).to.throw(Error, "invalid parameter");
     });
-
 });
 
 describe("ConcreteNetworkAdapter - observeNode", () => {
     // TODO
 });
 
-describe("ConcreteNetworkAdapter - unbserveNode", () => {
+describe("ConcreteNetworkAdapter - unobserveNode", () => {
     // TODO
 });
 
@@ -49,3 +48,4 @@ describe("ConcreteNetworkAdapter - getNodeList", () => {
       expect(nodeOne.getName()).to.equal('Example2');
     });
 });
+
