@@ -1,15 +1,15 @@
 define([
-  'jquery',
-  'lodash',
-  'angular',
-  'tether-drop',
+  "jquery",
+  "lodash",
+  "angular",
+  "tether-drop",
 ],
-function ($, _, angular, Drop) {
-  'use strict';
+function($, _, angular, Drop) {
+  "use strict";
 
   function createAnnotationToolip(element, event, plot) {
     var injector = angular.element(document).injector();
-    var content = document.createElement('div');
+    var content = document.createElement("div");
     content.innerHTML = '<annotation-tooltip event="event" on-edit="onEdit()"></annotation-tooltip>';
 
     injector.invoke(["$compile", "$rootScope", function($compile, $rootScope) {
@@ -28,17 +28,17 @@ function ($, _, angular, Drop) {
         target: element[0],
         content: content,
         position: "bottom center",
-        classes: 'drop-popover drop-popover--annotation',
-        openOn: 'hover',
+        classes: "drop-popover drop-popover--annotation",
+        openOn: "hover",
         hoverCloseDelay: 200,
         tetherOptions: {
-          constraints: [{to: 'window', pin: true, attachment: "both"}]
-        }
+          constraints: [{to: "window", pin: true, attachment: "both"}],
+        },
       });
 
       drop.open();
 
-      drop.on('close', function() {
+      drop.on("close", function() {
         setTimeout(function() {
           drop.destroy();
         });
@@ -66,7 +66,7 @@ function ($, _, angular, Drop) {
     setTimeout(function() {
 
       var injector = angular.element(document).injector();
-      var content = document.createElement('div');
+      var content = document.createElement("div");
       content.innerHTML = '<event-editor panel-ctrl="panelCtrl" event="event" close="close()"></event-editor>';
 
       injector.invoke(["$compile", "$rootScope", function($compile, $rootScope) {
@@ -86,17 +86,17 @@ function ($, _, angular, Drop) {
           target: markerElementToAttachTo[0],
           content: content,
           position: "bottom center",
-          classes: 'drop-popover drop-popover--form',
-          openOn: 'click',
+          classes: "drop-popover drop-popover--form",
+          openOn: "click",
           tetherOptions: {
-            constraints: [{to: 'window', pin: true, attachment: "both"}]
-          }
+            constraints: [{to: "window", pin: true, attachment: "both"}],
+          },
         });
 
         drop.open();
         eventManager.editorOpened();
 
-        drop.on('close', function() {
+        drop.on("close", function() {
           // need timeout here in order call drop.destroy
           setTimeout(function() {
             eventManager.editorClosed();
@@ -188,7 +188,7 @@ function ($, _, angular, Drop) {
      */
     this.setupEvents = function(events) {
       var that = this;
-      var parts = _.partition(events, 'isRegion');
+      var parts = _.partition(events, "isRegion");
       var regions = parts[0];
       events = parts[1];
 
@@ -197,7 +197,7 @@ function ($, _, angular, Drop) {
         _events.push(ve);
       });
 
-      $.each(regions, function (index, event) {
+      $.each(regions, function(index, event) {
         var vre = new VisualEvent(event, that._buildRegDiv(event));
         _events.push(vre);
       });
@@ -273,7 +273,7 @@ function ($, _, angular, Drop) {
       var eventTypeId = event.eventType;
 
       if (this._types === null || !this._types[eventTypeId] || !this._types[eventTypeId].color) {
-        color = '#666';
+        color = "#666";
       } else {
         color = this._types[eventTypeId].color;
       }
@@ -297,7 +297,7 @@ function ($, _, angular, Drop) {
       }
 
       if (this._types == null || !this._types[eventTypeId] || !this._types[eventTypeId].lineStyle) {
-        lineStyle = 'dashed'; //default line style
+        lineStyle = "dashed"; //default line style
       } else {
         lineStyle = this._types[eventTypeId].lineStyle.toLowerCase();
       }
@@ -317,16 +317,16 @@ function ($, _, angular, Drop) {
       var line = $('<div class="events_line flot-temp-elem"></div>').css({
         "position": "absolute",
         "opacity": 0.8,
-        "left": left + 'px',
+        "left": left + "px",
         "top": 8,
         "width": lineWidth + "px",
         "height": this._plot.height() + topOffset * 0.8,
         "border-left-width": lineWidth + "px",
         "border-left-style": lineStyle,
         "border-left-color": color,
-        "color": color
+        "color": color,
       })
-      .appendTo(container);
+        .appendTo(container);
 
       if (markerShow) {
         var marker = $('<div class="events_marker"></div>').css({
@@ -336,28 +336,28 @@ function ($, _, angular, Drop) {
           "line-height": 0,
           "width": 0,
           "height": 0,
-          "border-left": markerSize+"px solid transparent",
-          "border-right": markerSize+"px solid transparent"
+          "border-left": markerSize + "px solid transparent",
+          "border-right": markerSize + "px solid transparent",
         });
 
         marker.appendTo(line);
 
-        if (this._types[eventTypeId] && this._types[eventTypeId].position && this._types[eventTypeId].position.toUpperCase() === 'BOTTOM') {
+        if (this._types[eventTypeId] && this._types[eventTypeId].position && this._types[eventTypeId].position.toUpperCase() === "BOTTOM") {
           marker.css({
-            "top": top-markerSize-8 +"px",
+            "top": top - markerSize - 8 + "px",
             "border-top": "none",
-            "border-bottom": markerSize+"px solid " + color
+            "border-bottom": markerSize + "px solid " + color,
           });
         } else {
           marker.css({
             "top": "0px",
-            "border-top": markerSize+"px solid " + color,
-            "border-bottom": "none"
+            "border-top": markerSize + "px solid " + color,
+            "border-bottom": "none",
           });
         }
 
         marker.data({
-          "event": event
+          "event": event,
         });
 
         var mouseenter = function() {
@@ -385,13 +385,13 @@ function ($, _, angular, Drop) {
         function(obj, position) {
           obj.css({
             top: position.top,
-            left: position.left
+            left: position.left,
           });
         },
         left,
         top,
         line.width(),
-        line.height()
+        line.height(),
       );
 
       return drawableEvent;
@@ -400,7 +400,7 @@ function ($, _, angular, Drop) {
     /**
      * create a DOM element for the given region
      */
-    this._buildRegDiv = function (event) {
+    this._buildRegDiv = function(event) {
       var that = this;
 
       var container = this._plot.getPlaceholder();
@@ -417,7 +417,7 @@ function ($, _, angular, Drop) {
       var eventTypeId = event.eventType;
 
       if (this._types === null || !this._types[eventTypeId] || !this._types[eventTypeId].color) {
-        color = '#666';
+        color = "#666";
       } else {
         color = this._types[eventTypeId].color;
       }
@@ -435,7 +435,7 @@ function ($, _, angular, Drop) {
       }
 
       if (this._types == null || !this._types[eventTypeId] || !this._types[eventTypeId].lineStyle) {
-        lineStyle = 'dashed'; //default line style
+        lineStyle = "dashed"; //default line style
       } else {
         lineStyle = this._types[eventTypeId].lineStyle.toLowerCase();
       }
@@ -453,14 +453,14 @@ function ($, _, angular, Drop) {
         var line = $('<div class="events_line flot-temp-elem"></div>').css({
           "position": "absolute",
           "opacity": 0.8,
-          "left": position + 'px',
+          "left": position + "px",
           "top": 8,
           "width": lineWidth + "px",
           "height": that._plot.height() + topOffset,
           "border-left-width": lineWidth + "px",
           "border-left-style": lineStyle,
           "border-left-color": color,
-          "color": color
+          "color": color,
         });
         line.appendTo(container);
       });
@@ -468,21 +468,21 @@ function ($, _, angular, Drop) {
       var region = $('<div class="events_marker region_marker flot-temp-elem"></div>').css({
         "position": "absolute",
         "opacity": 0.5,
-        "left": left + 'px',
+        "left": left + "px",
         "top": top,
         "width": Math.round(regionWidth + lineWidth) + "px",
         "height": "0.5rem",
         "border-left-color": color,
         "color": color,
-        "background-color": color
+        "background-color": color,
       });
       region.appendTo(container);
 
       region.data({
-        "event": event
+        "event": event,
       });
 
-      var mouseenter = function () {
+      var mouseenter = function() {
         createAnnotationToolip(region, $(this).data("event"), that._plot);
       };
 
@@ -490,7 +490,7 @@ function ($, _, angular, Drop) {
         createEditPopover(region, event.editModel, that._plot);
       }
 
-      var mouseleave = function () {
+      var mouseleave = function() {
         that._plot.clearSelection();
       };
 
@@ -502,17 +502,17 @@ function ($, _, angular, Drop) {
       var drawableEvent = new DrawableEvent(
         region,
         function drawFunc(obj) { obj.show(); },
-        function (obj) { obj.remove(); },
-        function (obj, position) {
+        function(obj) { obj.remove(); },
+        function(obj, position) {
           obj.css({
             top: position.top,
-            left: position.left
+            left: position.left,
           });
         },
         left,
         top,
         region.width(),
-        region.height()
+        region.height(),
       );
 
       return drawableEvent;
@@ -591,14 +591,14 @@ function ($, _, angular, Drop) {
       data: null,
       types: null,
       xaxis: 1,
-      position: 'BOTTOM'
-    }
+      position: "BOTTOM",
+    },
   };
 
   $.plot.plugins.push({
     init: init,
     options: defaultOptions,
     name: "events",
-    version: "0.2.5"
+    version: "0.2.5",
   });
 });

@@ -1,4 +1,4 @@
-import { CalcResultItem } from "../../core/result/calculation_result/CalcResultItem";
+import { CalcResultItem } from "../../core/net_manager/result/calculation_result/CalcResultItem";
 
 import {expect} from "chai";
 

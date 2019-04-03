@@ -1,9 +1,9 @@
 import { expect } from "chai";
 import jsbayes = require("jsbayes");
 import "mocha";
-import { ConcreteNodeAdapter } from "../../core/node/ConcreteNodeAdapter";
-import { AbstractValue } from "../../core/node/value/AbstractValue";
-import { BoolValue } from "../../core/node/value/BoolValue";
+import { ConcreteNodeAdapter } from "../../core/network/adapter/ConcreteNodeAdapter";
+import { AbstractValue } from "../../core/network/value/AbstractValue";
+import { BoolValue } from "../../core/network/value/BoolValue";
 
 // ConcreteNode -------------------------------------------------------------------------------
 describe("ConcreteNodeAdapter - constructor", () => {

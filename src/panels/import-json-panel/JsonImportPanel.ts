@@ -3,11 +3,11 @@ import {ConcreteWriteClientFactory} from "../../core/write_client/WriteClientFac
 import { SelectDB_Ctrl, SelectDB_Directive} from "./select_ts_tab";
 
 import _ from "lodash";
+import { NetManager } from "../../core/net_manager/NetManager";
+import { NetReader } from "../../core/net_manager/reader/NetReader";
+import { NetUpdater } from "../../core/net_manager/updater/NetUpdater";
+import {NetWriter, SingleNetWriter} from "../../core/net_manager/writer/NetWriter";
 import { NetworkAdapter } from "../../core/network/adapter/NetworkAdapter";
-import { NetManager } from "../../core/network/controller/NetManager";
-import { NetReader } from "../../core/network/controller/reader/NetReader";
-import { NetUpdater } from "../../core/network/controller/updater/NetUpdater";
-import {NetWriter, SingleNetWriter} from "../../core/network/controller/writer/NetWriter";
 import { ConcreteNetworkFactory } from "../../core/network/factory/ConcreteNetworkFactory";
 
 export class JsImportPanel extends PanelCtrl {
