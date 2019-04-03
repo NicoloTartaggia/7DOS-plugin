@@ -16,7 +16,7 @@ import { CalcResult } from "core/net_manager/result/calculation_result/CalcResul
 describe("NetUpdater - constructor", () => {
   it("Undefined network - Error", () => {
     let network: NetworkAdapter;
-    expect(() => new NetUpdater(network)).to.throw(TypeError, "invalid parameter");
+    expect(() => new NetUpdater(network)).to.throw(Error, "invalid parameter");
   });
 });
 
@@ -69,14 +69,14 @@ describe("NetUpdater - updateNet", () => {
     expect(probs[5]).to.be.at.least(0.58);
     expect(probs[5]).to.be.at.most(0.62);
   });
-  it("Undefined InputResultAggregate - TypeError", () => {
+  it("Undefined InputResultAggregate - Error", () => {
     const json = require("../../TestNetwork.json");
     const jsonString: string = JSON.stringify(json);
 
     const network: NetworkAdapter = new ConcreteNetworkFactory().parseNetwork(jsonString, jsonSchemaString);
     let results: InputResultAggregate;
     const networkUpdater: NetUpdater = new NetUpdater(network);
-    expect(()=> networkUpdater.updateNet(results)).to.throw(TypeError, "invalid parameter");
+    expect(()=> networkUpdater.updateNet(results)).to.throw(Error, "invalid parameter");
   });
   it("Empty InputResultAggregate - Error", () => {
     const json = require("../../TestNetwork.json");
@@ -86,7 +86,7 @@ describe("NetUpdater - updateNet", () => {
     const arrayResult: Array<InputResult> = new Array<InputResult>();
     let results: InputResultAggregate = new InputResultAggregate(arrayResult);
     const networkUpdater: NetUpdater = new NetUpdater(network);
-    expect(()=> networkUpdater.updateNet(results)).to.throw(TypeError, "invalid parameter");
+    expect(()=> networkUpdater.updateNet(results)).to.throw(Error, "invalid parameter");
   });
 });
 
