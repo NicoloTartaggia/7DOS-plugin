@@ -44,7 +44,7 @@ export default class DataSource {
     return this.password;
   }
   public getUrl(): string {
-    return this.host + this.port;
+    return this.host + ":" + this.port;
   }
   public getType(): string {
     return this.type;
