@@ -23,7 +23,7 @@ export class ConcreteNetworkAdapter implements NetworkAdapter {
   /**
    * @Override - Function that remove the node from the observed nodes
    */
-  public unbserveNode (node: string): void {
+  public unobserveNode (node: string): void {
     this.graph.unobserve(node);
   }
 
