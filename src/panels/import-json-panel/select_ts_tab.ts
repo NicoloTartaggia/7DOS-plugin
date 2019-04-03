@@ -1,16 +1,9 @@
 import { RxHR } from "@akanass/rx-http-request/browser/index.js";
 
-import { NodeAdapter } from "core/node/NodeAdapter";
 import { coreModule } from "grafana/app/core/core";
 import { DashboardModel } from "grafana/app/features/dashboard/model";
-
-class Script_Found_Datasource {
-  public db: any;
-  public id: any;
-  public name: any;
-  public type: any;
-  public url: any;
-}
+import DataSource from "../../core/network/controller/reader/Datasource";
+import { NodeAdapter } from "../../core/node/NodeAdapter";
 
 class Script_Found_Database {
   public name: string;
@@ -30,7 +23,7 @@ export class SelectDB_Ctrl {
   // Private class stuff - do not touch
   private nodes: Array<NodeAdapter>;
   // private genericModel: any;
-  private datasources: { [datasource_id: string]: Script_Found_Datasource; } = {};
+  private datasources: { [datasource_id: string]: DataSource; } = {};
   private databases: { [datasource_id: string]: { [database_name: string]: Script_Found_Database; } } = {};
 
   // ANGULARJS <select> stuff - save all the node selections
@@ -52,10 +45,10 @@ export class SelectDB_Ctrl {
 
     // Linking select_ts_tab to panel
     this.panel.ts_tab_control = this.panelCtrl;
-
     console.log("SelectDB_Ctrl - Object build");
     console.log("SelectDB_Ctrl - Get datasources");
     this.getDatasources();
+    this.refreshNetwork();
   }
 
   // ------------------------------------------------------
@@ -67,7 +60,31 @@ export class SelectDB_Ctrl {
   public refreshNetwork() {
     if (this.panelCtrl.loaded_network !== undefined) {
       this.nodes = this.panelCtrl.loaded_network.getNodeList();
-      console.info("ciao");
+    }
+  }
+
+  public getQuery(nodesIndex: number): ([string, DataSource]) {
+    const nI: number = 0;   // used for tests, to be replaced with parameter nodesIndex
+    const nodeName: string = this.nodes[nI].getName(); // ^ used only here
+
+    const datasource: DataSource = this.datasources[this.selected_datasource[nodeName]];
+    const url: string = datasource.getUrl();
+    const database: string = datasource.getDatabase();
+    const table: string = this.selected_table[nodeName].name;
+    const field: string = this.selected_field[nodeName];
+    const query: string = url + "/query?db=" + database + "&q=SELECT " + field + " FROM " + table;
+    return ([query, datasource]);
+  }
+
+  public connectNodes() {
+    for (let i = 0; i < this.nodes.length; i++) {
+      const [query, datasource] = this.getQuery(i);
+      this.panelCtrl.netReader.connectNode(this.nodes[i].getName(), datasource, query);
+      console.log("nodo " + i);
+      console.log(this.nodes[i].getName());
+      console.log(query);
+      console.log("fine nodo " + i);
+
     }
   }
 
@@ -89,12 +106,8 @@ export class SelectDB_Ctrl {
           const datasources = JSON.parse(data.body);
           for (const entry of datasources) {
             if (entry.type === "influxdb") {
-              const datas = new Script_Found_Datasource();
-              datas.db = entry.database;
-              datas.id = entry.id;
-              datas.name = entry.name;
-              datas.type = entry.type;
-              datas.url = entry.url;
+              const datas = new DataSource(entry.url, entry.database, entry.user,
+                entry.password, entry.type, entry.name, entry.id);
               this.datasources[entry.id] = datas;
               this.getDatabases(entry.id);
             } else {
@@ -109,7 +122,8 @@ export class SelectDB_Ctrl {
 
   public getDatabases(datasource_id: string) {
     // http://localhost:8086/query?q=SHOW DATABASES
-    RxHR.get(this.datasources[datasource_id].url + "/query?q=SHOW DATABASES").subscribe(
+    console.log(this.datasources[datasource_id].getUrl() + "/query?q=SHOW DATABASES");
+    RxHR.get(this.datasources[datasource_id].getUrl() + "/query?q=SHOW DATABASES").subscribe(
       (data) => {
         if (data.response.statusCode === 200) {
           const databases = JSON.parse(data.body);
@@ -135,7 +149,8 @@ export class SelectDB_Ctrl {
   /**/
   public getTables(datasource_id: string, databaseOBJ: Script_Found_Database) {
     // http://localhost:8086/query?db=telegraf&q=SHOW MEASUREMENTS
-    RxHR.get(this.datasources[datasource_id].url + "/query?db=" + databaseOBJ.name + "&q=SHOW MEASUREMENTS").subscribe(
+    RxHR.get(this.datasources[datasource_id].getUrl() +
+     "/query?db=" + databaseOBJ.name + "&q=SHOW MEASUREMENTS").subscribe(
       (data) => {
         if (data.response.statusCode === 200) {
           const databases = JSON.parse(data.body);
@@ -156,7 +171,7 @@ export class SelectDB_Ctrl {
 
   public getTableFields(datasource_id: string, databaseOBJ: Script_Found_Database, tableOBJ: Script_Found_Table) {
     // http://localhost:8086/query?db=telegraf&q=SHOW FIELD KEYS FROM win_cpu
-    RxHR.get(this.datasources[datasource_id].url +
+    RxHR.get(this.datasources[datasource_id].getUrl() +
       "/query?db=" + databaseOBJ.name + "&q=SHOW FIELD KEYS FROM " + tableOBJ.name).subscribe(
       (data) => {
         if (data.response.statusCode === 200) {
@@ -219,8 +234,8 @@ export class SelectDB_Ctrl {
     const nodeName = this.nodes[nI].getName(); // ^ used only here
 
     const datasource = this.datasources[this.selected_datasource[nodeName]];
-    const url = datasource.url;
-    const database = datasource.db;
+    const url = datasource.getUrl();
+    const database = datasource.getDatabase();
     const table = this.selected_table[nodeName].name;
     const field = this.selected_field[nodeName];
     const query = url + "/query?db=" + database + "&q=SELECT " + field + " FROM " + table;
