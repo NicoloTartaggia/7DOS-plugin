@@ -2,7 +2,7 @@ import { CalcResultAggregate } from "../../core/calculation_result/CalcResultAgg
 
 import {expect} from "chai";
 
-describe("CalcResults - constructor", () => {
+describe("CalcResultAggregate - constructor", () => {
     it(" TODO ", () => {
         // TODO
         new CalcResultAggregate(null);
@@ -10,7 +10,7 @@ describe("CalcResults - constructor", () => {
     });
 });
 
-describe("CalcResults - createIterator", () => {
+describe("CalcResultAggregate - createIterator", () => {
     it(" TODO ", () => {
         // TODO
         expect(true).to.equal(true);
