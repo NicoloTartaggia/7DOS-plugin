@@ -5,28 +5,28 @@
     </div>
     <div class="gf-form" ng-repeat="value in ctrl.nodes">
         <p style="padding-right: 0.5em">Node : {{value.getName()}} </p>
-        <select ng-change="ctrl.select_datasource('{{value}}')" ng-model="ctrl.selected_datasource[value]">
+        <select ng-change="ctrl.select_datasource('{{value.getName()}}')" ng-model="ctrl.selected_datasource[value.getName()]">
             <option value="">-- Choose a datasource --</option>
-            <option ng-repeat="(datasource_id, object) in ctrl.datasources" value="{{object.id}}">{{object.name}} - {{object.url}}</option>
+            <option ng-repeat="(datasource_id, object) in ctrl.datasources" value="{{object.getGrafanaDatasourceId()}}">{{object.getName()}} - {{object.getUrl()}}</option>
         </select>
-        <select ng-change="ctrl.select_database('{{value}}')"
-                ng-options="database_name for (database_name, object) in ctrl.databases[ctrl.selected_datasource[value]] track by database_name"
-                ng-model="ctrl.selected_database[value]">
+        <select ng-change="ctrl.select_database('{{value.getName()}}')"
+                ng-options="database_name for (database_name, object) in ctrl.databases[ctrl.selected_datasource[value.getName()]] track by database_name"
+                ng-model="ctrl.selected_database[value.getName()]">
             <option value="">-- Choose a database --</option>
         </select>
-        <select ng-change="ctrl.select_table('{{value}}')"
-                ng-options="table.name for table in ctrl.selected_database[value].tables track by table.name"
-                ng-model="ctrl.selected_table[value]">
+        <select ng-change="ctrl.select_table('{{value.getName()}}')"
+                ng-options="table.name for table in ctrl.selected_database[value.getName()].tables track by table.name"
+                ng-model="ctrl.selected_table[value.getName()]">
             <option value="">-- Choose a measurement --</option>
         </select>
-        <select ng-change="ctrl.select_field('{{value}}')"
-                ng-options="field for field in ctrl.selected_database[value].tables[ctrl.selected_table[value].name].fields track by field"
-                ng-model="ctrl.selected_field[value]">
+        <select ng-change="ctrl.select_field('{{value.getName()}}')"
+                ng-options="field for field in ctrl.selected_database[value.getName()].tables[ctrl.selected_table[value.getName()].name].fields track by field"
+                ng-model="ctrl.selected_field[value.getName()]">
             <option value="">-- Choose a field --</option>
         </select>
     </div>
     <div class="gf-form">
-        <button type="button" id="query-btn" ng-click="ctrl.refreshNetwork()" class="btn btn-inverse" ng-model="load" >Query</button>
+        <button type="button" id="query-btn" ng-click="ctrl.connectNodes()" class="btn btn-inverse" ng-model="load" >Salva connessioni</button>
         <p style="padding-bottom: 4em"></p>
     </div>
 </div>

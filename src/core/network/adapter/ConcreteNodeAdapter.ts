@@ -1,5 +1,5 @@
+import {AbstractValue} from "../value/value-module";
 import {NodeAdapter} from "./NodeAdapter";
-import {AbstractValue} from "./value/value-module";
 
 export class ConcreteNodeAdapter implements NodeAdapter {
   private readonly values: Array<AbstractValue>;
@@ -7,7 +7,7 @@ export class ConcreteNodeAdapter implements NodeAdapter {
 
   constructor (node: JNode, values: Array<AbstractValue>) {
     if (node == null || values == null) {
-      throw new TypeError("invalid parameter");
+      throw new Error("invalid parameter");
     }
     this.node = node;
     this.values = values;
@@ -29,7 +29,7 @@ export class ConcreteNodeAdapter implements NodeAdapter {
 
   public findValue (currentValue: string): AbstractValue {
     if (currentValue == null) {
-      throw new TypeError("invalid parameter");
+      throw new Error("invalid parameter");
     }
 
     for (const element of this.values) {

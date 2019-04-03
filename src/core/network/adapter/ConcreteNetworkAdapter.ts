@@ -1,5 +1,5 @@
-import {NodeAdapter} from "../../node/NodeAdapter";
 import {NetworkAdapter} from "./NetworkAdapter";
+import {NodeAdapter} from "./NodeAdapter";
 
 export class ConcreteNetworkAdapter implements NetworkAdapter {
   private graph: JGraph;
@@ -7,7 +7,7 @@ export class ConcreteNetworkAdapter implements NetworkAdapter {
 
   public constructor (network: JGraph, nodeList: Array<NodeAdapter>) {
     if (network == null || nodeList == null) {
-      throw new TypeError("invalid parameter");
+      throw new Error("invalid parameter");
     }
     this.graph = network;
     this.nodeList = nodeList;
@@ -23,7 +23,7 @@ export class ConcreteNetworkAdapter implements NetworkAdapter {
   /**
    * @Override - Function that remove the node from the observed nodes
    */
-  public unbserveNode (node: string): void {
+  public unobserveNode (node: string): void {
     this.graph.unobserve(node);
   }
 

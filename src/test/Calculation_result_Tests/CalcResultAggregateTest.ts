@@ -1,4 +1,4 @@
-import { CalcResultAggregate } from "../../core/calculation_result/CalcResultAggregate";
+import { CalcResultAggregate } from "../../core/net_manager/result/calculation_result/CalcResultAggregate";
 
 import {expect} from "chai";
 

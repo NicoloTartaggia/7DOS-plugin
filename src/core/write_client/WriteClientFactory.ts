@@ -10,7 +10,7 @@ import {
   InfluxDB,
 } from "influx";
 import InfluxWriteClient from "./InfluxWriteClient";
-import WriteClient from "./WriteClient";
+import {WriteClient} from "./WriteClient";
 
 /**
  * @interface WriteClientFactory

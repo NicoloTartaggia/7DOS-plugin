@@ -1,29 +1,29 @@
-import { NetUpdater } from "../../../../core/network/controller/updater/NetUpdater";
+import { NetUpdater } from "../../../../core/net_manager/updater/NetUpdater";
 
 import {expect} from "chai";
 import { NetworkAdapter } from "../../../../core/network/adapter/NetworkAdapter";
 import { ConcreteNetworkFactory } from "../../../../core/network/factory/ConcreteNetworkFactory";
-import { InputResult } from "../../../../core/inputReadResult/InputResult";
-import { InputResultAggregate } from "../../../../core/inputReadResult/InputResultAggregate";
-import { AbstractValue } from "../../../../core/node/value/AbstractValue";
-import { StringValue } from "../../../../core/node/value/StringValue";
-import { NodeAdapter } from "../../../../core/node/NodeAdapter";
-import { ConcreteNodeAdapter } from "../../../../core/node/ConcreteNodeAdapter";
+import { InputResult } from "../../../../core/net_manager/result/input_result/InputResult";
+import { InputResultAggregate } from "../../../../core/net_manager/result/input_result/InputResultAggregate";
+import { AbstractValue } from "../../../../core/network/value/AbstractValue";
+import { StringValue } from "../../../../core/network/value/StringValue";
+import { NodeAdapter } from "../../../../core/network/adapter/NodeAdapter";
+import { ConcreteNodeAdapter } from "../../../../core/network/adapter/ConcreteNodeAdapter";
 
 import jsbayes = require("jsbayes");
-import { CalcResult } from "core/calculation_result/CalcResult";
+import { CalcResult } from "core/net_manager/result/calculation_result/CalcResult";
 
 describe("NetUpdater - constructor", () => {
-  it("Undefined network - TypeError", () => {
+  it("Undefined network - Error", () => {
     let network: NetworkAdapter;
-    expect(() => new NetUpdater(network)).to.throw(TypeError, "invalid parameter");
+    expect(() => new NetUpdater(network)).to.throw(Error, "invalid parameter");
   });
 });
 
 describe("NetUpdater - updateNet", () => {
   const jsonSchema = require("../../../../core/network/factory/network_structure.schema.json");
   const jsonSchemaString: string = JSON.stringify(jsonSchema);
-  it("Correct network", () => {
+  it("Correct InputResultAggregate - Correct probValues", () => {
     const json = require("../../TestNetwork.json");
     const jsonString: string = JSON.stringify(json);
 
@@ -69,6 +69,24 @@ describe("NetUpdater - updateNet", () => {
     expect(probs[5]).to.be.at.least(0.58);
     expect(probs[5]).to.be.at.most(0.62);
   });
+  it("Undefined InputResultAggregate - Error", () => {
+    const json = require("../../TestNetwork.json");
+    const jsonString: string = JSON.stringify(json);
+
+    const network: NetworkAdapter = new ConcreteNetworkFactory().parseNetwork(jsonString, jsonSchemaString);
+    let results: InputResultAggregate;
+    const networkUpdater: NetUpdater = new NetUpdater(network);
+    expect(()=> networkUpdater.updateNet(results)).to.throw(Error, "invalid parameter");
+  });
+  it("Empty InputResultAggregate - Error", () => {
+    const json = require("../../TestNetwork.json");
+    const jsonString: string = JSON.stringify(json);
+
+    const network: NetworkAdapter = new ConcreteNetworkFactory().parseNetwork(jsonString, jsonSchemaString);
+    const arrayResult: Array<InputResult> = new Array<InputResult>();
+    let results: InputResultAggregate = new InputResultAggregate(arrayResult);
+    const networkUpdater: NetUpdater = new NetUpdater(network);
+    expect(()=> networkUpdater.updateNet(results)).to.throw(Error, "invalid parameter");
+  });
 });
 
-// let i: number = 0; i<it.next().getValueProbs.length; i+=1
