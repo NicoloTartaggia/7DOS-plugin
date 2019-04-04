@@ -3,6 +3,7 @@
     "allowSyntheticDefaultImports": true,
     "baseUrl": "./src",
     "declaration": false,
+    "downlevelIteration": true,
     "emitDecoratorMetadata": false,
     "esModuleInterop": true,
     "experimentalDecorators": true,

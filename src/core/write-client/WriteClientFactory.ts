@@ -35,12 +35,14 @@ export class ConcreteWriteClientFactory implements WriteClientFactory {
    */
   public async makeInfluxWriteClient(host: string, port: string, defaultDB: string, credentials?: [string, string])
     : Promise<InfluxWriteClient> {
-    const address: string = host + ":" + port;
-    const login: string = credentials ?
-      credentials[0] + ":" + credentials[1] + "@" :
-      "";
-    const dsn = "http://" + login + address + "/";
-    const influx: InfluxDB = new InfluxDB(dsn + "/" + defaultDB);
+    const dsn: URL = new URL(host);
+    dsn.port = port;
+    if (credentials && credentials[0] != null && credentials[0].length !== 0) {
+      dsn.username = credentials[0];
+      dsn.password = credentials[1];
+    }
+    const dsn_string = dsn.toString();
+    const influx: InfluxDB = new InfluxDB(dsn_string + defaultDB);
     influx.getDatabaseNames()
       .then((names) => {
         if (!names.includes(defaultDB)) {
@@ -53,6 +55,6 @@ export class ConcreteWriteClientFactory implements WriteClientFactory {
       .catch((err) => {
         throw new Error("Getting database names at: " + dsn + " has encountered the following error: " + err);
       });
-    return new InfluxWriteClient(dsn, defaultDB, influx);
+    return new InfluxWriteClient(dsn_string, defaultDB, influx);
   }
 }
