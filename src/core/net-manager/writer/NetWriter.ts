@@ -9,10 +9,16 @@ export class SingleNetWriter implements NetWriter {
   private client: WriteClient;
 
   public constructor(client: WriteClient) {
+    if (client == null) {
+      throw new Error("invalid parameter");
+    }
     this.client = client;
   }
 
   public async write(calcData: CalcResultAggregate): Promise<void> {
+    if (calcData == null) {
+      throw new Error("invalid parameter");
+    }
     await this.client.writeBatchData(calcData);
   }
 }
