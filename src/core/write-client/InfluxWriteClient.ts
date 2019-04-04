@@ -72,7 +72,7 @@ export default class InfluxWriteClient implements WriteClient {
    * unless specified, it's the default database for the client.
    */
   public async writePointData (point: CalcResult,
-                               {database = this.defaultDB}: { database?: string })
+                               database: string = this.defaultDB)
     : Promise<void> {
     const pointData: IPoint = this.parsePointData(point);
     this.influx.writePoints([
@@ -106,10 +106,11 @@ export default class InfluxWriteClient implements WriteClient {
   private parsePointData (point: CalcResult): IPoint {
     const pointRes: IPoint = {
       fields: {},
-      // measurement: point.getName(),
+      measurement: point.getNodeName(),
     };
     point.getValueProbs().forEach((item) => {
-      Object.defineProperty(pointRes, item.getValueName(), {value: item.getProbValue()});
+      const field: string = item.getValueName();
+      pointRes.fields[field] = item.getProbValue();
     });
     return pointRes;
   }

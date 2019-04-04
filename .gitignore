@@ -40,3 +40,4 @@ package-lock\.json
 \.nyc_output/
 
 src/core/**/*.js
+src/core/write-client/test.ts
