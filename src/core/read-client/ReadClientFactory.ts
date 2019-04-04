@@ -28,10 +28,14 @@ export class ConcreteReadClientFactory implements ReadClientFactory {
   public makeInfluxReadClient (host: string, port: string, credentials?: [string, string])
     : InfluxReadClient {
     const address: string = host + ":" + port;
-    const login: string = credentials
-      ? credentials[0] + ":" + credentials[1] + "@"
-      : "";
-    const dsn = "http://" + login + address + "/";
+    let login: string = "";
+    if (credentials[1]) {
+      login = credentials
+        ? credentials[0] + ":" + credentials[1] + "@"
+        : "";
+    }
+    // TODO address is already "http://localhost:8086" login must be appended
+    const dsn = login + address + "/";
     const influx: InfluxDB = new InfluxDB(dsn);
     return new InfluxReadClient(address, influx);
   }

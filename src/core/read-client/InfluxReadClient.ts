@@ -38,9 +38,6 @@ export default class InfluxReadClient implements ReadClient {
    */
   public async readField (database: string,
                           query: string): Promise<Array<{ name: string, tags: Tags, rows: Array<any> }>> {
-    console.log("Read field - db:" + database);
-    console.log("Read field - query:" + query);
-    console.log("Current address"+this.getAddress());
     const queryOptions: IQueryOptions = {};
     queryOptions.database = database;
     const tempRes = await this.influx.query(query, queryOptions)
