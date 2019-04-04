@@ -12,6 +12,8 @@ import {
 import InfluxWriteClient from "./InfluxWriteClient";
 import {WriteClient} from "./WriteClient";
 
+import {URL} from "url";
+
 /**
  * @interface WriteClientFactory
  * @description Exposes the factory methods of ConcreteWriteClientFactory.
