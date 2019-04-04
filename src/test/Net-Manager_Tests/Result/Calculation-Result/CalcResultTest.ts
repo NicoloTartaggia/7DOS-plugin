@@ -4,10 +4,10 @@ import { CalcResultItem } from "../../../../core/net-manager/result/calculation-
 import {expect} from "chai";
 
 describe("CalcResult - constructor", () => {
-    it(" null parameters passed - exception thrown ", () => {
+    it("Null parameters passed - Error", () => {
         expect(() => new CalcResult(null,null)).to.throw(Error, "invalid parameter");
     });
-    it(" null item in array passed - exception thrown ", () => {
+    it("Null item in array passed - Error", () => {
         let calcItems:Array<CalcResultItem>=new Array<CalcResultItem>();
         calcItems.push(new CalcResultItem("1",0.5));
         calcItems.push(new CalcResultItem("2",0.6));
@@ -18,7 +18,7 @@ describe("CalcResult - constructor", () => {
 });
 
 describe("CalcResult - getNodeName", () => {
-    it(" base function call- returns node name ", () => {
+    it("Base function call - Returns node name", () => {
         let calcItems:Array<CalcResultItem>=new Array<CalcResultItem>();
         calcItems.push(new CalcResultItem("1",0.5));
         expect(new CalcResult("n1",calcItems).getNodeName()).to.equal("n1");
@@ -26,7 +26,7 @@ describe("CalcResult - getNodeName", () => {
 });
 
 describe("CalcResult - getValueProbs", () => {
-    it(" base function call- returns node name ", () => {
+    it("Base function call - Returns node name", () => {
         let calcItems:Array<CalcResultItem>=new Array<CalcResultItem>();
         calcItems.push(new CalcResultItem("n5",0.5));
         calcItems.push(new CalcResultItem("n3",0.6));
@@ -37,7 +37,7 @@ describe("CalcResult - getValueProbs", () => {
         expect(probs[1].getValueName()).to.equals("n3");
         expect(probs[1].getProbValue()).to.equals(0.6);
     });
-    it(" check deep copy of ValueProbs- ValueProbs is not changed ", () => {
+    it("Check deep copy of ValueProbs - ValueProbs is not changed", () => {
         let calcItems:Array<CalcResultItem>=new Array<CalcResultItem>();
         calcItems.push(new CalcResultItem("n5",0.5));
         let calcResult=new CalcResult("n1",calcItems);
