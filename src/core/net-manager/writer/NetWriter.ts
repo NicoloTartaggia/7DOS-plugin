@@ -19,6 +19,6 @@ export class SingleNetWriter implements NetWriter {
     if (calcData == null) {
       throw new Error("invalid parameter");
     }
-    await this.client.writeBatchData(calcData, {});
+    await this.client.writeBatchData(calcData);
   }
 }
