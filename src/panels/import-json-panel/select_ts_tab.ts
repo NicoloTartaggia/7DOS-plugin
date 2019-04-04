@@ -64,16 +64,18 @@ export class SelectDB_Ctrl {
   }
 
   public getQuery(nodesIndex: number): ([string, DataSource]) {
-    const nI: number = 0;   // used for tests, to be replaced with parameter nodesIndex
-    const nodeName: string = this.nodes[nI].getName(); // ^ used only here
+    const nodeName: string = this.nodes[nodesIndex].getName(); // ^ used only here
 
     const datasource: DataSource = this.datasources[this.selected_datasource[nodeName]];
-    const url: string = datasource.getUrl();
-    const database: string = datasource.getDatabase();
-    const table: string = this.selected_table[nodeName].name;
-    const field: string = this.selected_field[nodeName];
-    const query: string = url + "/query?db=" + database + "&q=SELECT " + field + " FROM " + table;
-    return ([query, datasource]);
+    if (datasource !== undefined && datasource !== null) {
+      const url: string = datasource.getUrl();
+      const database: string = datasource.getDatabase();
+      const table: string = this.selected_table[nodeName].name;
+      const field: string = this.selected_field[nodeName];
+      const query: string = url + "/query?db=" + database + "&q=SELECT " + field + " FROM " + table;
+      return ([query, datasource]);
+    }
+    return([null, null]);
   }
 
   public connectNodes() {
@@ -86,6 +88,7 @@ export class SelectDB_Ctrl {
       console.log("fine nodo " + i);
 
     }
+    this.panelCtrl.netManager.updateNet();
   }
 
   public loadData() {
@@ -122,7 +125,6 @@ export class SelectDB_Ctrl {
 
   public getDatabases(datasource_id: string) {
     // http://localhost:8086/query?q=SHOW DATABASES
-    console.log(this.datasources[datasource_id].getUrl() + "/query?q=SHOW DATABASES");
     RxHR.get(this.datasources[datasource_id].getUrl() + "/query?q=SHOW DATABASES").subscribe(
       (data) => {
         if (data.response.statusCode === 200) {
@@ -154,7 +156,6 @@ export class SelectDB_Ctrl {
       (data) => {
         if (data.response.statusCode === 200) {
           const databases = JSON.parse(data.body);
-          console.log("getTables request done - executing for");
           if (typeof databases.results[0].series !== "undefined") {
             for (const entry of databases.results[0].series[0].values) {
               const tableOBJ = new Script_Found_Table();
@@ -176,7 +177,6 @@ export class SelectDB_Ctrl {
       (data) => {
         if (data.response.statusCode === 200) {
           const databases = JSON.parse(data.body);
-          console.log("getTableFields request done - executing for");
           if (typeof databases.results[0].series !== "undefined") {
             for (const entry of databases.results[0].series[0].values) {
               tableOBJ.fields.push(entry[0]);
