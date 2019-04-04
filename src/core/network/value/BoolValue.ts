@@ -15,7 +15,7 @@ class BoolValue extends AbstractValue {
     if (value == null) {
       throw new Error("invalid parameter");
     }
-    const boolValue = value.toLowerCase();
+    const boolValue = value.toString().toLowerCase();
     if (boolValue !== "true" && boolValue !== "false") {
       return false;
     } else if (boolValue === "true" && this.value) {
