@@ -8,8 +8,8 @@ export class InfluxInputFlow implements InputFlow {
   private readonly client: ReadClient;
 
   constructor (database: string, query: string, client: ReadClient) {
-    if (database == null || query == null || client == null || 
-        database.length === 0 || query.length ===0) {
+    if (database == null || query == null || client == null ||
+        database.length === 0 || query.length === 0) {
           throw new Error("invalid parameter");
     }
     this.query = this.checkQuery(query);
