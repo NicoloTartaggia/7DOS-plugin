@@ -1,3 +1,3 @@
-export interface OutputFlux {
+export interface OutputFlow {
   writeResult(result: string): boolean;
 }
