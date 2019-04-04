@@ -1,4 +1,4 @@
-import ReadClient from "../../../read_client/ReadClient";
+import ReadClient from "../../../read-client/ReadClient";
 import {InputFlow} from "./InputFlow";
 
 export class InfluxInputFlow implements InputFlow {
@@ -14,10 +14,11 @@ export class InfluxInputFlow implements InputFlow {
   }
 
   public async getResult (): Promise<string> {
-    const result = await this.client.readField(this.database_name, this.query).catch((err) => {
-      console.error("An error happened on getResult() " + err);
-      throw err;
-    });
+    const result = await this.client.readField(this.database_name, this.query)
+      .catch((err) => {
+        console.error("An error happened on getResult() " + err);
+        throw err;
+      });
     console.log("---getResult()");
     console.log(JSON.stringify(result[0]));
     console.log("---end getResult()");

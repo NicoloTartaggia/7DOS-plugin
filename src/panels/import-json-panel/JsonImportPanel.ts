@@ -1,5 +1,5 @@
 import { PanelCtrl } from "grafana/app/plugins/sdk";
-import {ConcreteWriteClientFactory} from "../../core/write_client/WriteClientFactory";
+import {ConcreteWriteClientFactory} from "../../core/write-client/WriteClientFactory";
 import { SelectDB_Ctrl, SelectDB_Directive} from "./select_ts_tab";
 
 import _ from "lodash";

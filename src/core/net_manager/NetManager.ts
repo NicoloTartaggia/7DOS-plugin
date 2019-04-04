@@ -1,6 +1,6 @@
 import { NetReader } from "./reader/NetReader";
-import {CalcResultAggregate} from "./result/calculation_result/CalcResultAggregate";
-import {InputResultAggregate} from "./result/input_result/InputResultAggregate";
+import {CalcResultAggregate} from "./result/calculation-result/CalcResultAggregate";
+import {InputResultAggregate} from "./result/input-result/InputResultAggregate";
 import {  NetUpdater } from "./updater/NetUpdater";
 import { NetWriter } from "./writer/NetWriter";
 

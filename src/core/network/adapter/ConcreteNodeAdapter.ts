@@ -1,4 +1,4 @@
-import {AbstractValue} from "../value/value-module";
+import {AbstractValue} from "../value/value";
 import {NodeAdapter} from "./NodeAdapter";
 
 export class ConcreteNodeAdapter implements NodeAdapter {
