@@ -7,6 +7,14 @@ import jsbayes = require("jsbayes");
 
 import {expect} from "chai";
 
+const schemaPath: string = "../../../core/network/factory/network_structure.schema.json";
+const jsonSchema = require(schemaPath);
+const jsonSchemaString: string = JSON.stringify(jsonSchema);
+
+const correctNetworkPath: string = "../../Util_JSON/CorrectNetwork.json"
+const json = require(correctNetworkPath);
+const correctJsonString: string = JSON.stringify(json);
+
 describe("ConcreteNetworkAdapter - constructor", () => {
     it("Undefined graph - Error", () => {
         let graph: JGraph;
@@ -23,13 +31,8 @@ describe("ConcreteNetworkAdapter - constructor", () => {
 });
 
 describe("ConcreteNetworkAdapter - observeNode", () => {
-    const jsonSchema = require("../../../core/network/factory/network_structure.schema.json");
-    const jsonSchemaString: string = JSON.stringify(jsonSchema);
-    it("Correct node, isObserved - True", () => {
-        const json = require("../CorrectNetwork.json");
-        const jsonString: string = JSON.stringify(json);
-    
-        const network: NetworkAdapter = new ConcreteNetworkFactory().parseNetwork(jsonString, jsonSchemaString);
+    it("Correct node, isObserved - True", () => {    
+        const network: NetworkAdapter = new ConcreteNetworkFactory().parseNetwork(correctJsonString, jsonSchemaString);
         network.observeNode("Example", "Example of string value");
 
         // TODO WHEN FUNCTIONALITY ISOBSERVED IS IMPLEMENTED --------------------------------------------------
@@ -39,37 +42,23 @@ describe("ConcreteNetworkAdapter - observeNode", () => {
         // TODO WHEN FUNCTIONALITY ISOBSERVED IS IMPLEMENTED --------------------------------------------------
     });
     it("Undefined node name - Error", () => {
-        const json = require("../CorrectNetwork.json");
-        const jsonString: string = JSON.stringify(json);
-    
-        const network: NetworkAdapter = new ConcreteNetworkFactory().parseNetwork(jsonString, jsonSchemaString);
+        const network: NetworkAdapter = new ConcreteNetworkFactory().parseNetwork(correctJsonString, jsonSchemaString);
         let name: string;
         expect(()=>network.observeNode(name, "Example of string value")).to.throw(Error, "invalid parameter");
     });
     it("Incorrect node name - Error", () => {
-        const json = require("../CorrectNetwork.json");
-        const jsonString: string = JSON.stringify(json);
-    
-        const network: NetworkAdapter = new ConcreteNetworkFactory().parseNetwork(jsonString, jsonSchemaString);
+        const network: NetworkAdapter = new ConcreteNetworkFactory().parseNetwork(correctJsonString, jsonSchemaString);
         expect(()=>network.observeNode("FakeNode", "Example of string value")).to.throw(Error, "Node FakeNode isn't present in the network");
     });
     it("Incorrect node value - Error", () => {
-        const json = require("../CorrectNetwork.json");
-        const jsonString: string = JSON.stringify(json);
-    
-        const network: NetworkAdapter = new ConcreteNetworkFactory().parseNetwork(jsonString, jsonSchemaString);
+        const network: NetworkAdapter = new ConcreteNetworkFactory().parseNetwork(correctJsonString, jsonSchemaString);
         expect(()=>network.observeNode("Example", "FakeValue")).to.throw(Error, "Node Example hasn't a value called FakeValue");
     });
 });
 
 describe("ConcreteNetworkAdapter - unobserveNode", () => {
-    const jsonSchema = require("../../../core/network/factory/network_structure.schema.json");
-    const jsonSchemaString: string = JSON.stringify(jsonSchema);
     it("Correct node, isObserved - False", () => {
-        const json = require("../CorrectNetwork.json");
-        const jsonString: string = JSON.stringify(json);
-    
-        const network: NetworkAdapter = new ConcreteNetworkFactory().parseNetwork(jsonString, jsonSchemaString);
+        const network: NetworkAdapter = new ConcreteNetworkFactory().parseNetwork(correctJsonString, jsonSchemaString);
         network.observeNode("Example", "Example of string value");
 
         // TODO WHEN FUNCTIONALITY ISOBSERVED IS IMPLEMENTED --------------------------------------------------
@@ -83,67 +72,45 @@ describe("ConcreteNetworkAdapter - unobserveNode", () => {
         // TODO WHEN FUNCTIONALITY ISOBSERVED IS IMPLEMENTED --------------------------------------------------
     });
     it("Undefined node name - Error", () => {
-        const json = require("../CorrectNetwork.json");
-        const jsonString: string = JSON.stringify(json);
-    
-        const network: NetworkAdapter = new ConcreteNetworkFactory().parseNetwork(jsonString, jsonSchemaString);
+        const network: NetworkAdapter = new ConcreteNetworkFactory().parseNetwork(correctJsonString, jsonSchemaString);
         let name: string;
         expect(()=>network.unobserveNode(name)).to.throw(Error, "invalid parameter");
     });
     it("Incorrect node name - Error", () => {
-        const json = require("../CorrectNetwork.json");
-        const jsonString: string = JSON.stringify(json);
-    
-        const network: NetworkAdapter = new ConcreteNetworkFactory().parseNetwork(jsonString, jsonSchemaString);
+        const network: NetworkAdapter = new ConcreteNetworkFactory().parseNetwork(correctJsonString, jsonSchemaString);
         expect(()=>network.unobserveNode("FakeNode")).to.throw(Error, "Node FakeNode isn't present in the network");
     });
 });
 
 describe("ConcreteNetworkAdapter - sampleNetwork", () => {
-    const jsonSchema = require("../../../core/network/factory/network_structure.schema.json");
-    const jsonSchemaString: string = JSON.stringify(jsonSchema);
     it("Undefined number of samples - Error", () => {
-      const json = require("../CorrectNetwork.json");
-      const jsonString: string = JSON.stringify(json);
-      const s: ConcreteNetworkAdapter = new ConcreteNetworkFactory().parseNetwork(jsonString, jsonSchemaString);
+      const s: ConcreteNetworkAdapter = new ConcreteNetworkFactory().parseNetwork(correctJsonString, jsonSchemaString);
       let undNumber: number;
       expect(()=>s.sampleNetwork(undNumber)).to.throw(Error, "invalid parameter");
     });
     it("Less than zero number of samples - Error", () => {
-        const json = require("../CorrectNetwork.json");
-        const jsonString: string = JSON.stringify(json);
-        const s: ConcreteNetworkAdapter = new ConcreteNetworkFactory().parseNetwork(jsonString, jsonSchemaString);
+        const s: ConcreteNetworkAdapter = new ConcreteNetworkFactory().parseNetwork(correctJsonString, jsonSchemaString);
         let negNumber: number = -50;
         expect(()=>s.sampleNetwork(negNumber)).to.throw(Error, "invalid parameter");
       });
 });
 
 describe("ConcreteNetworkAdapter - getNodeProbs", () => {
-    const jsonSchema = require("../../../core/network/factory/network_structure.schema.json");
-    const jsonSchemaString: string = JSON.stringify(jsonSchema);
     it("Undefined node name - Error", () => {
-      const json = require("../CorrectNetwork.json");
-      const jsonString: string = JSON.stringify(json);
-      const s: ConcreteNetworkAdapter = new ConcreteNetworkFactory().parseNetwork(jsonString, jsonSchemaString);
+      const s: ConcreteNetworkAdapter = new ConcreteNetworkFactory().parseNetwork(correctJsonString, jsonSchemaString);
       let undName: string;
       expect(()=>s.getNodeProbs(undName)).to.throw(Error, "invalid parameter");
     });
     it("Incorrect node name - Error", () => {
-        const json = require("../CorrectNetwork.json");
-        const jsonString: string = JSON.stringify(json);
-        const s: ConcreteNetworkAdapter = new ConcreteNetworkFactory().parseNetwork(jsonString, jsonSchemaString);
+        const s: ConcreteNetworkAdapter = new ConcreteNetworkFactory().parseNetwork(correctJsonString, jsonSchemaString);
         let incName: string = "IncorrectName";
         expect(()=>s.getNodeProbs(incName)).to.throw(Error, "Node IncorrectName isn't present in the network");
       });
 });
 
 describe("ConcreteNetworkAdapter - getNodeList", () => {
-    const jsonSchema = require("../../../core/network/factory/network_structure.schema.json");
-    const jsonSchemaString: string = JSON.stringify(jsonSchema);
     it("Correct network, grab second node's name - Second node's name", () => {
-      const json = require("../CorrectNetwork.json");
-      const jsonString: string = JSON.stringify(json);
-      const s: ConcreteNetworkAdapter = new ConcreteNetworkFactory().parseNetwork(jsonString, jsonSchemaString);
+      const s: ConcreteNetworkAdapter = new ConcreteNetworkFactory().parseNetwork(correctJsonString, jsonSchemaString);
       const nodeOne = s.getNodeList()[1];
       expect(nodeOne.getName()).to.equal('Example2');
     });

@@ -1,4 +1,4 @@
-import { InputResult } from "../../core/net-manager/result/input-result/InputResult";
+import { InputResult } from "../../../../core/net-manager/result/input-result/InputResult";
 
 import {expect} from "chai";
 

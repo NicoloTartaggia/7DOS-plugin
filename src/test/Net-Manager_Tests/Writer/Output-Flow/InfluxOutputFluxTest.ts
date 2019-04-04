@@ -1,4 +1,4 @@
-import InfluxOutputFlux from "../../../../../core/net-manager/writer/output-flux/InfluxOutputFlux";
+import InfluxOutputFlux from "../../../../core/net-manager/writer/output-flux/InfluxOutputFlux";
 
 import {expect} from "chai";
 

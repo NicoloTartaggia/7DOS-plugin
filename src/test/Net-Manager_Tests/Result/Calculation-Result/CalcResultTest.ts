@@ -1,5 +1,5 @@
-import { CalcResult } from "../../core/net-manager/result/calculation-result/CalcResult";
-import { CalcResultItem } from "../../core/net-manager/result/calculation-result/CalcResultItem";
+import { CalcResult } from "../../../../core/net-manager/result/calculation-result/CalcResult";
+import { CalcResultItem } from "../../../../core/net-manager/result/calculation-result/CalcResultItem";
 
 import {expect} from "chai";
 
