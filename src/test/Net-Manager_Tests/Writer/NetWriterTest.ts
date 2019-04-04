@@ -52,7 +52,6 @@ describe("SingleNetWriter - write", () => {
             });
         }).catch(function(e){
             console.log(e);
-        });
-        
+        }); 
     });
 });

@@ -8,6 +8,10 @@ export class InfluxInputFlow implements InputFlow {
   private readonly client: ReadClient;
 
   constructor (database: string, query: string, client: ReadClient) {
+    if (database == null || query == null || client == null || 
+        database.length === 0 || query.length ===0) {
+          throw new Error("invalid parameter");
+    }
     this.query = this.checkQuery(query);
     this.database_name = database;
     this.client = client;
@@ -16,14 +20,17 @@ export class InfluxInputFlow implements InputFlow {
   public async getResult (): Promise<string> {
     const result = await this.client.readField(this.database_name, this.query)
       .catch((err) => {
-        console.error("An error happened on getResult() " + err);
+        // console.error("An error happened on getResult() " + err);
         throw err;
       });
-    console.log(JSON.stringify(result[0]));
+    // console.log(JSON.stringify(result[0]));
     return result[0].rows[0][this.select_field];
   }
 
   private checkQuery (query: string): string {
+    if (query == null || query.length === 0) {
+      throw new Error("invalid parameter");
+    }
     // Check if query has select *
     if (query.includes("*")) {
       throw new Error("The query cannot have a *, select a single field");
