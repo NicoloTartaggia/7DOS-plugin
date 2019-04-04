@@ -14,17 +14,12 @@ export class InfluxInputFlow implements InputFlow {
   }
 
   public async getResult (): Promise<string> {
-    console.log("Awaiting getResult()");
-    console.log("DB:" + this.database_name);
-    console.log("Query:" + this.query);
     const result = await this.client.readField(this.database_name, this.query)
       .catch((err) => {
         console.error("An error happened on getResult() " + err);
         throw err;
       });
-    console.log("---getResult()");
     console.log(JSON.stringify(result[0]));
-    console.log("---end getResult()");
     return result[0].rows[0][this.select_field];
   }
 

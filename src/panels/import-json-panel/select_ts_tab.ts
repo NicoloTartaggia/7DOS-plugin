@@ -88,9 +88,7 @@ export class SelectDB_Ctrl {
       console.log("fine nodo " + i);
 
     }
-    this.panelCtrl.netManager.updateNet().then((result) => {
-      console.log("Then()");
-    });
+    this.panelCtrl.netManager.updateNet();
   }
 
   public loadData() {
