@@ -37,6 +37,10 @@ export class ConcreteWriteClientFactory implements WriteClientFactory {
    */
   public async makeInfluxWriteClient(host: string, port: string, defaultDB: string, credentials?: [string, string])
     : Promise<InfluxWriteClient> {
+    if (host == null || port == null || defaultDB == null) {
+      throw new Error("invalid parameter");
+    }
+
     const dsn: URL = new URL(host);
     dsn.port = port;
     if (credentials && credentials[0] != null && credentials[0].length !== 0) {
