@@ -34,7 +34,7 @@ export class ConcreteReadClientFactory implements ReadClientFactory {
         ? credentials[0] + ":" + credentials[1] + "@"
         : "";
     }
-    // TODO address is already "http://localhost:8086" login must be appended
+    // TODO address is already "http://localhost" login must be appended manually
     const dsn = login + address + "/";
     const influx: InfluxDB = new InfluxDB(dsn);
     return new InfluxReadClient(address, influx);
