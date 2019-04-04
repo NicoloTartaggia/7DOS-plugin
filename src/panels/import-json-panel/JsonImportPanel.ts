@@ -83,12 +83,12 @@ export class JsImportPanel extends PanelCtrl {
       this.loaded_network = new ConcreteNetworkFactory().parseNetwork(JSON.stringify(net));
       console.log(this.loaded_network.getNodeList().length);
     } catch (e) {
-      this.message = "Upload fallito!";
-      this.result = "Errore nella lettura del JSON, probabilmente non valido...";
+      this.message = "Upload failed!";
+      this.result = "Impossible to read JSON, probably not valid...";
       return;
     }
-    this.message = "Upload riuscito con successo!";
-    this.result = "Rete pronta!";
+    this.message = "Upload succeeded!";
+    this.result = "Network ready!";
     this.panel.jsonContent = JSON.stringify(net, null, "\t");
     this.events.emit("data-received", null);
     this.netUpdater = new NetUpdater(this.loaded_network);
