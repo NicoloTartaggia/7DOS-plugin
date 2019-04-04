@@ -22,10 +22,7 @@ export class CalcResult {
   }
 
   public getValueProbs (): Array<CalcResultItem> {
-    const copyProbs: Array<CalcResultItem> = new Array<CalcResultItem>();
-    for (const item of this.items) {
-      copyProbs.push(item);
-    }
-    return copyProbs;
+  // tslint:disable-next-line: prefer-object-spread
+    return Object.assign([], this.items); // returns deep copy
   }
 }

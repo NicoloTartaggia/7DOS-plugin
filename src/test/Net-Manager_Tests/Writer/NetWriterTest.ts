@@ -2,7 +2,7 @@ import {SingleNetWriter} from "../../../core/net-manager/writer/NetWriter";
 import { WriteClient } from "../../../core/write-client/WriteClient";
 import { CalcResultAggregate } from "../../../core/net-manager/result/calculation-result/CalcResultAggregate";
 import InfluxWriteClient from "../../../core/write-client/InfluxWriteClient";
-//import { CalcResult, CalcResultItem } from "../../../core/net-manager/result/calculation-result/calculation-result";
+import { CalcResult, CalcResultItem } from "../../../core/net-manager/result/calculation-result/calculation-result";
 import { ConcreteWriteClientFactory } from "../../../core/write-client/write-client";
 
 import { InfluxDB } from "influx";
@@ -17,9 +17,8 @@ describe("SingleNetWriter - constructor", () => {
         new ConcreteWriteClientFactory().makeInfluxWriteClient(
             "http://localhost", "8086", "prova", ["root", "root"]
         ).then(function(writeClient){
-            // const singleWriter: SingleNetWriter = new SingleNetWriter(writeClient);
-            
-            // console.log(singleWriter);
+            const singleWriter: SingleNetWriter = new SingleNetWriter(writeClient);
+            expect(singleWriter).to.not.equal(null);
         });
     });
 });
@@ -36,31 +35,24 @@ describe("SingleNetWriter - write", () => {
                                 });
     });
     it("Correct calcData - Something", () => {
-        /*
         new ConcreteWriteClientFactory().makeInfluxWriteClient(
             "http://localhost/", "8086", "prova", ["root", "root"]
         ).then(function(writeClient){
             const singleWriter: SingleNetWriter = new SingleNetWriter(writeClient);
-            console.log("//////////////////// WriteClient ///////////////////////");
-            console.log(writeClient);
-            console.log("//////////////////// InfluxDB ///////////////////////////");
-            console.log(writeClient.getInflux());
-            console.log("//////////////////// SingleWriter //////////////////////");
-            console.log(singleWriter);
             let calcArray: Array<CalcResult> = new Array<CalcResult>();
             let itemArray: Array<CalcResultItem> = new Array<CalcResultItem>();
             itemArray.push(new CalcResultItem("field1", 1));
             calcArray.push(new CalcResult("burglary", itemArray));
-            let calc: CalcResultAggregate;// = new CalcResultAggregate(calcArray);
+            let calc: CalcResultAggregate = new CalcResultAggregate(calcArray);
             singleWriter.write(calc).then(function (){
-                console.log(calc);
+                expect(calc.createIterator().next().value.getNodeName()).to.equal("burglary");
             })
             .catch(function (e){
                 console.log(e);
             });
         }).catch(function(e){
             console.log(e);
-        });*/
+        });
         
     });
 });
