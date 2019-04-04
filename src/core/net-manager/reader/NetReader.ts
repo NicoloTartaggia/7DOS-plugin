@@ -12,22 +12,25 @@ export class NetReader {
   private readonly node_list_ref: Array<NodeAdapter>;
 
   public constructor (network_ref: NetworkAdapter) {
+    if (network_ref == null) {
+      throw new Error("invalid parameter");
+    }
     this.flowMap = new Map<string, InputFlow>();
     this.node_list_ref = network_ref.getNodeList();
   }
 
   public async read (): Promise<InputResultAggregate> {
     const return_array: Array<InputResult> = new Array<InputResult>();
-    console.log("this.flowMap.size" + this.flowMap.size);
+    // console.log("this.flowMap.size" + this.flowMap.size);
 
     for (const [key, value] of this.flowMap) {
       const node: NodeAdapter = this.getNodeFromName(key);
       if (node === null) {
         throw new Error("getNodeFromName() failed and returned null");
       } else {
-        console.log(value);
+        // console.log(value);
         const res_value: string  = await value.getResult();
-        console.log("read(): Value letto:" + res_value);
+        // console.log("read(): Value letto:" + res_value);
         return_array.push(new InputResult(node, res_value));
       }
     }
@@ -35,11 +38,12 @@ export class NetReader {
   }
 
   public connectNode (node: string, dataSource: DataSource, query: string): void {
-    if (query !== undefined &&  query !== null) {
-      const client = ReusableReadClientPool.getInstance().acquireReusable(dataSource);
-      this.flowMap.set(node, new InfluxInputFlow(dataSource.getDatabase(), query, client));
-      console.log("controllo presenza nodo" + this.flowMap.has("node"));
+    if (node == null || dataSource == null || query == null || node.length === 0 || query.length === 0) {
+      throw new Error("invalid parameter");
     }
+    const client = ReusableReadClientPool.getInstance().acquireReusable(dataSource);
+    this.flowMap.set(node, new InfluxInputFlow(dataSource.getDatabase(), query, client));
+    console.log("controllo presenza nodo" + this.flowMap.has("node"));
   }
 
   private getNodeFromName (name: string): NodeAdapter {
