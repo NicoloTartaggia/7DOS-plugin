@@ -59,7 +59,7 @@ export default class InfluxWriteClient implements WriteClient {
    * unless specified, it's the default database for the client.
    */
   public async writeBatchData (batch: CalcResultAggregate,
-                               {database = this.defaultDB}: { database?: string })
+                               database: string = this.defaultDB)
     : Promise<void> {
     const batchData: Array<IPoint> = this.parseBatchData(batch);
     this.influx.writePoints(
