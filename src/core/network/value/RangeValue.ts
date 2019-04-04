@@ -5,7 +5,7 @@ class RangeValue extends AbstractValue {
   private readonly maxRange: number;
 
   constructor(minRange: number, maxRange: number, name: string) {
-    if (minRange == null || maxRange == null || name == null) {
+    if (minRange == null || maxRange == null || name == null || name.length === 0) {
       throw new Error("invalid parameter");
     } else if (minRange > maxRange) {
       throw new Error("maxRange is less then minRange");
@@ -16,7 +16,7 @@ class RangeValue extends AbstractValue {
   }
 
   public isValueType(value: string): boolean {
-    if (value == null) {
+    if (value == null || value.length === 0) {
       throw new Error("invalid parameter");
     }
     const numericValue = Number(value);

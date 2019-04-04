@@ -4,7 +4,7 @@ class StringValue extends AbstractValue {
   private readonly value: string;
 
   constructor(value: string, name: string) {
-    if (value == null || name == null) {
+    if (value == null || name == null || value.length === 0 || name.length === 0) {
       throw new Error("invalid parameter");
     }
     super(name);
@@ -12,7 +12,7 @@ class StringValue extends AbstractValue {
   }
 
   public isValueType(value: string): boolean {
-    if (value == null) {
+    if (value == null || value.length === 0) {
       throw new Error("invalid parameter");
     }
     if (this.value === value) {

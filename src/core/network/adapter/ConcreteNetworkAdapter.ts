@@ -6,7 +6,7 @@ export class ConcreteNetworkAdapter implements NetworkAdapter {
   private readonly nodeList: Array<NodeAdapter>;
 
   public constructor (network: JGraph, nodeList: Array<NodeAdapter>) {
-    if (network == null || nodeList == null) {
+    if (network == null || nodeList == null || nodeList.length === 0) {
       throw new Error("invalid parameter");
     }
     this.graph = network;
@@ -17,7 +17,7 @@ export class ConcreteNetworkAdapter implements NetworkAdapter {
    * @Override - Function that fixes a specific values (state) for a node in the network
    */
   public observeNode (node: string, value: string): void {
-    if (node == null || value == null) {
+    if (node == null || value == null || node.length === 0 || value.length === 0) {
       throw new Error("invalid parameter");
     }
     let isPresent: boolean = false;
@@ -47,7 +47,7 @@ export class ConcreteNetworkAdapter implements NetworkAdapter {
    * @Override - Function that remove the node from the observed nodes
    */
   public unobserveNode (node: string): void {
-    if (node == null) {
+    if (node == null || node.length === 0) {
       throw new Error("invalid parameter");
     }
     let isPresent: boolean = false;
@@ -78,7 +78,7 @@ export class ConcreteNetworkAdapter implements NetworkAdapter {
    * @returns Return a Array<number> that represent the probs of a specific node
    */
   public getNodeProbs (nodeName: string): Array<number> {
-    if (nodeName == null) {
+    if (nodeName == null || nodeName.length === 0) {
       throw new Error("invalid parameter");
     }
     for (const node of this.graph.nodes) {

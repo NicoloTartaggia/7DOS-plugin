@@ -8,6 +8,9 @@ describe("BoolValue - constructor", () => {
         let str: string;
         expect(() => new BoolValue(true, str)).to.throw(Error, "invalid parameter");
     });
+    it("Empty name - Error", () => {
+        expect(() => new BoolValue(true, "")).to.throw(Error, "invalid parameter");
+    });
     it("Undefined value - Error", () => {
         let str: boolean;
         expect(() => new BoolValue(str, "name1")).to.throw(Error, "invalid parameter");
@@ -30,15 +33,14 @@ describe("BoolValue - isValueType", () => {
         const result: boolean = boolV.isValueType("brzcld");
         expect(result).to.equal(false);
     });
-    it("Empty value - False", () => {
-        const boolV = new BoolValue(true, "name5");
-        const result: boolean = boolV.isValueType("");
-        expect(result).to.equal(false);
-    });
     it("Correct but upper case value - True", () => {
-        const boolV = new BoolValue(true, "name6");
+        const boolV = new BoolValue(true, "name5");
         const result: boolean = boolV.isValueType("True");
         expect(result).to.equal(true);
+    });
+    it("Empty value - Error", () => {
+        const boolV = new BoolValue(true, "name6");
+        expect(() => boolV.isValueType("")).to.throw(Error, "invalid parameter");
     });
     it("Undefined value - Error", () => {
         const boolV = new BoolValue(true, "name7");

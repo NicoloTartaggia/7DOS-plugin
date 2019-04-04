@@ -22,14 +22,13 @@ describe("NetUpdater - constructor", () => {
 
 const schemaPath: string = "../../../core/network/factory/network_structure.schema.json";
 const testNetworkPath: string = "../../Util_JSON/TestNetwork.json";
+const json = require(testNetworkPath);
+const jsonString: string = JSON.stringify(json);
 
 describe("NetUpdater - updateNet", () => {
   const jsonSchema = require(schemaPath);
   const jsonSchemaString: string = JSON.stringify(jsonSchema);
   it("Correct InputResultAggregate - Correct probValues", () => {
-    const json = require(testNetworkPath);
-    const jsonString: string = JSON.stringify(json);
-
     const network: NetworkAdapter = new ConcreteNetworkFactory().parseNetwork(jsonString, jsonSchemaString);
     network.observeNode("n1", "value1");
     const arrayValue: Array<AbstractValue> = new Array<AbstractValue>();
@@ -73,21 +72,8 @@ describe("NetUpdater - updateNet", () => {
     expect(probs[5]).to.be.at.most(0.62);
   });
   it("Undefined InputResultAggregate - Error", () => {
-    const json = require(testNetworkPath);
-    const jsonString: string = JSON.stringify(json);
-
     const network: NetworkAdapter = new ConcreteNetworkFactory().parseNetwork(jsonString, jsonSchemaString);
     let results: InputResultAggregate;
-    const networkUpdater: NetUpdater = new NetUpdater(network);
-    expect(()=> networkUpdater.updateNet(results)).to.throw(Error, "invalid parameter");
-  });
-  it("Empty InputResultAggregate - Error", () => {
-    const json = require(testNetworkPath);
-    const jsonString: string = JSON.stringify(json);
-
-    const network: NetworkAdapter = new ConcreteNetworkFactory().parseNetwork(jsonString, jsonSchemaString);
-    const arrayResult: Array<InputResult> = new Array<InputResult>();
-    let results: InputResultAggregate = new InputResultAggregate(arrayResult);
     const networkUpdater: NetUpdater = new NetUpdater(network);
     expect(()=> networkUpdater.updateNet(results)).to.throw(Error, "invalid parameter");
   });

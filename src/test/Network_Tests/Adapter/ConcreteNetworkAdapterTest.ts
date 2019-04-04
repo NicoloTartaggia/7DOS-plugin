@@ -28,6 +28,12 @@ describe("ConcreteNetworkAdapter - constructor", () => {
 
         expect(() => new ConcreteNetworkAdapter(graph, list)).to.throw(Error, "invalid parameter");
     });
+    it("Empty list - Error", () => {
+        let graph: JGraph = jsbayes.newGraph();
+        let list: Array<NodeAdapter> = new Array<NodeAdapter>();
+
+        expect(() => new ConcreteNetworkAdapter(graph, list)).to.throw(Error, "invalid parameter");
+    });
 });
 
 describe("ConcreteNetworkAdapter - observeNode", () => {
@@ -45,6 +51,10 @@ describe("ConcreteNetworkAdapter - observeNode", () => {
         const network: NetworkAdapter = new ConcreteNetworkFactory().parseNetwork(correctJsonString, jsonSchemaString);
         let name: string;
         expect(()=>network.observeNode(name, "Example of string value")).to.throw(Error, "invalid parameter");
+    });
+    it("Empty node name - Error", () => {
+        const network: NetworkAdapter = new ConcreteNetworkFactory().parseNetwork(correctJsonString, jsonSchemaString);
+        expect(()=>network.observeNode("", "Example of string value")).to.throw(Error, "invalid parameter");
     });
     it("Incorrect node name - Error", () => {
         const network: NetworkAdapter = new ConcreteNetworkFactory().parseNetwork(correctJsonString, jsonSchemaString);
@@ -76,6 +86,10 @@ describe("ConcreteNetworkAdapter - unobserveNode", () => {
         let name: string;
         expect(()=>network.unobserveNode(name)).to.throw(Error, "invalid parameter");
     });
+    it("Empty node name - Error", () => {
+        const network: NetworkAdapter = new ConcreteNetworkFactory().parseNetwork(correctJsonString, jsonSchemaString);
+        expect(()=>network.unobserveNode("")).to.throw(Error, "invalid parameter");
+    });
     it("Incorrect node name - Error", () => {
         const network: NetworkAdapter = new ConcreteNetworkFactory().parseNetwork(correctJsonString, jsonSchemaString);
         expect(()=>network.unobserveNode("FakeNode")).to.throw(Error, "Node FakeNode isn't present in the network");
@@ -101,11 +115,14 @@ describe("ConcreteNetworkAdapter - getNodeProbs", () => {
       let undName: string;
       expect(()=>s.getNodeProbs(undName)).to.throw(Error, "invalid parameter");
     });
+    it("Empty node name - Error", () => {
+        const s: ConcreteNetworkAdapter = new ConcreteNetworkFactory().parseNetwork(correctJsonString, jsonSchemaString);
+        expect(()=>s.getNodeProbs("")).to.throw(Error, "invalid parameter");
+    });
     it("Incorrect node name - Error", () => {
         const s: ConcreteNetworkAdapter = new ConcreteNetworkFactory().parseNetwork(correctJsonString, jsonSchemaString);
-        let incName: string = "IncorrectName";
-        expect(()=>s.getNodeProbs(incName)).to.throw(Error, "Node IncorrectName isn't present in the network");
-      });
+        expect(()=>s.getNodeProbs("IncorrectName")).to.throw(Error, "Node IncorrectName isn't present in the network");
+    });
 });
 
 describe("ConcreteNetworkAdapter - getNodeList", () => {

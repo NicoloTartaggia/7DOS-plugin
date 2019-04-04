@@ -6,7 +6,7 @@ export class ConcreteNodeAdapter implements NodeAdapter {
   private node: JNode;
 
   constructor (node: JNode, values: Array<AbstractValue>) {
-    if (node == null || values == null) {
+    if (node == null || values == null || values.length === 0) {
       throw new Error("invalid parameter");
     }
     this.node = node;
@@ -28,7 +28,7 @@ export class ConcreteNodeAdapter implements NodeAdapter {
   }
 
   public findValue (currentValue: string): AbstractValue {
-    if (currentValue == null) {
+    if (currentValue == null || currentValue.length === 0) {
       throw new Error("invalid parameter");
     }
 

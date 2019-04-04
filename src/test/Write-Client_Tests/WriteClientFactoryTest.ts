@@ -28,6 +28,27 @@ describe("WriteClientFactory - chooseClient", () => {
             expect(<Error> e.toString()).to.equal("Error: invalid parameter");
         });
     });
+    it("Empty host - Error ", () => {
+        new ConcreteWriteClientFactory().makeInfluxWriteClient(
+            "", "something", "something else", ["admin", "password"]
+        ).then(function(){}).catch(function(e){
+            expect(<Error> e.toString()).to.equal("Error: invalid parameter");
+        });
+    });
+    it("Empty port - Error ", () => {
+        new ConcreteWriteClientFactory().makeInfluxWriteClient(
+            "something", "", "something else", ["admin", "password"]
+        ).then(function(){}).catch(function(e){
+            expect(<Error> e.toString()).to.equal("Error: invalid parameter");
+        });
+    });
+    it("Empty defaultDB - Error ", () => {
+        new ConcreteWriteClientFactory().makeInfluxWriteClient(
+            "something", "something else", "", ["admin", "password"]
+        ).then(function(){}).catch(function(e){
+            expect(<Error> e.toString()).to.equal("Error: invalid parameter");
+        });
+    });
     it("All defined - New InfluxWriteClient", () => {
         new ConcreteWriteClientFactory().makeInfluxWriteClient(
             "http://localhost", "8086", "prova"

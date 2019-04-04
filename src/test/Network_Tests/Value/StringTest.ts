@@ -8,9 +8,15 @@ describe("StringValue - constructor", () => {
         let str: string;
         expect(() => new StringValue("value1", str)).to.throw(Error, "invalid parameter");
     });
+    it("Empty name - Error", () => {
+        expect(() => new StringValue("value1", "")).to.throw(Error, "invalid parameter");
+    });
     it("Undefined value - Error", () => {
         let str: string;
         expect(() => new StringValue(str, "name1")).to.throw(Error, "invalid parameter");
+    });
+    it("Empty value - Error", () => {
+        expect(() => new StringValue("", "name1")).to.throw(Error, "invalid parameter");
     });
 });
 
@@ -30,20 +36,23 @@ describe("StringValue - isValueType", () => {
         const result: boolean = stringV.isValueType("brzcld");
         expect(result).to.equal(false);
     });
-    it("Empty value - False", () => {
+    it("Empty value - Error", () => {
         const stringV = new StringValue("value5", "name5");
-        const result: boolean = stringV.isValueType("");
-        expect(result).to.equal(false);
+        expect(() => stringV.isValueType("")).to.throw(Error, "invalid parameter");
     });
     it("Correct but upper case value - False", () => {
         const stringV = new StringValue("value6", "name6");
         const result: boolean = stringV.isValueType("VALUE6");
         expect(result).to.equal(false);
     });
-    it("Undefined value parameter - Error", () => {
+    it("Undefined value - Error", () => {
         const stringV = new StringValue("value7", "name7");
         let str: string;
         expect(() => stringV.isValueType(str)).to.throw(Error, "invalid parameter");
+    });
+    it("Empty value - Error", () => {
+        const stringV = new StringValue("value8", "name8");
+        expect(() => stringV.isValueType("")).to.throw(Error, "invalid parameter");
     });
 });
 
