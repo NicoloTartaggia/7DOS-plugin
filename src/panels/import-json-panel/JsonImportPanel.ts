@@ -94,7 +94,7 @@ export class JsImportPanel extends PanelCtrl {
     this.netUpdater = new NetUpdater(this.loaded_network);
     this.netReader = new NetReader(this.loaded_network);
     this.netWriter = new SingleNetWriter(await new ConcreteWriteClientFactory()
-      .makeInfluxWriteClient("localhost", "8086", "myDB"));
+      .makeInfluxWriteClient("http://localhost", "8086", "myDB"));
     this.netManager = new NetManager(this.netReader, this.netUpdater, this.netWriter);
     this.ts_tab_control.refreshNetwork();
   }
