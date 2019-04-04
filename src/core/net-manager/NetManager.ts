@@ -11,6 +11,9 @@ export class NetManager {
 
   // TODO aggiungere writer
   public constructor(reader: NetReader, updater: NetUpdater, writer: NetWriter) {
+    if (reader == null || updater == null || writer == null) {
+      throw new Error("invalid parameter");
+    }
     this.reader = reader;
     this.updater = updater;
     this.writer = writer;
