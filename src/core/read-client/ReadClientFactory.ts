@@ -27,12 +27,14 @@ export default interface ReadClientFactory {
 export class ConcreteReadClientFactory implements ReadClientFactory {
   public makeInfluxReadClient (host: string, port: string, credentials?: [string, string])
     : InfluxReadClient {
-    const address: string = host + ":" + port;
-    const login: string = credentials
-      ? credentials[0] + ":" + credentials[1] + "@"
-      : "";
-    const dsn = "http://" + login + address + "/";
-    const influx: InfluxDB = new InfluxDB(dsn);
-    return new InfluxReadClient(address, influx);
+    const dsn: URL = new URL(host);
+    dsn.port = port;
+    if (credentials && credentials[0] != null && credentials[0].length !== 0) {
+      dsn.username = credentials[0];
+      dsn.password = credentials[1];
+    }
+    const dsn_string = dsn.toString();
+    const influx: InfluxDB = new InfluxDB(dsn_string);
+    return new InfluxReadClient(dsn_string, influx);
   }
 }

@@ -68,11 +68,11 @@ export class SelectDB_Ctrl {
 
     const datasource: DataSource = this.datasources[this.selected_datasource[nodeName]];
     if (datasource !== undefined && datasource !== null) {
-      const url: string = datasource.getUrl();
-      const database: string = datasource.getDatabase();
+      //  url: string = datasource.getUrl();
+      // const database: string = datasource.getDatabase();
       const table: string = this.selected_table[nodeName].name;
       const field: string = this.selected_field[nodeName];
-      const query: string = url + "/query?db=" + database + "&q=SELECT " + field + " FROM " + table;
+      const query: string = "SELECT " + field + " FROM " + table;
       return ([query, datasource]);
     }
     return([null, null]);

@@ -19,9 +19,7 @@ export class InfluxInputFlow implements InputFlow {
         console.error("An error happened on getResult() " + err);
         throw err;
       });
-    console.log("---getResult()");
     console.log(JSON.stringify(result[0]));
-    console.log("---end getResult()");
     return result[0].rows[0][this.select_field];
   }
 

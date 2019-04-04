@@ -27,7 +27,7 @@ export class NetReader {
       } else {
         console.log(value);
         const res_value: string  = await value.getResult();
-        console.log("value letto" + res_value);
+        console.log("read(): Value letto:" + res_value);
         return_array.push(new InputResult(node, res_value));
       }
     }
