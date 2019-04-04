@@ -10,7 +10,7 @@ export class InfluxInputFlow implements InputFlow {
   constructor (database: string, query: string, client: ReadClient) {
     if (database == null || query == null || client == null ||
         database.length === 0 || query.length === 0) {
-          throw new Error("invalid parameter");
+      throw new Error("invalid parameter");
     }
     this.query = this.checkQuery(query);
     this.database_name = database;
