@@ -26,6 +26,7 @@ export class NetReader {
         throw new Error("getNodeFromName() failed and returned null");
       } else {
         console.log(value);
+        console.log("Calling getResult for " + key);
         const res_value: string  = await value.getResult();
         console.log("value letto" + res_value);
         return_array.push(new InputResult(node, res_value));
