@@ -1,4 +1,4 @@
-import { InfluxInputFlow } from "../../../../../core/net_manager/reader/input-flow/InfluxInputFlow";
+import { InfluxInputFlow } from "../../../../../core/net-manager/reader/input-flow/InfluxInputFlow";
 
 import {expect} from "chai";
 

@@ -3,10 +3,10 @@ import {ConcreteWriteClientFactory} from "../../core/write-client/WriteClientFac
 import { SelectDB_Ctrl, SelectDB_Directive} from "./select_ts_tab";
 
 import _ from "lodash";
-import { NetManager } from "../../core/net_manager/NetManager";
-import { NetReader } from "../../core/net_manager/reader/NetReader";
-import { NetUpdater } from "../../core/net_manager/updater/NetUpdater";
-import {NetWriter, SingleNetWriter} from "../../core/net_manager/writer/NetWriter";
+import { NetManager } from "../../core/net-manager/NetManager";
+import { NetReader } from "../../core/net-manager/reader/NetReader";
+import { NetUpdater } from "../../core/net-manager/updater/NetUpdater";
+import {NetWriter, SingleNetWriter} from "../../core/net-manager/writer/NetWriter";
 import { NetworkAdapter } from "../../core/network/adapter/NetworkAdapter";
 import { ConcreteNetworkFactory } from "../../core/network/factory/ConcreteNetworkFactory";
 

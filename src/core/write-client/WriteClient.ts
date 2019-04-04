@@ -13,8 +13,8 @@
     Andrea Trevisin, 30/04/19, created file and implemented interface WriteClient
 */
 
-import {CalcResult} from "../net_manager/result/calculation-result/CalcResult";
-import {CalcResultAggregate} from "../net_manager/result/calculation-result/CalcResultAggregate";
+import {CalcResult} from "../net-manager/result/calculation-result/CalcResult";
+import {CalcResultAggregate} from "../net-manager/result/calculation-result/CalcResultAggregate";
 
 export interface WriteClient {
   writeBatchData(batch: CalcResultAggregate , ...options): any;

@@ -1,6 +1,6 @@
 import {InfluxDB, IPoint} from "influx";
-import {CalcResult} from "../net_manager/result/calculation-result/CalcResult";
-import {CalcResultAggregate} from "../net_manager/result/calculation-result/CalcResultAggregate";
+import {CalcResult} from "../net-manager/result/calculation-result/CalcResult";
+import {CalcResultAggregate} from "../net-manager/result/calculation-result/CalcResultAggregate";
 import {WriteClient} from "./WriteClient";
 
 export default class InfluxWriteClient implements WriteClient {
