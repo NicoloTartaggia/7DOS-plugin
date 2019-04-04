@@ -49,10 +49,6 @@ export default class InfluxWriteClient implements WriteClient {
     return this.defaultDB;
   }
 
-  public getInflux(): InfluxDB {
-    return this.influx;
-  }
-
   /**
    * @param batch The batch of data to be parsed and written to the server.
    * @param database OPTIONAL: the database to write the data to;
