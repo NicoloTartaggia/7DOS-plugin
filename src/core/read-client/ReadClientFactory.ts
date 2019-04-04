@@ -1,17 +1,17 @@
 /*
-  File: WriteClientFactory.ts
+  File: ReadClientFactory.ts
   Version: 1.0.0
   Type: Typescript module
-  Author: Andrea Trevisin
+  Author: Michele Roverato
   Email: andre.trevisin@gmail.com
   Date: 30/03/2019
   Desc: Module containing the definition of the factory class
-        used to instantiate WriteClient subclasses
+        used to instantiate ReadClient subclasses
   Changelog:
-    Andrea Trevisin, 02/04/19, deleted WriteClientCreator
-    Andrea Trevisin, 01/04/19, added WriteClientCreator (experimental)
-    Andrea Trevisin, 31/04/19, implemented ConcreteWriteClientFactory
-    Andrea Trevisin, 30/04/19, created file and implemented interface WriteClient
+    Andrea Trevisin, 02/04/19, deleted ReadClientCreator
+    Andrea Trevisin, 01/04/19, added ReadClientCreator (experimental)
+    Michele Roverato, 31/04/19, implemented ConcreteReadClientFactory
+    Michele Roverato, 30/04/19, created file and implemented interface ReadClient
 */
 
 import {

@@ -1,9 +1,9 @@
 import {NetworkAdapter} from "../../network/adapter/NetworkAdapter";
-import { CalcResult } from "../result/calculation_result/CalcResult";
-import { CalcResultAggregate } from "../result/calculation_result/CalcResultAggregate";
-import { CalcResultItem } from "../result/calculation_result/CalcResultItem";
-import { InputResult } from "../result/input_result/InputResult";
-import { InputResultAggregate } from "../result/input_result/InputResultAggregate";
+import { CalcResult } from "../result/calculation-result/CalcResult";
+import { CalcResultAggregate } from "../result/calculation-result/CalcResultAggregate";
+import { CalcResultItem } from "../result/calculation-result/CalcResultItem";
+import { InputResult } from "../result/input-result/InputResult";
+import { InputResultAggregate } from "../result/input-result/InputResultAggregate";
 
 export class NetUpdater {
   private readonly network: NetworkAdapter;

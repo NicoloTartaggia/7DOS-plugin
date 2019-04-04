@@ -1,4 +1,4 @@
-import InfluxWriteClient from "../../core/write_client/InfluxWriteClient";
+import InfluxWriteClient from "../../core/write-client/InfluxWriteClient";
 
 import {expect} from "chai";
 

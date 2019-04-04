@@ -1,10 +1,10 @@
 import {NetworkAdapter} from "../../network/adapter/NetworkAdapter";
 import {NodeAdapter} from "../../network/adapter/NodeAdapter";
-import {InputResult} from "../result/input_result/InputResult";
-import {InputResultAggregate} from "../result/input_result/InputResultAggregate";
+import {InputResult} from "../result/input-result/InputResult";
+import {InputResultAggregate} from "../result/input-result/InputResultAggregate";
 import DataSource from "./Datasource";
-import {InfluxInputFlow} from "./flow/InfluxInputFlow";
-import {InputFlow} from "./flow/InputFlow";
+import {InfluxInputFlow} from "./input-flow/InfluxInputFlow";
+import {InputFlow} from "./input-flow/InputFlow";
 import ReusableReadClientPool from "./ReusableReadClientPool";
 
 export class NetReader {

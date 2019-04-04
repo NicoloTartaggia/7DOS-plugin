@@ -1,5 +1,5 @@
-import {CalcResultAggregate} from "core/net_manager/result/calculation_result/CalcResultAggregate";
-import {WriteClient} from "../../write_client/write-client-module";
+import {CalcResultAggregate} from "core/net_manager/result/calculation-result/CalcResultAggregate";
+import {WriteClient} from "../../write-client/write-client";
 
 export interface NetWriter {
   write(data: CalcResultAggregate): Promise<void>;
