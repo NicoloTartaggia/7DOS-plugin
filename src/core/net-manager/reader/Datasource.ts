@@ -10,7 +10,7 @@ export default class DataSource {
 
   public constructor (url: string, database: string = "telegraf",
                       username: string = null, password: string = null,
-                      type: string= null, name: string= null, grafanaDatasourceId: number= null) {
+                      type: string = null, name: string = null, grafanaDatasourceId: number = null) {
     if (url.length === 0) {
       throw new Error("invalid url parameter");
     } else if (type !== null && type.length === 0) {
@@ -50,17 +50,33 @@ export default class DataSource {
   public getPassword (): string {
     return this.password;
   }
-  public getUrl(): string {
+
+  public getUrl (): string {
     return this.host + ":" + this.port;
   }
-  public getType(): string {
+
+  public getType (): string {
     return this.type;
   }
-  public getName(): string {
-    return this.name ;
+
+  public getName (): string {
+    return this.name;
   }
-  public getGrafanaDatasourceId(): number {
+
+  public getGrafanaDatasourceId (): number {
     return this.grafanaDatasourceId;
+  }
+
+  public clone (): DataSource {
+    return new DataSource((this.host + ":" + this.port), this.database, this.username, this.password,
+      this.type, this.name, this.grafanaDatasourceId);
+
+  }
+
+  public clone_with_new_db (database_name: string): DataSource {
+    return new DataSource((this.host + ":" + this.port), database_name, this.username, this.password,
+      this.type, this.name, this.grafanaDatasourceId);
+
   }
 
 }
