@@ -1,8 +1,21 @@
 <div class="editor-row">
     <div class="section gf-form-group">
-        <h5 class="section-heading">Imposta la connessione al server Influx su cui scrivere</h5>
+        <h5 class="section-heading">Set up a connection to Influx server in order to write the results on it</h5>
         <div class="gf-form">
-            <button ng-click="ctrl.testDB('net-name')" id="testdb-btn" class="btn btn-inverse">Test database</button>
+            <button type="button" id="load-btn" ng-click="ctrl.loadData()" class="btn btn-inverse" ng-model="load" >Load data</button>
+            <p style="padding-bottom: 4em"></p>
+            <select ng-model="ctrl.selected_datasource">
+                <option value="">-- Choose a datasource --</option>
+                <option ng-repeat="(datasource_id, object) in ctrl.datasources" value="{{object.getGrafanaDatasourceId()}}">{{object.getName()}} - {{object.getUrl()}}</option>
+            </select>
+        </div>
+        <div  class="gf-form">
+            <label class="gf-form-label max-width-20" style="font-size: 13px">Insert database name</label>
+            <input class="gf-form-input max-width-20" type="text" ng-model="ctrl.database_name" />
+        </div>
+        <div>
+            <button ng-click="ctrl.createDatabaseToWrite()" id="testdb-btn" class="btn btn-inverse" style="margin-top: 1.5em">
+                Conferma</button>
         </div>
     </div>
 </div>

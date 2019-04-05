@@ -1,6 +1,7 @@
 import { PanelCtrl } from "grafana/app/plugins/sdk";
 import {ConcreteWriteClientFactory} from "../../core/write-client/WriteClientFactory";
 import { SelectDB_Ctrl, SelectDB_Directive} from "./select_ts_tab";
+import { SetWriteConnection_Ctrl, SetWriteConnection_Directive } from "./set_write_connection_tab";
 
 import _ from "lodash";
 import { NetManager } from "../../core/net-manager/NetManager";
@@ -50,6 +51,7 @@ export class JsImportPanel extends PanelCtrl {
   public netWriter: NetWriter;
 
   public ts_tab_control: SelectDB_Ctrl;
+  public write_connection_control: SetWriteConnection_Ctrl;
 
   public panelDefaults = {
     jsonContent: "",
@@ -70,9 +72,7 @@ export class JsImportPanel extends PanelCtrl {
     this.addEditorTab("Graphic-Network-Editor",
       "public/plugins/app-jsbayes/panels/import-json-panel/partials/optionTab_GraphicEditor.html",
       3);
-    this.addEditorTab("Setup-Results-Influx",
-      "public/plugins/app-jsbayes/panels/import-json-panel/partials/optionTab_setupInflux.html",
-      4);
+    this.addEditorTab("Setup-Results-Influx", SetWriteConnection_Directive, 4);
     this.events.emit("data-received", null);
 
   }
@@ -97,6 +97,7 @@ export class JsImportPanel extends PanelCtrl {
       .makeInfluxWriteClient("http://localhost", "8086", "myDB"));
     this.netManager = new NetManager(this.netReader, this.netUpdater, this.netWriter);
     this.ts_tab_control.refreshNetwork();
+    this.write_connection_control.createDatabaseToWrite();
   }
 
   public onSubmit () { // Currently not used
