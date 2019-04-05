@@ -4,11 +4,12 @@ import { NetUpdater } from "../../core/net-manager/updater/NetUpdater";
 import { SingleNetWriter, NetWriter } from "../../core/net-manager/writer/NetWriter";
 import { ConcreteNetworkFactory } from "../../core/network/factory/factory";
 import { ConcreteWriteClientFactory } from "../../core/write-client/write-client";
-
-import {expect} from "chai";
-import { ConcreteNetworkAdapter } from "core/network/adapter/adapter";
+import { ConcreteNetworkAdapter } from "../../core/network/adapter/adapter";
 
 const schemaPath: string = "../../core/network/factory/network_structure.schema.json";
+
+import {expect} from "chai";
+
 const jsonSchema = require(schemaPath);
 const jsonSchemaString: string = JSON.stringify(jsonSchema);
 
@@ -41,8 +42,7 @@ describe("NetManager - constructor", () => {
 });
 
 describe("NetManager - updateNet", () => {
-    it(" TODO ", () => {
-        // TODO
-        expect(true).to.equal(true);
-    });
+    it("Reader Updater Writer - Updated network // TO BE DONE (it's difficult)", () => {
+        expect("it works").to.equal("it works");
+    }); 
 });

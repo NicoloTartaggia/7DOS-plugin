@@ -27,10 +27,15 @@ export default interface ReadClientFactory {
 export class ConcreteReadClientFactory implements ReadClientFactory {
   public makeInfluxReadClient (host: string, port: string, credentials?: [string, string])
     : InfluxReadClient {
-    if (host === null || port === null || host === "" || port === ""
-    || (credentials != null && (credentials[0] === null
+    if (host === null ||  host === "") {
+      throw new Error("invalid host parameter");
+    }
+    if (port === null || port === "") {
+      throw new Error("invalid port parameter");
+    }
+    if ((credentials != null && (credentials[0] === null
     || credentials[0] === "" || credentials[1] === null))) {
-      throw new Error("invalid parameter");
+      throw new Error("invalid credentials parameter");
     }
     const dsn: URL = new URL(host);
     dsn.port = port;

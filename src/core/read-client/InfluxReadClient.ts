@@ -38,8 +38,11 @@ export default class InfluxReadClient implements ReadClient {
    */
   public async readField (database: string, query: string):
   Promise<Array<{ name: string, tags: Tags, rows: Array<any> }>> {
-    if (database === null || query === null || database === "" || query === "") {
-      throw new Error("invalid parameter");
+    if (database == null || database.length === 0) {
+      throw new Error("invalid database parameter");
+    }
+    if (query == null || query.length === 0) {
+      throw new Error("invalid query parameter");
     }
     const queryOptions: IQueryOptions = {};
     queryOptions.database = database;

@@ -23,10 +23,11 @@ describe("NetReader - constructor", () => {
 });
 
 describe("NetReader - read", () => {
-    it("Correct network - Collection", () => {
+    it("Correct network, connection to node - Collection", () => {
         const networkReader: NetReader = new NetReader(network);
+        networkReader.connectNode("Example", new DataSource("http://localhost:8086/"), "SELECT Percent_DPC_Time FROM win_cpu");
         networkReader.read().then(function(result){
-            expect(result.collection.length).to.equal(0);
+            expect(result.buildIterator().next().value.getNode().getName()).to.equal("Example");
         }).catch(function(e){
             console.log("NetReader read ERROR: " + e);
         });

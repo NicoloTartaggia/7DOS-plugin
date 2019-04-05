@@ -47,7 +47,7 @@ export class NetReader {
     }
     const client = ReusableReadClientPool.getInstance().acquireReusable(dataSource);
     this.flowMap.set(node, new InfluxInputFlow(dataSource.getDatabase(), query, client));
-    console.log("controllo presenza nodo" + this.flowMap.has("node"));
+    // console.log("controllo presenza nodo" + this.flowMap.has("node"));
   }
 
   private getNodeFromName (name: string): NodeAdapter {

@@ -54,28 +54,28 @@ describe("InfluxReadClient - readField", () => {
     });
   });
   */
-  it("null database - exception thrown",()=>{
-    client.readField(null,":8086").then(function(){})
+  it("Undefined database - Error",()=>{
+    client.readField(null,"SHOW MEASUREMENTS").then(function(){})
     .catch(function(e){
-      expect(<Error> e.toString()).to.equal("Error: invalid parameter");
+      expect(<Error> e.toString()).to.equal("Error: invalid database parameter");
     });
   });
-  it("null query - exception thrown",()=>{
+  it("Undefined query - Error",()=>{
     client.readField("http://localhost",null).then(function(){})
     .catch(function(e){
-      expect(<Error> e.toString()).to.equal("Error: invalid parameter");
+      expect(<Error> e.toString()).to.equal("Error: invalid query parameter");
     });
   });
-  it("database empty string- exception thrown",()=>{
+  it("Empty database - Error",()=>{
+    client.readField("", "SHOW MEASUREMENTS").then(function(){})
+    .catch(function(e){
+      expect(<Error> e.toString()).to.equal("Error: invalid database parameter");
+    });
+  });
+  it("Empty query - Error",()=>{
     client.readField("http://localhost","").then(function(){})
     .catch(function(e){
-      expect(<Error> e.toString()).to.equal("Error: invalid parameter");
-    });
-  });
-  it("query empty string- exception thrown",()=>{
-    client.readField("","8086").then(function(){})
-    .catch(function(e){
-      expect(<Error> e.toString()).to.equal("Error: invalid parameter");
+      expect(<Error> e.toString()).to.equal("Error: invalid query parameter");
     });
   });
 });
