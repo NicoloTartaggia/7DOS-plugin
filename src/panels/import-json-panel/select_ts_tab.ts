@@ -42,7 +42,6 @@ export class SelectDB_Ctrl {
     this.panel.datasource = this.panel.datasource || null;
     this.panel.targets = this.panel.targets || [{}];
     this.dashboard = this.panelCtrl.dashboard;
-
     // Linking select_ts_tab to panel
     this.panel.ts_tab_control = this.panelCtrl;
     console.log("SelectDB_Ctrl - Object build");
@@ -85,7 +84,6 @@ export class SelectDB_Ctrl {
         this.panelCtrl.netReader.connectNode(this.nodes[i].getName(), datasource, query);
       }
     }
-    this.panelCtrl.netManager.updateNet();
   }
 
   public loadData() {
