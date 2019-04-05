@@ -1,8 +1,11 @@
-// import InfluxReadClient from "../../core/read-client/InfluxReadClient";
-// import { ConcreteReadClientFactory } from "../../core/read-client/ReadClientFactory";
+import InfluxReadClient from "../../core/read-client/InfluxReadClient";
+import { ConcreteReadClientFactory } from "../../core/read-client/ReadClientFactory";
 
 import {expect} from "chai";
-//import {InfluxDB} from "influx";
+import {InfluxDB} from "influx";
+
+let client:InfluxReadClient=new ConcreteReadClientFactory().makeInfluxReadClient("http://localhost","8086");
+
 describe("InfluxReadClient - createReaderClient", () => {
     it(" TODO ", () => {
         // TODO
@@ -11,41 +14,35 @@ describe("InfluxReadClient - createReaderClient", () => {
 });
 
 describe("InfluxReadClient - getAddress", () => {
-    it(" TODO ", () => {
-        // TODO
-        expect(true).to.equal(true);
+    it(" base call no login - address returned correctly ", () => {
+      expect(client.getAddress()).to.equals("http://localhost:8086/");
+    });
+    it(" base call with login - address returned correctly ", () => {
+      let loginClient=new ConcreteReadClientFactory().makeInfluxReadClient("http://localhost","8086",["admin","password"]);
+      expect(loginClient.getAddress()).to.equals("http://admin:password@localhost:8086/");
     });
 });
 describe("InfluxReadClient - readField", () => {
-/*
-  before(function(){
-    this.timeout(10000);
-    let client:InfluxDB=new InfluxDB({
+  it("read on influx server- field read correctly", () => {
+    let influxclient:InfluxDB=new InfluxDB({
       host: 'localhost',
       port: 8086,
       database:"readTest"
     });
-    return new Promise((resolve) => {
-      client.createDatabase("readTest").then(function(){
-        client.writePoints([{
-          measurement:"cpu",
-          tags:{},
-          fields:{value:0.64}
-        }]);
-      });
-      resolve();
-    }); 
-  });
-  it("read on influx server- field read correctly", () => {
-      return new Promise((resolve) => {
-        let client:InfluxReadClient=new ConcreteReadClientFactory().makeInfluxReadClient("http://localhost","8086");
+    influxclient.createDatabase("readTest").then(function(){
+      influxclient.writePoints([{
+        measurement:"cpu",
+        tags:{},
+        fields:{value:0.64}
+      }]).then(function(){
         let result=client.readField("readTest", "select value from cpu");
         result.then(function(value){
           expect(value[0].rows[0].value).to.equal(0.64);
         });
-        resolve();
-      });
+      })
+    });
   });
+  /*
   after(function(){
     return new Promise((resolve) => {
       let client:InfluxDB=new InfluxDB({
@@ -58,19 +55,27 @@ describe("InfluxReadClient - readField", () => {
   });
   */
   it("null database - exception thrown",()=>{
-    /*
-    let client:InfluxReadClient=new ConcreteReadClientFactory().makeInfluxReadClient("http://localhost","8086");
     client.readField(null,":8086").then(function(){})
     .catch(function(e){
       expect(<Error> e.toString()).to.equal("Error: invalid parameter");
-    });*/
+    });
   });
   it("null query - exception thrown",()=>{
-    /*
-    let client:InfluxReadClient=new ConcreteReadClientFactory().makeInfluxReadClient("http://localhost","8086");
     client.readField("http://localhost",null).then(function(){})
     .catch(function(e){
       expect(<Error> e.toString()).to.equal("Error: invalid parameter");
-    });*/
+    });
+  });
+  it("database empty string- exception thrown",()=>{
+    client.readField("http://localhost","").then(function(){})
+    .catch(function(e){
+      expect(<Error> e.toString()).to.equal("Error: invalid parameter");
+    });
+  });
+  it("query empty string- exception thrown",()=>{
+    client.readField("","8086").then(function(){})
+    .catch(function(e){
+      expect(<Error> e.toString()).to.equal("Error: invalid parameter");
+    });
   });
 });
