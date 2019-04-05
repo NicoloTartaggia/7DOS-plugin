@@ -35,10 +35,15 @@ export class InfluxInputFlow implements InputFlow {
     if (query.includes("*")) {
       throw new Error("The query cannot have a *, select a single field");
     }
+    // Order desc
+    if (!query.toLowerCase().includes("order by time desc")) {
+      query = query.concat(" ORDER BY time DESC");
+    }
     // Add limit if not already present
     if (!query.toLowerCase().includes("limit 1")) {
       query = query.concat(" LIMIT 1");
     }
+
     // Get the name of the field to select
     const select = query.substring(
       query.toLowerCase().indexOf("select") + 7,

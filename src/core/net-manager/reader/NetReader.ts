@@ -38,8 +38,12 @@ export class NetReader {
   }
 
   public connectNode (node: string, dataSource: DataSource, query: string): void {
-    if (node == null || dataSource == null || query == null || node.length === 0 || query.length === 0) {
-      throw new Error("invalid parameter");
+    if (node == null || node.length === 0) {
+      throw new Error("Invalid node");
+    } else if (dataSource == null) {
+      throw new Error("Invalid dataSource.");
+    } else if (query == null || query.length === 0) {
+      throw new Error("Invalid query.");
     }
     const client = ReusableReadClientPool.getInstance().acquireReusable(dataSource);
     this.flowMap.set(node, new InfluxInputFlow(dataSource.getDatabase(), query, client));

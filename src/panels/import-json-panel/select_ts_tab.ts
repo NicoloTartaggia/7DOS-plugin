@@ -81,12 +81,9 @@ export class SelectDB_Ctrl {
   public connectNodes() {
     for (let i = 0; i < this.nodes.length; i++) {
       const [query, datasource] = this.getQuery(i);
-      this.panelCtrl.netReader.connectNode(this.nodes[i].getName(), datasource, query);
-      console.log("nodo " + i);
-      console.log(this.nodes[i].getName());
-      console.log(query);
-      console.log("fine nodo " + i);
-
+      if (datasource !== null) {
+        this.panelCtrl.netReader.connectNode(this.nodes[i].getName(), datasource, query);
+      }
     }
     this.panelCtrl.netManager.updateNet();
   }
@@ -111,6 +108,7 @@ export class SelectDB_Ctrl {
             if (entry.type === "influxdb") {
               const datas = new DataSource(entry.url, entry.database, entry.user,
                 entry.password, entry.type, entry.name, entry.id);
+              console.log("datas.name: " + datas.getName());
               this.datasources[entry.id] = datas;
               this.getDatabases(entry.id);
             } else {

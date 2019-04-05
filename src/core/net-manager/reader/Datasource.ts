@@ -11,12 +11,14 @@ export default class DataSource {
   public constructor (url: string, database: string = "telegraf",
                       username: string = null, password: string = null,
                       type: string= null, name: string= null, grafanaDatasourceId: number= null) {
-    if (url.length === 0 || database.length === 0 || (username !== null && username.length === 0) ||
-        (password !== null && password.length === 0) ||
-        (type !== null && type.length === 0) ||
-        (name !== null && name.length === 0)) {
-      throw new Error("invalid parameter");
+    if (url.length === 0) {
+      throw new Error("Invalid url.");
+    } else if (type !== null && type.length === 0) {
+      throw new Error("Invalid type.");
+    } else if (name !== null && name.length === 0) {
+      throw new Error("Invalid name.");
     }
+
     const urlParse: URL = new URL(url);
     this.host = urlParse.protocol + "//" + urlParse.hostname;
     this.port = urlParse.port;
