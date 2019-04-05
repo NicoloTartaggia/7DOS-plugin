@@ -1,15 +1,16 @@
-import { PanelCtrl } from "grafana/app/plugins/sdk";
+import appEvents from "grafana/app/core/app_events";
+import {PanelCtrl} from "grafana/app/plugins/sdk";
 import {ConcreteWriteClientFactory} from "../../core/write-client/WriteClientFactory";
-import { SelectDB_Ctrl, SelectDB_Directive} from "./select_ts_tab";
-import { SetWriteConnection_Ctrl, SetWriteConnection_Directive } from "./set_write_connection_tab";
+import {SelectDB_Ctrl, SelectDB_Directive} from "./select_ts_tab";
+import {SetWriteConnection_Ctrl, SetWriteConnection_Directive} from "./set_write_connection_tab";
 
 import _ from "lodash";
-import { NetManager } from "../../core/net-manager/NetManager";
-import { NetReader } from "../../core/net-manager/reader/NetReader";
-import { NetUpdater } from "../../core/net-manager/updater/NetUpdater";
+import {NetManager} from "../../core/net-manager/NetManager";
+import {NetReader} from "../../core/net-manager/reader/NetReader";
+import {NetUpdater} from "../../core/net-manager/updater/NetUpdater";
 import {NetWriter, SingleNetWriter} from "../../core/net-manager/writer/NetWriter";
-import { NetworkAdapter } from "../../core/network/adapter/NetworkAdapter";
-import { ConcreteNetworkFactory } from "../../core/network/factory/ConcreteNetworkFactory";
+import {NetworkAdapter} from "../../core/network/adapter/NetworkAdapter";
+import {ConcreteNetworkFactory} from "../../core/network/factory/ConcreteNetworkFactory";
 
 export class JsImportPanel extends PanelCtrl {
   public static templateUrl: string = "panels/import-json-panel/partials/panelTemplate.html";
@@ -171,6 +172,12 @@ export class JsImportPanel extends PanelCtrl {
     this.doRefresh = false;
     this.$timeout.cancel(this.nextTickPromise);
   }
+  public showError (error_title: string, error_message: string) {
+    // The error type can be alert-error or alert-warning, it basically just change box the icon
+    // Example: appEvents.emit("alert-warning", ["Validation failed", "An error occurred doing something..."]);
+    appEvents.emit("alert-error", [error_title, error_message]);
+  }
+
   public link (scope, element) {
   }
 }
