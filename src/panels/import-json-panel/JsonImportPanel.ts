@@ -1,15 +1,16 @@
-import { PanelCtrl } from "grafana/app/plugins/sdk";
+import appEvents from "grafana/app/core/app_events";
+import {PanelCtrl} from "grafana/app/plugins/sdk";
 import {ConcreteWriteClientFactory} from "../../core/write-client/WriteClientFactory";
-import { SelectDB_Ctrl, SelectDB_Directive} from "./select_ts_tab";
-import { SetWriteConnection_Ctrl, SetWriteConnection_Directive } from "./set_write_connection_tab";
+import {SelectDB_Ctrl, SelectDB_Directive} from "./select_ts_tab";
+import {SetWriteConnection_Ctrl, SetWriteConnection_Directive} from "./set_write_connection_tab";
 
 import _ from "lodash";
-import { NetManager } from "../../core/net-manager/NetManager";
-import { NetReader } from "../../core/net-manager/reader/NetReader";
-import { NetUpdater } from "../../core/net-manager/updater/NetUpdater";
+import {NetManager} from "../../core/net-manager/NetManager";
+import {NetReader} from "../../core/net-manager/reader/NetReader";
+import {NetUpdater} from "../../core/net-manager/updater/NetUpdater";
 import {NetWriter, SingleNetWriter} from "../../core/net-manager/writer/NetWriter";
-import { NetworkAdapter } from "../../core/network/adapter/NetworkAdapter";
-import { ConcreteNetworkFactory } from "../../core/network/factory/ConcreteNetworkFactory";
+import {NetworkAdapter} from "../../core/network/adapter/NetworkAdapter";
+import {ConcreteNetworkFactory} from "../../core/network/factory/ConcreteNetworkFactory";
 
 export class JsImportPanel extends PanelCtrl {
   public static templateUrl: string = "panels/import-json-panel/partials/panelTemplate.html";
@@ -19,7 +20,6 @@ export class JsImportPanel extends PanelCtrl {
   public scope: any;
   public datasource: any;
   public $q: any;
-  public $timeout: any;
   public contextSrv: any;
   public datasourceSrv: any;
   public timeSrv: any;
@@ -53,14 +53,21 @@ export class JsImportPanel extends PanelCtrl {
   public ts_tab_control: SelectDB_Ctrl;
   public write_connection_control: SetWriteConnection_Ctrl;
 
+  public secondToRefresh: number;
+  public nextTickPromise: any;
+  public doRefresh: boolean;
   public panelDefaults = {
     jsonContent: "",
+    secondToRefresh: 5,
   };
 
   constructor ($scope, $injector) {
     super($scope, $injector);
     _.defaults(this.panel, this.panelDefaults);
+    this.secondToRefresh = 5;
+    this.doRefresh = false;
 
+    this.events.on("panel-teardown", this.stop.bind(this));
     this.events.on("init-edit-mode", this.onInitEditMode.bind(this));
   }
 
@@ -69,8 +76,8 @@ export class JsImportPanel extends PanelCtrl {
       "public/plugins/app-jsbayes/panels/import-json-panel/partials/optionTab_importEditJson.html",
       1);
     this.addEditorTab("Network-Connection-to-Grafana", SelectDB_Directive, 2);
-    this.addEditorTab("Graphic-Network-Editor",
-      "public/plugins/app-jsbayes/panels/import-json-panel/partials/optionTab_GraphicEditor.html",
+    this.addEditorTab("Network-Calculation-SetUp",
+      "public/plugins/app-jsbayes/panels/import-json-panel/partials/network_Calculation_SetUp.html",
       3);
     this.addEditorTab("Setup-Results-Influx", SetWriteConnection_Directive, 4);
     this.events.emit("data-received", null);
@@ -132,6 +139,43 @@ export class JsImportPanel extends PanelCtrl {
     element.click();
 
     document.body.removeChild(element);
+  }
+
+  public runUpdate() {
+    this.$timeout.cancel(this.nextTickPromise);
+
+    this.netManager.updateNet();
+    if (this.doRefresh) {
+      this.nextTickPromise = this.$timeout(this.runUpdate.bind(this), this.secondToRefresh * 1000);
+    }
+
+    console.log("aggiornato");
+  }
+
+  public setSecond() {
+    this.secondToRefresh = Number(this.panel.secondToRefresh);
+    if (Number.isNaN(this.secondToRefresh)) {
+      this.secondToRefresh = 5;
+      this.panel.secondToRefresh = 5;
+    }
+    if (this.secondToRefresh === 0) {
+      this.secondToRefresh = 1;
+      this.panel.secondToRefresh = 1;
+    }
+  }
+
+  public start() {
+    this.doRefresh = true;
+    this.runUpdate();
+  }
+  public stop() {
+    this.doRefresh = false;
+    this.$timeout.cancel(this.nextTickPromise);
+  }
+  public showError (error_title: string, error_message: string) {
+    // The error type can be alert-error or alert-warning, it basically just change box the icon
+    // Example: appEvents.emit("alert-warning", ["Validation failed", "An error occurred doing something..."]);
+    appEvents.emit("alert-error", [error_title, error_message]);
   }
 
   public link (scope, element) {
