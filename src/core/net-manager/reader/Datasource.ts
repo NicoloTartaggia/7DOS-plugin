@@ -12,11 +12,11 @@ export default class DataSource {
                       username: string = null, password: string = null,
                       type: string= null, name: string= null, grafanaDatasourceId: number= null) {
     if (url.length === 0) {
-      throw new Error("Invalid url.");
+      throw new Error("invalid url parameter");
     } else if (type !== null && type.length === 0) {
-      throw new Error("Invalid type.");
+      throw new Error("invalid type parameter");
     } else if (name !== null && name.length === 0) {
-      throw new Error("Invalid name.");
+      throw new Error("invalid name parameter");
     }
 
     const urlParse: URL = new URL(url);

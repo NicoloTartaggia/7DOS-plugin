@@ -4,8 +4,11 @@ class BoolValue extends AbstractValue {
   private readonly value: boolean;
 
   constructor(value: boolean, name: string) {
-    if (value == null || name == null || name.length === 0) {
-      throw new Error("invalid parameter");
+    if (name == null || name.length === 0) {
+      throw new Error("invalid name parameter");
+    }
+    if (value == null) {
+      throw new Error("invalid value parameter");
     }
     super(name);
     this.value = value;
@@ -13,7 +16,7 @@ class BoolValue extends AbstractValue {
 
   public isValueType(value: string): boolean {
     if (value == null || value.length === 0) {
-      throw new Error("invalid parameter");
+      throw new Error("invalid value parameter");
     }
     const boolValue = value.toString().toLowerCase();
     if (boolValue !== "true" && boolValue !== "false") {

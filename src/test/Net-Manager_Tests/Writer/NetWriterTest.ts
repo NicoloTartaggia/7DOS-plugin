@@ -11,7 +11,7 @@ import {expect} from "chai";
 describe("SingleNetWriter - constructor", () => {
     it("Undefined client - Error", () => {
         let client: WriteClient;
-        expect(()=> new SingleNetWriter(client)).to.throw(Error, "invalid parameter");
+        expect(()=> new SingleNetWriter(client)).to.throw(Error, "invalid client parameter");
     });
     it("Defined client - New SingleNetWriter", () => {
         new ConcreteWriteClientFactory().makeInfluxWriteClient(
@@ -19,19 +19,21 @@ describe("SingleNetWriter - constructor", () => {
         ).then(function(writeClient){
             const singleWriter: SingleNetWriter = new SingleNetWriter(writeClient);
             expect(singleWriter).to.not.equal(null);
+        }).catch(function(e){
+            console.log("SingleNetWriter constructor ERROR: " + e);
         });
     });
 });
 
 describe("SingleNetWriter - write", () => {
     it("Undefined calcData - Error", () => {
-        const idb: InfluxDB = new InfluxDB();
-        const client: WriteClient = new InfluxWriteClient("", "", idb);
+        const idb: InfluxDB = new InfluxDB("http://localhost:8086/prova");
+        const client: WriteClient = new InfluxWriteClient("http://localhost", "prova", idb);
         const singleWriter: SingleNetWriter = new SingleNetWriter(client);
         let calc: CalcResultAggregate;
         singleWriter.write(calc).then(function (){})
                                 .catch(function (e){
-                                    expect(<Error> e.toString()).to.equal("Error: invalid parameter");
+                                    expect(<Error> e.toString()).to.equal("Error: invalid calcData parameter");
                                 });
     });
     it("Correct calcData - Something", () => {
@@ -48,10 +50,10 @@ describe("SingleNetWriter - write", () => {
                 expect(calc.createIterator().next().value.getNodeName()).to.equal("burglary");
             })
             .catch(function (e){
-                console.log(e);
+                console.log("SingleNetWriter write ERROR: " + e);
             });
         }).catch(function(e){
-            console.log(e);
+            console.log("SingleNetWriter write ERROR 2: " + e);
         }); 
     });
 });

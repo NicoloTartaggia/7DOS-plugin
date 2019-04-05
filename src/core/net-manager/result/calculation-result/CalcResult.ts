@@ -5,12 +5,15 @@ export class CalcResult {
   private readonly items: Array<CalcResultItem>;
 
   public constructor (nodeName: string, items: Array<CalcResultItem>) {
-    if (nodeName == null || items == null) {
-      throw new Error("invalid parameter");
+    if (nodeName == null || nodeName.length === 0) {
+      throw new Error("invalid nodeName parameter");
     }
+    if (items == null || items.length === 0) {
+      throw new Error("invalid items parameter");
+    } 
     for (const item of items) {
       if (item === null) {
-        throw new Error("invalid parameter");
+        throw new Error("invalid items parameter");
       }
     }
     this.nodeName = nodeName;

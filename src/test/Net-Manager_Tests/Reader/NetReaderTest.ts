@@ -28,8 +28,7 @@ describe("NetReader - read", () => {
         networkReader.read().then(function(result){
             expect(result.collection.length).to.equal(0);
         }).catch(function(e){
-            console.log("errore");
-            console.log(e);
+            console.log("NetReader read ERROR: " + e);
         });
     });
 });

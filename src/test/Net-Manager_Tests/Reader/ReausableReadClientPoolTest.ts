@@ -9,7 +9,7 @@ import {expect} from "chai";
 describe("ReusableReadClientPool - acquireReusable", () => {
     it("Undefined datasource - Error", () => {
         let datasource: DataSource;
-        expect(() => ReusableReadClientPool.getInstance().acquireReusable(datasource)).to.throw(Error, "invalid parameter");
+        expect(() => ReusableReadClientPool.getInstance().acquireReusable(datasource)).to.throw(Error, "invalid datasource parameter");
     });
     it("Defined datasource - ReadClient", () => {
         let datasource: DataSource = new DataSource("http://localhost:8086/");
@@ -21,6 +21,6 @@ describe("ReusableReadClientPool - acquireReusable", () => {
 describe("ReusableReadClientPool - releseReusable", () => {
     it("Undefined to_remove - Error", () => {
         let to_remove: ReadClient;
-        expect(() => ReusableReadClientPool.getInstance().releseReusable(to_remove)).to.throw(Error, "invalid parameter");
+        expect(() => ReusableReadClientPool.getInstance().releseReusable(to_remove)).to.throw(Error, "invalid to_remove parameter");
     });
 });

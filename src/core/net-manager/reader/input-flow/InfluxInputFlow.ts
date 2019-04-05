@@ -8,9 +8,14 @@ export class InfluxInputFlow implements InputFlow {
   private readonly client: ReadClient;
 
   constructor (database: string, query: string, client: ReadClient) {
-    if (database == null || query == null || client == null ||
-        database.length === 0 || query.length === 0) {
-      throw new Error("invalid parameter");
+    if (database == null || database.length === 0) {
+      throw new Error("invalid database parameter");
+    }
+    if (query == null || query.length === 0) {
+      throw new Error("invalid query parameter");
+    }
+    if (client == null) {
+      throw new Error("invalid client parameter");
     }
     this.query = this.checkQuery(query);
     this.database_name = database;
@@ -29,7 +34,7 @@ export class InfluxInputFlow implements InputFlow {
 
   private checkQuery (query: string): string {
     if (query == null || query.length === 0) {
-      throw new Error("invalid parameter");
+      throw new Error("invalid query parameter");
     }
     // Check if query has select *
     if (query.includes("*")) {

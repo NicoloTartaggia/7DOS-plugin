@@ -9,15 +9,15 @@ const influx: InfluxDB = new InfluxDB("http://localhost:8086/prova");
 describe("InfluxWriteClient - constructor", () => { 
     it("Undefined dsn - Error", () => {
         let dsn: string;
-        expect(() => new InfluxWriteClient(dsn, "prova", influx)).to.throw(Error, "invalid parameter");
+        expect(() => new InfluxWriteClient(dsn, "prova", influx)).to.throw(Error, "invalid dsn parameter");
     });
     it("Undefined defaultDB - Error", () => {
         let defaultDB: string;
-        expect(() => new InfluxWriteClient("http://localhost:8086/", defaultDB, influx)).to.throw(Error, "invalid parameter");
+        expect(() => new InfluxWriteClient("http://localhost:8086/", defaultDB, influx)).to.throw(Error, "invalid defaultDB parameter");
     });
     it("Undefined influx - Error", () => {
         let unInflux: InfluxDB;
-        expect(() => new InfluxWriteClient("http://localhost:8086/", "prova", unInflux)).to.throw(Error, "invalid parameter");
+        expect(() => new InfluxWriteClient("http://localhost:8086/", "prova", unInflux)).to.throw(Error, "invalid influx parameter");
     });
     it("All defined - InfluxWriteClient", () => {  
         expect(new InfluxWriteClient("http://localhost:8086/", "prova", influx).getAddress()).to.equal("http://localhost:8086/");
@@ -47,7 +47,7 @@ describe("InfluxWriteClient - writeBatchData", () => {
         influxWriter.writeBatchData(toBeWritten).then(function(){
             expect(true).to.equal(true);
         }).catch(function(e){
-            console.log("Errore: "+e.toString());
+            console.log("InfluxWriteClient writeBatchData ERROR: " + e);
         });
     });
 });
@@ -60,7 +60,7 @@ describe("InfluxWriteClient - writePointData", () => {
         influxWriter.writePointData(new CalcResult("burglary", calcItemArray)).then(function(){
             expect(true).to.equal(true);
         }).catch(function(e){
-            console.log("Errore: "+e.toString());
+            console.log("InfluxWriteClient writePointData ERROR: " + e);
         });
     });
 });

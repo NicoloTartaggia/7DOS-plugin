@@ -35,9 +35,14 @@ export class ConcreteWriteClientFactory implements WriteClientFactory {
    */
   public async makeInfluxWriteClient(host: string, port: string, defaultDB: string, credentials?: [string, string])
     : Promise<InfluxWriteClient> {
-    if (host == null || port == null || defaultDB == null ||
-        host.length === 0 || port.length === 0 || defaultDB.length === 0) {
-      throw new Error("invalid parameter");
+    if (host == null || host.length === 0) {
+      throw new Error("invalid host parameter");
+    }
+    if (port == null || port.length === 0) {
+      throw new Error("invalid port parameter");
+    }
+    if (defaultDB == null || defaultDB.length === 0) {
+      throw new Error("invalid defaultDB parameter");
     }
 
     const dsn: URL = new URL(host);
@@ -48,7 +53,7 @@ export class ConcreteWriteClientFactory implements WriteClientFactory {
     }
     const dsn_string = dsn.toString();
     const influx: InfluxDB = new InfluxDB(dsn_string + defaultDB);
-    influx.getDatabaseNames()
+    await influx.getDatabaseNames()
       .then((names) => {
         if (!names.includes(defaultDB)) {
           return influx.createDatabase(defaultDB)

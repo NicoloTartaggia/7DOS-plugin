@@ -6,8 +6,11 @@ export class ConcreteNetworkAdapter implements NetworkAdapter {
   private readonly nodeList: Array<NodeAdapter>;
 
   public constructor (network: JGraph, nodeList: Array<NodeAdapter>) {
-    if (network == null || nodeList == null || nodeList.length === 0) {
-      throw new Error("invalid parameter");
+    if (network == null) {
+      throw new Error("invalid network parameter");
+    }
+    if(nodeList == null || nodeList.length === 0) {
+      throw new Error("invalid nodeList parameter");
     }
     this.graph = network;
     this.nodeList = nodeList;
@@ -17,8 +20,11 @@ export class ConcreteNetworkAdapter implements NetworkAdapter {
    * @Override - Function that fixes a specific values (state) for a node in the network
    */
   public observeNode (node: string, value: string): void {
-    if (node == null || value == null || node.length === 0 || value.length === 0) {
-      throw new Error("invalid parameter");
+    if (node == null || node.length === 0) {
+      throw new Error("invalid node parameter");
+    }
+    if(value == null || value.length === 0) {
+      throw new Error("invalid value parameter");
     }
     let isPresent: boolean = false;
     let valueIsCorrect: boolean = false;
@@ -48,7 +54,7 @@ export class ConcreteNetworkAdapter implements NetworkAdapter {
    */
   public unobserveNode (node: string): void {
     if (node == null || node.length === 0) {
-      throw new Error("invalid parameter");
+      throw new Error("invalid node parameter");
     }
     let isPresent: boolean = false;
     for (const jn of this.graph.nodes) {
@@ -68,7 +74,7 @@ export class ConcreteNetworkAdapter implements NetworkAdapter {
    */
   public sampleNetwork (sampleNum: number): void {
     if (sampleNum == null || sampleNum <= 0) {
-      throw new Error("invalid parameter");
+      throw new Error("invalid sampleNum parameter");
     }
     this.graph.sample(sampleNum);
   }
@@ -79,7 +85,7 @@ export class ConcreteNetworkAdapter implements NetworkAdapter {
    */
   public getNodeProbs (nodeName: string): Array<number> {
     if (nodeName == null || nodeName.length === 0) {
-      throw new Error("invalid parameter");
+      throw new Error("invalid nodeName parameter");
     }
     for (const node of this.graph.nodes) {
       if (node.name === nodeName) {

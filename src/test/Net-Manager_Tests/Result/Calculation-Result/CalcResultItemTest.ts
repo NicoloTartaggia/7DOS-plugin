@@ -3,14 +3,14 @@ import { CalcResultItem } from "../../../../core/net-manager/result/calculation-
 import {expect} from "chai";
 
 describe("CalcResultItem - constructor", () => {
-    it("Null parameter - Error", () => {
-        expect(() => new CalcResultItem(null,null)).to.throw(Error, "invalid parameter");
+    it("Null valueName - Error", () => {
+        expect(() => new CalcResultItem(null,null)).to.throw(Error, "invalid valueName parameter");
     });
     it("Negative prob - Error", () => {
-        expect(() => new CalcResultItem("n1",-5)).to.throw(Error, "invalid parameter");
+        expect(() => new CalcResultItem("n1",-5)).to.throw(Error, "invalid probValue parameter");
     });
     it("Prob greater than 1 - Error", () => {
-        expect(() => new CalcResultItem("n1",1.1)).to.throw(Error, "invalid parameter");
+        expect(() => new CalcResultItem("n1",1.1)).to.throw(Error, "invalid probValue parameter");
     });
 });
 

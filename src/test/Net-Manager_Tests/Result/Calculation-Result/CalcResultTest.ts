@@ -4,16 +4,25 @@ import { CalcResultItem } from "../../../../core/net-manager/result/calculation-
 import {expect} from "chai";
 
 describe("CalcResult - constructor", () => {
-    it("Null parameters passed - Error", () => {
-        expect(() => new CalcResult(null,null)).to.throw(Error, "invalid parameter");
+    it("Undefined nodeName passed - Error", () => {
+        let nodeName: string;
+        let calcItems:Array<CalcResultItem> = new Array<CalcResultItem>();
+        calcItems.push(new CalcResultItem("1",0.5));
+        calcItems.push(new CalcResultItem("2",0.6));
+        calcItems.push(new CalcResultItem("3",0.3));
+        expect(() => new CalcResult(nodeName,calcItems)).to.throw(Error, "invalid nodeName parameter");
     });
-    it("Null item in array passed - Error", () => {
-        let calcItems:Array<CalcResultItem>=new Array<CalcResultItem>();
+    it("Undefined items passed - Error", () => {
+        let calcItems:Array<CalcResultItem>;
+        expect(() => new CalcResult("something",calcItems)).to.throw(Error, "invalid items parameter");
+    });
+    it("Null item(s) in array passed - Error", () => {
+        let calcItems:Array<CalcResultItem> = new Array<CalcResultItem>();
         calcItems.push(new CalcResultItem("1",0.5));
         calcItems.push(new CalcResultItem("2",0.6));
         calcItems.push(new CalcResultItem("3",0.3));
         calcItems.push(null);
-        expect(() => new CalcResult(null,calcItems)).to.throw(Error, "invalid parameter");
+        expect(() => new CalcResult("something",calcItems)).to.throw(Error, "invalid items parameter");
     });
 });
 

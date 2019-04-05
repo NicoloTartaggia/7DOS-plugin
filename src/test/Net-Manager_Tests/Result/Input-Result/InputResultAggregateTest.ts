@@ -9,7 +9,7 @@ import jsbayes = require("jsbayes");
 describe("InputResultAggregate - constructor", () => {
     it("Undefined collection - Error", () => {
         let collection: Array<InputResult>;
-        expect(() => new InputResultAggregate(collection)).to.throw(Error, "invalid parameter");
+        expect(() => new InputResultAggregate(collection)).to.throw(Error, "invalid collection parameter");
     });
 });
 

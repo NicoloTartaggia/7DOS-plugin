@@ -6,17 +6,17 @@ import { StringValue } from "../../../core/network/value/StringValue";
 describe("StringValue - constructor", () => {
     it("Undefined name - Error", () => {
         let str: string;
-        expect(() => new StringValue("value1", str)).to.throw(Error, "invalid parameter");
+        expect(() => new StringValue("value1", str)).to.throw(Error, "invalid name parameter");
     });
     it("Empty name - Error", () => {
-        expect(() => new StringValue("value1", "")).to.throw(Error, "invalid parameter");
+        expect(() => new StringValue("value1", "")).to.throw(Error, "invalid name parameter");
     });
     it("Undefined value - Error", () => {
         let str: string;
-        expect(() => new StringValue(str, "name1")).to.throw(Error, "invalid parameter");
+        expect(() => new StringValue(str, "name1")).to.throw(Error, "invalid value parameter");
     });
     it("Empty value - Error", () => {
-        expect(() => new StringValue("", "name1")).to.throw(Error, "invalid parameter");
+        expect(() => new StringValue("", "name1")).to.throw(Error, "invalid value parameter");
     });
 });
 
@@ -38,7 +38,7 @@ describe("StringValue - isValueType", () => {
     });
     it("Empty value - Error", () => {
         const stringV = new StringValue("value5", "name5");
-        expect(() => stringV.isValueType("")).to.throw(Error, "invalid parameter");
+        expect(() => stringV.isValueType("")).to.throw(Error, "invalid value parameter");
     });
     it("Correct but upper case value - False", () => {
         const stringV = new StringValue("value6", "name6");
@@ -48,11 +48,11 @@ describe("StringValue - isValueType", () => {
     it("Undefined value - Error", () => {
         const stringV = new StringValue("value7", "name7");
         let str: string;
-        expect(() => stringV.isValueType(str)).to.throw(Error, "invalid parameter");
+        expect(() => stringV.isValueType(str)).to.throw(Error, "invalid value parameter");
     });
     it("Empty value - Error", () => {
         const stringV = new StringValue("value8", "name8");
-        expect(() => stringV.isValueType("")).to.throw(Error, "invalid parameter");
+        expect(() => stringV.isValueType("")).to.throw(Error, "invalid value parameter");
     });
 });
 

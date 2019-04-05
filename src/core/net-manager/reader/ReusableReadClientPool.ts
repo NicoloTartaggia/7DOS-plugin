@@ -20,7 +20,7 @@ export default class ReusableReadClientPool {
 
   public acquireReusable (dataSource: DataSource): ReadClient {
     if (dataSource == null) {
-      throw new Error("invalid parameter");
+      throw new Error("invalid datasource parameter");
     }
     let client: ReadClient = null;
     const factory = new ConcreteReadClientFactory();
@@ -42,7 +42,7 @@ export default class ReusableReadClientPool {
 
   public releseReusable (to_remove: ReadClient) {
     if (to_remove == null) {
-      throw new Error("invalid parameter");
+      throw new Error("invalid to_remove parameter");
     }
     const pos: number = this.read_clients.indexOf(to_remove);
     if (pos >= 0) {

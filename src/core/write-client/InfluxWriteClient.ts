@@ -27,8 +27,14 @@ export default class InfluxWriteClient implements WriteClient {
    * @param influx The InfluxDB instance assigned to the client.
    */
   constructor (dsn: string, defaultDB: string, influx: InfluxDB) {
-    if (dsn == null || defaultDB == null || influx == null) {
-      throw new Error("invalid parameter");
+    if (dsn == null || dsn.length === 0) {
+      throw new Error("invalid dsn parameter");
+    }
+    if (defaultDB == null || defaultDB.length === 0) {
+      throw new Error("invalid defaultDB parameter");
+    }
+    if (influx == null) {
+      throw new Error("invalid influx parameter");
     }
     this.dsn = dsn;
     this.defaultDB = defaultDB;

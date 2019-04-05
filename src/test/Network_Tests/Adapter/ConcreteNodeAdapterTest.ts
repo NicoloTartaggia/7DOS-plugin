@@ -10,22 +10,22 @@ describe("ConcreteNodeAdapter - constructor", () => {
     it("Undefined node - Error", () => {
         let node: JNode;
         const values: Array<AbstractValue> = new Array<AbstractValue>();
-
-        expect(() => new ConcreteNodeAdapter(node, values)).to.throw(Error, "invalid parameter");
+        values.push(new BoolValue(true, "name"));
+        expect(() => new ConcreteNodeAdapter(node, values)).to.throw(Error, "invalid node parameter");
     });
     it("Undefined values - Error", () => {
         const graph: JGraph = jsbayes.newGraph();
         const n1: JNode = graph.addNode("n1", ["true", "false"]);
         let values: Array<AbstractValue>;
 
-        expect(() => new ConcreteNodeAdapter(n1, values)).to.throw(Error, "invalid parameter");
+        expect(() => new ConcreteNodeAdapter(n1, values)).to.throw(Error, "invalid values parameter");
     });
     it("Empty values - Error", () => {
         const graph: JGraph = jsbayes.newGraph();
         const n1: JNode = graph.addNode("n1", ["true", "false"]);
         let values: Array<AbstractValue> = new Array<AbstractValue>();
 
-        expect(() => new ConcreteNodeAdapter(n1, values)).to.throw(Error, "invalid parameter");
+        expect(() => new ConcreteNodeAdapter(n1, values)).to.throw(Error, "invalid values parameter");
     });
 });
 
@@ -156,7 +156,7 @@ describe("ConcreteNodeAdapter - findValue", () => {
         const concreteNode = new ConcreteNodeAdapter(n1, concreteNodeValues);
         let str: string;
 
-        expect(() => concreteNode.findValue(str)).to.throw(Error, "invalid parameter");
+        expect(() => concreteNode.findValue(str)).to.throw(Error, "invalid currentValue parameter");
     });
     it("Empty value - Error", () => {
         const graph: JGraph = jsbayes.newGraph();
@@ -170,6 +170,6 @@ describe("ConcreteNodeAdapter - findValue", () => {
         const concreteNode = new ConcreteNodeAdapter(n1, concreteNodeValues);
         let str: string = "";
 
-        expect(() => concreteNode.findValue(str)).to.throw(Error, "invalid parameter");
+        expect(() => concreteNode.findValue(str)).to.throw(Error, "invalid currentValue parameter");
     });
 });

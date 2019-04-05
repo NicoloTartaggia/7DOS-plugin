@@ -23,18 +23,20 @@ describe("NetManager - constructor", () => {
     let writer: NetWriter;
     new ConcreteWriteClientFactory().makeInfluxWriteClient("http://localhost/", "8086", "prova").then(function(result){
         writer = new SingleNetWriter(result);
+    }).catch(function(e){
+        console.log("NetManager constructor ERROR: " + e);
     });
     it("Undefined reader - Error", () => {
         let unReader: NetReader;
-        expect(() =>new NetManager(unReader, updater, writer)).to.throw(Error, "invalid parameter");
+        expect(() =>new NetManager(unReader, updater, writer)).to.throw(Error, "invalid reader parameter");
     });
     it("Undefined updater - Error", () => {
         let unUpdater: NetUpdater;
-        expect(() =>new NetManager(reader, unUpdater, writer)).to.throw(Error, "invalid parameter");
+        expect(() =>new NetManager(reader, unUpdater, writer)).to.throw(Error, "invalid updater parameter");
     });
     it("Undefined writer - Error", () => {
         let unWriter: NetWriter;
-        expect(() => new NetManager(reader, updater, unWriter)).to.throw(Error, "invalid parameter");
+        expect(() => new NetManager(reader, updater, unWriter)).to.throw(Error, "invalid writer parameter");
     });
 });
 

@@ -4,11 +4,11 @@ import { CalcResult, CalcResultAggregate, CalcResultItem } from "../../../../cor
 describe("CalcResultAggregate - constructor", () => {
     it("Undefined collection - Error", () => {
         let collection: Array<CalcResult>;
-        expect(()=> new CalcResultAggregate(collection)).to.throw(Error, "invalid parameter");
+        expect(()=> new CalcResultAggregate(collection)).to.throw(Error, "invalid collection parameter");
     });
     it("Empty collection - Error", () => {
         let collection: Array<CalcResult> = new Array<CalcResult>();
-        expect(()=> new CalcResultAggregate(collection)).to.throw(Error, "invalid parameter");
+        expect(()=> new CalcResultAggregate(collection)).to.throw(Error, "invalid collection parameter");
     });
 });
 

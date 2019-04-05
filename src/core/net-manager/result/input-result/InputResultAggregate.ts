@@ -5,7 +5,7 @@ export class InputResultAggregate {
 
   public constructor (collection: Array<InputResult>) {
     if (collection == null) {
-      throw new Error("invalid parameter");
+      throw new Error("invalid collection parameter");
     }
     this.collection = collection;
   }

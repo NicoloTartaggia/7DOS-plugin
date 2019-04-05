@@ -46,7 +46,7 @@ describe("ConcreteNetworkFactory - parseNetwork", () => {
     expect(() => new ConcreteNetworkFactory().parseNetwork(invertedMinMaxJsonString, jsonSchemaString)).to.throw(Error, "maxRange is less then minRange");
   });
   it("Incorrect node value type - Error", () => {
-    expect(() => new ConcreteNetworkFactory().parseNetwork(incorrectTypeJsonString, jsonSchemaString)).to.throw(Error, "invalid parameter");
+    expect(() => new ConcreteNetworkFactory().parseNetwork(incorrectTypeJsonString, jsonSchemaString)).to.throw(Error, "invalid value parameter");
   });
   it("Non existing node parent - Error", () => {
     expect(() => new ConcreteNetworkFactory().parseNetwork(incorrectParentJsonString, jsonSchemaString)).to.throw(Error, "Node FakeParent not found in the network!");

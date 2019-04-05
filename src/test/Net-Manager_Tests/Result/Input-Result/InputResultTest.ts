@@ -8,7 +8,7 @@ import jsbayes = require("jsbayes");
 describe("InputResult - constructor", () => {
     it("Undefined nodeName - Error", () => {
         let nodeName: ConcreteNodeAdapter;
-        expect(() => new InputResult(nodeName, "valore")).to.throw(Error, "invalid parameter");
+        expect(() => new InputResult(nodeName, "valore")).to.throw(Error, "invalid nodeName parameter");
     });
     it("Undefined currentValue - Error", () => {
         const graph: JGraph = jsbayes.newGraph();
@@ -18,7 +18,7 @@ describe("InputResult - constructor", () => {
         
         const nodeName: ConcreteNodeAdapter = new ConcreteNodeAdapter(n1, values);
         let currentValue: string;
-        expect(() => new InputResult(nodeName, currentValue)).to.throw(Error, "invalid parameter");
+        expect(() => new InputResult(nodeName, currentValue)).to.throw(Error, "invalid currentValue parameter");
     });
 });
 

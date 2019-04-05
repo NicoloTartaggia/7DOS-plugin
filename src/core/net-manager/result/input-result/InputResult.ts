@@ -5,8 +5,11 @@ export class InputResult {
   private currentValue: string;
 
   public constructor (nodeName: NodeAdapter, currentValue: string) {
-    if (nodeName == null || currentValue == null || currentValue.length === 0) {
-      throw new Error("invalid parameter");
+    if (nodeName == null) {
+      throw new Error("invalid nodeName parameter");
+    }
+    if (currentValue == null || currentValue.length === 0) {
+      throw new Error("invalid currentValue parameter");
     }
     this.currentValue = currentValue;
     this.node = nodeName;

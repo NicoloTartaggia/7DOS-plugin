@@ -16,7 +16,7 @@ import { CalcResult } from "core/net-manager/result/calculation-result/CalcResul
 describe("NetUpdater - constructor", () => {
   it("Undefined network - Error", () => {
     let network: NetworkAdapter;
-    expect(() => new NetUpdater(network)).to.throw(Error, "invalid parameter");
+    expect(() => new NetUpdater(network)).to.throw(Error, "invalid network parameter");
   });
 });
 
@@ -75,7 +75,7 @@ describe("NetUpdater - updateNet", () => {
     const network: NetworkAdapter = new ConcreteNetworkFactory().parseNetwork(jsonString, jsonSchemaString);
     let results: InputResultAggregate;
     const networkUpdater: NetUpdater = new NetUpdater(network);
-    expect(()=> networkUpdater.updateNet(results)).to.throw(Error, "invalid parameter");
+    expect(()=> networkUpdater.updateNet(results)).to.throw(Error, "invalid fluxResults parameter");
   });
 });
 
