@@ -4,6 +4,7 @@ import { RxHR } from "@akanass/rx-http-request/browser/index.js";
 import { coreModule } from "grafana/app/core/core";
 import { DashboardModel } from "grafana/app/features/dashboard/model";
 import DataSource from "../../core/net-manager/reader/Datasource";
+import {ConcreteWriteClientFactory, WriteClientFactory} from "../../core/write-client/WriteClientFactory";
 
 export class SetWriteConnection_Ctrl {
   public panel: any;
@@ -14,11 +15,13 @@ export class SetWriteConnection_Ctrl {
   private datasources: { [datasource_id: string]: DataSource; } = {};
 
   // ANGULARJS <select> stuff - save all the node selections
-
   // @ts-ignore
   private selected_datasource: string;
   // @ts-ignore
   private database_name: string;
+
+  // WriteClientFactory field to set the database written in the textbox by the user
+  private writeCF: WriteClientFactory;
 
   // @ts-ignore
   constructor($scope, private $sce, datasourceSrv, private backendSrv) {
@@ -32,10 +35,15 @@ export class SetWriteConnection_Ctrl {
 
     // Linking select_ts_tab to panel
     this.panel.ts_tab_control = this.panelCtrl;
+
+    this.database_name = "7DOS_default_DB";
+    this.selected_datasource = null;
+    this.writeCF = new ConcreteWriteClientFactory();
+
     console.log("SelectDB_Ctrl - Object build");
     console.log("SelectDB_Ctrl - Get datasources");
+
     this.getDatasources();
-    this.selected_datasource = null;
   }
 
   // ------------------------------------------------------
@@ -75,10 +83,20 @@ export class SetWriteConnection_Ctrl {
 
   public createDatabaseToWrite() {
     // if user doesn't provide a specific name
-    if (this.database_name === null) {
+    if (this.database_name === null || this.database_name.length === 0) {
       this.database_name = "7DOS_default_DB";
     }
+    try {
+      const hostname: string = this.datasources[this.selected_datasource].getHost();
+      const port: string = this.datasources[this.selected_datasource].getPort();
+      console.log("Trying to write result on database: " + this.database_name +
+        " on URL: " + hostname + port);
+      this.writeCF.makeInfluxWriteClient(hostname, port, this.database_name);
+    } catch (err) {
+      console.error(err);
+    }
   }
+
   // ------------------------------------------------------
   // Change select
   // ------------------------------------------------------
