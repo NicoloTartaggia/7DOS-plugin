@@ -27,10 +27,10 @@ export default interface ReadClientFactory {
 export class ConcreteReadClientFactory implements ReadClientFactory {
   public makeInfluxReadClient (host: string, port: string, credentials?: [string, string])
     : InfluxReadClient {
-    if (host === null ||  host === "") {
+    if (host === null ||  host.length === 0) {
       throw new Error("invalid host parameter");
     }
-    if (port === null || port === "") {
+    if (port === null || port.length === 0) {
       throw new Error("invalid port parameter");
     }
     if ((credentials != null && (credentials[0] === null

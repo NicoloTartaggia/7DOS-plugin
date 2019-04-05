@@ -7,10 +7,17 @@ import {InfluxDB} from "influx";
 let client:InfluxReadClient=new ConcreteReadClientFactory().makeInfluxReadClient("http://localhost","8086");
 
 describe("InfluxReadClient - createReaderClient", () => {
-    it(" TODO ", () => {
-        // TODO
-        expect(true).to.equal(true);
-    });
+  const influx: InfluxDB = new InfluxDB();  
+  it("Undefined dsn - Error", () => {
+    let dsn: string;
+    expect(() => new InfluxReadClient(dsn, influx)).to.throw(Error, "invalid dsn parameter");
+  });
+  it("Empty dsn - Error", () => {
+    expect(() => new InfluxReadClient("", influx)).to.throw(Error, "invalid dsn parameter");
+  });
+  it("Undefined influx - Error", () => {
+    expect(() => new InfluxReadClient("http://localhost:8086/prova", null)).to.throw(Error, "invalid influx parameter");
+  });
 });
 
 describe("InfluxReadClient - getAddress", () => {

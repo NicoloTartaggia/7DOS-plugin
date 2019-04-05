@@ -20,6 +20,12 @@ export default class InfluxReadClient implements ReadClient {
    * @param influx The InfluxDB instance assigned to the client.
    */
   public constructor (dsn: string, influx: InfluxDB) {
+    if (dsn == null || dsn.length === 0) {
+      throw new Error("invalid dsn parameter");
+    }
+    if (influx == null) {
+      throw new Error("invalid influx parameter");
+    }
     this.dsn = dsn;
     this.influx = influx;
   }
