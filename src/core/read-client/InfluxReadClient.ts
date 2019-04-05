@@ -36,8 +36,9 @@ export default class InfluxReadClient implements ReadClient {
    * @param query The query to execute.
    * @returns A Promise of nested arrays representing the results of the query.
    */
-  public async readField (database: string, query: string): Promise<Array<{ name: string, tags: Tags, rows: Array<any> }>> {
-    if (database === null || query === null || database==="" || query==="") {
+  public async readField (database: string, query: string):
+  Promise<Array<{ name: string, tags: Tags, rows: Array<any> }>> {
+    if (database === null || query === null || database === "" || query === "") {
       throw new Error("invalid parameter");
     }
     const queryOptions: IQueryOptions = {};

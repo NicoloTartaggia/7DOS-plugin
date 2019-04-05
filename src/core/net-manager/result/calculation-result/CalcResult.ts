@@ -10,7 +10,7 @@ export class CalcResult {
     }
     if (items == null || items.length === 0) {
       throw new Error("invalid items parameter");
-    } 
+    }
     for (const item of items) {
       if (item === null) {
         throw new Error("invalid items parameter");

@@ -3,7 +3,7 @@ export class CalcResultItem {
   private readonly probValue: number;
 
   public constructor (valueName: string, probValue: number) {
-    if (valueName === null || valueName.length === 0){
+    if (valueName === null || valueName.length === 0) {
       throw new Error("invalid valueName parameter");
     }
     if (probValue === null || probValue < 0 || probValue > 1) {
@@ -20,5 +20,4 @@ export class CalcResultItem {
   public getProbValue (): number {
     return this.probValue;
   }
-
 }

@@ -9,7 +9,7 @@ export class ConcreteNetworkAdapter implements NetworkAdapter {
     if (network == null) {
       throw new Error("invalid network parameter");
     }
-    if(nodeList == null || nodeList.length === 0) {
+    if (nodeList == null || nodeList.length === 0) {
       throw new Error("invalid nodeList parameter");
     }
     this.graph = network;
@@ -23,7 +23,7 @@ export class ConcreteNetworkAdapter implements NetworkAdapter {
     if (node == null || node.length === 0) {
       throw new Error("invalid node parameter");
     }
-    if(value == null || value.length === 0) {
+    if (value == null || value.length === 0) {
       throw new Error("invalid value parameter");
     }
     let isPresent: boolean = false;
