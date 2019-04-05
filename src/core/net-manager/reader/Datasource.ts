@@ -73,7 +73,7 @@ export default class DataSource {
 
   }
 
-  public clone_with_new_db (database_name: string): DataSource {
+  public cloneWithDB (database_name: string): DataSource {
     return new DataSource((this.host + ":" + this.port), database_name, this.username, this.password,
       this.type, this.name, this.grafanaDatasourceId);
 

@@ -69,7 +69,7 @@ export class SelectDB_Ctrl {
     if (datasource !== undefined && datasource !== null) {
       // Create a clone of the selected datasource with the specified database name
       const database: string = this.selected_database[nodeName].name;
-      const return_datasource = datasource.clone_with_new_db(database);
+      const return_datasource = datasource.cloneWithDB(database);
       const table: string = this.selected_table[nodeName].name;
       const field: string = this.selected_field[nodeName];
       const query: string = "SELECT " + field + " FROM " + table;
