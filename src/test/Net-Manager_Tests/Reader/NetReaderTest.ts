@@ -38,20 +38,20 @@ describe("NetReader - connectNode", () => {
     const networkReader: NetReader = new NetReader(network);
     it("Undefined node - Error", () => {
         let node: string;
-        expect(() => networkReader.connectNode(node, new DataSource("http://localhost"), "query")).to.throw(Error, "invalid parameter");
+        expect(() => networkReader.connectNode(node, new DataSource("http://localhost"), "query")).to.throw(Error, "Invalid node");
     });
     it("Undefined datasource - Error", () => {
         let dataS: DataSource;
-        expect(() => networkReader.connectNode("node", dataS, "query")).to.throw(Error, "invalid parameter");
+        expect(() => networkReader.connectNode("node", dataS, "query")).to.throw(Error, "Invalid dataSource.");
     });
     it("Undefined query - Error", () => {
         let query: string;
-        expect(() => networkReader.connectNode("node", new DataSource("http://localhost"), query)).to.throw(Error, "invalid parameter");
+        expect(() => networkReader.connectNode("node", new DataSource("http://localhost"), query)).to.throw(Error, "Invalid query.");
     });
     it("Empty node - Error", () => {
-        expect(() => networkReader.connectNode("", new DataSource("http://localhost"), "query")).to.throw(Error, "invalid parameter");
+        expect(() => networkReader.connectNode("", new DataSource("http://localhost"), "query")).to.throw(Error, "Invalid node");
     });
     it("Empty query - Error", () => {
-        expect(() => networkReader.connectNode("node", new DataSource("http://localhost"), "")).to.throw(Error, "invalid parameter");
+        expect(() => networkReader.connectNode("node", new DataSource("http://localhost"), "")).to.throw(Error, "Invalid query");
     });
 });
