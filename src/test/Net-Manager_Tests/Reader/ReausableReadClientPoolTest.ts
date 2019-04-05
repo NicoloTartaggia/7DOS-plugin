@@ -12,7 +12,7 @@ describe("ReusableReadClientPool - acquireReusable", () => {
         expect(() => ReusableReadClientPool.getInstance().acquireReusable(datasource)).to.throw(Error, "invalid datasource parameter");
     });
     it("Defined datasource - ReadClient", () => {
-        let datasource: DataSource = new DataSource("http://localhost:8086/");
+        let datasource: DataSource = new DataSource("http://localhost:8086/", "prova");
         let JSONstr: string = JSON.stringify(ReusableReadClientPool.getInstance().acquireReusable(datasource));
         expect(JSONstr.includes("http://localhost")).to.equal(true);
     });
