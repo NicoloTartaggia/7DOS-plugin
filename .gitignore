@@ -41,3 +41,4 @@ package-lock\.json
 
 src/core/**/*.js
 src/core/write-client/test.ts
+src/core/test.ts

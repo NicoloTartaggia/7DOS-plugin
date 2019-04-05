@@ -19,16 +19,15 @@ export class NetUpdater {
     if (fluxResults == null || fluxResults.collection.length === 0) {
       throw new Error("invalid fluxResults parameter");
     }
-    const iterator: IterableIterator<InputResult> = fluxResults.buildIterator();
-    let currentIt: IteratorResult<InputResult> = iterator.next();
+    const results: IterableIterator<InputResult> = fluxResults.buildIterator();
 
     // ciclo che itera tutti i InputResult e fissa gli observe
-    while (!currentIt.done) {
+    for (const res of results) {
       this.network.observeNode(
-        currentIt.value.getNode().getName(),
-        currentIt.value.getNode().findValue(
-          currentIt.value.getCurrentValue()).getValueName());
-      currentIt = iterator.next();
+        res.getNode().getName(),
+        res.getNode().findValue(
+          res.getCurrentValue()).getValueName(),
+      );
     }
 
     // TODO: Poter definire qunti sample fare
@@ -50,6 +49,13 @@ export class NetUpdater {
       }
       arrayCalcResult.push(new CalcResult(name, arrayCalcResultItem));
     }
+    // ciclo che itera tutti i InputResult e fa l'unobserve dei nodi
+    for (const res of results) {
+      this.network.unobserveNode(
+        res.getNode().getName(),
+      );
+    }
+
     return new CalcResultAggregate(arrayCalcResult);
   }
 }

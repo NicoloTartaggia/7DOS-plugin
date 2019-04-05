@@ -100,8 +100,8 @@ export default class InfluxWriteClient implements WriteClient {
    */
   private parseBatchData (batch: CalcResultAggregate): Array<IPoint> {
     const batchRes: Array<IPoint> = new Array<IPoint>();
-    const it: IterableIterator<CalcResult> = batch.createIterator();
-    for (const item of it) {
+    const iterator: IterableIterator<CalcResult> = batch.createIterator();
+    for (const item of iterator) {
       const pointTemp: IPoint = this.parsePointData(item);
       batchRes.push(pointTemp);
     }
