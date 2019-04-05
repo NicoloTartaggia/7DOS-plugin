@@ -20,6 +20,9 @@ describe("NetReader - constructor", () => {
         let networkAdapter: ConcreteNetworkAdapter;
         expect(()=> new NetReader(networkAdapter)).to.throw(Error, "invalid parameter");
     });
+    it("Correct inputs - NetReader", () => {
+        expect(()=> new NetReader(network)).to.not.throw(Error, "invalid parameter");
+    });
 });
 
 describe("NetReader - read", () => {

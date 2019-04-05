@@ -40,6 +40,12 @@ describe("InfluxInputFlow - constructor", () => {
             new ConcreteReadClientFactory().makeInfluxReadClient("http://localhost", "9957", ["user", "password"]))
         ).to.throw(Error, "invalid query parameter");
     });
+    it("Correct inputs - InfluxInputFlow", () => {
+        expect(()=> 
+            new InfluxInputFlow("db", "query", 
+            new ConcreteReadClientFactory().makeInfluxReadClient("http://localhost", "9957", ["user", "password"]))
+        ).to.not.throw(Error);
+    });
 });
 
 describe("InfluxInputFlow - getResult", () => {

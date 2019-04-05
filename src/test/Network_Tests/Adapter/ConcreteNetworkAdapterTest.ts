@@ -2,6 +2,8 @@ import { NetworkAdapter } from "../../../core/network/adapter/NetworkAdapter";
 import { ConcreteNetworkAdapter } from "../../../core/network/adapter/ConcreteNetworkAdapter";
 import { ConcreteNetworkFactory } from "../../../core/network/factory/ConcreteNetworkFactory";
 import { NodeAdapter } from "../../../core/network/adapter/NodeAdapter";
+import { ConcreteNodeAdapter } from "../../../core/network/adapter/adapter";
+import { AbstractValue, BoolValue } from "../../../core/network/value/value";
 
 import jsbayes = require("jsbayes");
 
@@ -33,6 +35,15 @@ describe("ConcreteNetworkAdapter - constructor", () => {
         let list: Array<NodeAdapter> = new Array<NodeAdapter>();
 
         expect(() => new ConcreteNetworkAdapter(graph, list)).to.throw(Error, "invalid nodeList parameter");
+    });
+    it("Correct inputs - ConcreteNetworkAdapter", () => {
+        const graph: JGraph = jsbayes.newGraph();
+        const list: Array<NodeAdapter> = new Array<NodeAdapter>();
+        const node: JNode = graph.addNode("n1", ["true", "false"]);
+        const array: Array<AbstractValue> = new Array<AbstractValue>();
+        array.push(new BoolValue(true, "name1"));
+        list.push(new ConcreteNodeAdapter(node, array));
+        expect(() => new ConcreteNetworkAdapter(graph, list)).to.not.throw(Error);
     });
 });
 

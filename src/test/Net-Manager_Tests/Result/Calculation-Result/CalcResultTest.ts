@@ -24,6 +24,11 @@ describe("CalcResult - constructor", () => {
         calcItems.push(null);
         expect(() => new CalcResult("something",calcItems)).to.throw(Error, "invalid items parameter");
     });
+    it("Correct inputs - CalcResult", () => {
+        let calcItems:Array<CalcResultItem>=new Array<CalcResultItem>();
+        calcItems.push(new CalcResultItem("1",0.5));
+        expect(() => new CalcResult("n1",calcItems)).to.not.throw(Error);
+    });    
 });
 
 describe("CalcResult - getNodeName", () => {

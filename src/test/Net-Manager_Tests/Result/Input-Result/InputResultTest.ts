@@ -20,6 +20,16 @@ describe("InputResult - constructor", () => {
         let currentValue: string;
         expect(() => new InputResult(nodeName, currentValue)).to.throw(Error, "invalid currentValue parameter");
     });
+    it("Correct inputs - InputResult", () => {
+        const graph: JGraph = jsbayes.newGraph();
+        const n1: JNode = graph.addNode("n1", ["true", "false"]);
+        const values: Array<AbstractValue> = new Array<AbstractValue>();
+        values.push(new BoolValue(true, "prova"));
+        
+        const nodeName: ConcreteNodeAdapter = new ConcreteNodeAdapter(n1, values);
+        const currentValue: string = "valore";
+        expect(() => new InputResult(nodeName, currentValue)).to.not.throw(Error);
+    });   
 });
 
 describe("InputResult - getNode", () => {

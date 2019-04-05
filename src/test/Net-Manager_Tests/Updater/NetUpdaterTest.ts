@@ -13,21 +13,49 @@ import { ConcreteNodeAdapter } from "../../../core/network/adapter/ConcreteNodeA
 import jsbayes = require("jsbayes");
 import { CalcResult } from "core/net-manager/result/calculation-result/CalcResult";
 
+const schemaPath: string = "../../../core/network/factory/network_structure.schema.json";
+const testNetworkPath: string = "../../Util_JSON/TestNetwork.json";
+const json = require(testNetworkPath);
+const jsonString: string = JSON.stringify(json);
+const jsonSchema = require(schemaPath);
+const jsonSchemaString: string = JSON.stringify(jsonSchema);
+
 describe("NetUpdater - constructor", () => {
   it("Undefined network - Error", () => {
     let network: NetworkAdapter;
     expect(() => new NetUpdater(network)).to.throw(Error, "invalid network parameter");
   });
+  it("Correct inputs - NetUpdater", () => {
+    const network: NetworkAdapter = new ConcreteNetworkFactory().parseNetwork(jsonString, jsonSchemaString);
+    network.observeNode("n1", "value1");
+    const arrayValue: Array<AbstractValue> = new Array<AbstractValue>();
+    arrayValue.push(new StringValue("0", "value1"));
+    arrayValue.push(new StringValue("1", "value2"));
+    arrayValue.push(new StringValue("2", "value3"));
+
+    var g = jsbayes.newGraph();
+    var n1 = g.addNode('n1', ['0', '1', '2']);
+    var n2 = g.addNode('n2', ['0', '1', '2']);
+    n2.addParent(n1);
+    
+    n1.cpt = [0.1, 0.8, 0.1]; //note 3 float value
+    n2.cpt = [ 
+     [0.2, 0.2, 0.6], //[ P(n2=0|n1=0), P(n2=1|n1=0), P(n2=2|n1=0) ]
+     [0.6, 0.2, 0.2], //[ P(n2=0|n1=1), P(n2=1|n1=1), P(n2=2|n1=1) ]
+     [0.2, 0.6, 0.2]  //[ P(n2=0|n1=2), P(n2=1|n1=2), P(n2=2|n1=2) ]
+    ];
+    g.observe("n1", "0");
+    g.sample(10000);
+    const nodeAdapter: NodeAdapter = new ConcreteNodeAdapter(n1, arrayValue);
+
+    const arrayResult: Array<InputResult> = new Array<InputResult>();
+    arrayResult.push(new InputResult(nodeAdapter, "0"));
+    expect(()=> new NetUpdater(network)).to.not.throw(Error);
+  });
 });
 
-const schemaPath: string = "../../../core/network/factory/network_structure.schema.json";
-const testNetworkPath: string = "../../Util_JSON/TestNetwork.json";
-const json = require(testNetworkPath);
-const jsonString: string = JSON.stringify(json);
-
 describe("NetUpdater - updateNet", () => {
-  const jsonSchema = require(schemaPath);
-  const jsonSchemaString: string = JSON.stringify(jsonSchema);
+
   it("Correct InputResultAggregate - Correct probValues", () => {
     const network: NetworkAdapter = new ConcreteNetworkFactory().parseNetwork(jsonString, jsonSchemaString);
     network.observeNode("n1", "value1");

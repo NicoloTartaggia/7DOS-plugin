@@ -11,6 +11,19 @@ describe("InputResultAggregate - constructor", () => {
         let collection: Array<InputResult>;
         expect(() => new InputResultAggregate(collection)).to.throw(Error, "invalid collection parameter");
     });
+    it("Correct inputs - InputResultAggregate", () => {
+        const graph: JGraph = jsbayes.newGraph();
+        const n1: JNode = graph.addNode("n1", ["true", "false"]);
+        const values: Array<AbstractValue> = new Array<AbstractValue>();
+        values.push(new BoolValue(true, "prova"));
+        
+        const nodeName: ConcreteNodeAdapter = new ConcreteNodeAdapter(n1, values);
+        const currentValue: string = "valore";
+
+        const collection: Array<InputResult> = new Array<InputResult>();
+        collection.push(new InputResult(nodeName, currentValue));
+        expect(() => new InputResultAggregate(collection)).to.not.throw(Error);
+    });
 });
 
 describe("InputResultAggregate - buildIterator", () => {

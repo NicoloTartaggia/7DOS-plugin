@@ -48,7 +48,7 @@ describe("WriteClientFactory - makeInfluxWriteClient", () => {
             expect(<Error> e.toString()).to.equal("Error: invalid defaultDB parameter");
         });
     });
-    it("All defined - New InfluxWriteClient", () => {
+    it("Correct inputs - New InfluxWriteClient", () => {
         new ConcreteWriteClientFactory().makeInfluxWriteClient(
             "http://localhost", "8086", "prova"
         ).then(function(writeClient){

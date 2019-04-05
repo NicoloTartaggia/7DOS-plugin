@@ -18,6 +18,9 @@ describe("InfluxReadClient - createReaderClient", () => {
   it("Undefined influx - Error", () => {
     expect(() => new InfluxReadClient("http://localhost:8086/prova", null)).to.throw(Error, "invalid influx parameter");
   });
+  it("Correct inputs - InfluxReadClient", () => {
+    expect(() => new InfluxReadClient("http://localhost:8086/prova", influx)).to.not.throw(Error);
+  });
 });
 
 describe("InfluxReadClient - getAddress", () => {

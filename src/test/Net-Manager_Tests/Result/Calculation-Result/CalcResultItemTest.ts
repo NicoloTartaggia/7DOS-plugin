@@ -12,6 +12,9 @@ describe("CalcResultItem - constructor", () => {
     it("Prob greater than 1 - Error", () => {
         expect(() => new CalcResultItem("n1",1.1)).to.throw(Error, "invalid probValue parameter");
     });
+    it("Correct inputs - Error", () => {
+        expect(() => new CalcResultItem("n1",0.5)).to.not.throw(Error);
+    });
 });
 
 describe("CalcResultItem - getValueName", () => {

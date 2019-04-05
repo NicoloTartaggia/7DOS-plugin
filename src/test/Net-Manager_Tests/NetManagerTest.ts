@@ -22,8 +22,8 @@ describe("NetManager - constructor", () => {
     const reader: NetReader = new NetReader(network);
     const updater: NetUpdater = new NetUpdater(network);
     let writer: NetWriter;
-    new ConcreteWriteClientFactory().makeInfluxWriteClient("http://localhost/", "8086", "prova").then(function(result){
-        writer = new SingleNetWriter(result);
+    new ConcreteWriteClientFactory().makeInfluxWriteClient("http://localhost/", "8086", "prova").then(async function(result){
+        writer = await new SingleNetWriter(result);
     }).catch(function(e){
         console.log("NetManager constructor ERROR: " + e);
     });
@@ -38,6 +38,9 @@ describe("NetManager - constructor", () => {
     it("Undefined writer - Error", () => {
         let unWriter: NetWriter;
         expect(() => new NetManager(reader, updater, unWriter)).to.throw(Error, "invalid writer parameter");
+    });
+    it("Correct inputs - NetManager", () => {
+        expect(() => new NetManager(reader, updater, writer)).to.not.throw(Error);
     });
 });
 

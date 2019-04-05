@@ -27,6 +27,13 @@ describe("ConcreteNodeAdapter - constructor", () => {
 
         expect(() => new ConcreteNodeAdapter(n1, values)).to.throw(Error, "invalid values parameter");
     });
+    it("Correct inputs - ConcreteNodeAdapter", () => {
+        const graph: JGraph = jsbayes.newGraph();
+        const n1: JNode = graph.addNode("n1", ["true", "false"]);
+        let values: Array<AbstractValue> = new Array<AbstractValue>();
+        values.push(new BoolValue(true, "name1"));
+        expect(() => new ConcreteNodeAdapter(n1, values)).to.not.throw(Error);
+    });
 });
 
 describe("ConcreteNodeAdapter - getStates", () => {

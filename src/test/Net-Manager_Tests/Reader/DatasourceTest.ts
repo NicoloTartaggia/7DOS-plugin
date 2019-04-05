@@ -13,4 +13,7 @@ describe("Datasource - constructor", () => {
     it("Empty name - Error", () => {
         expect(() => new DataSource("http://localhost", "database", "username", "password", "type", "")).to.throw(Error, "invalid name parameter");
     });
+    it("Correct inputs - DataSource", () => {
+        expect(() => new DataSource("http://localhost", "database")).to.not.throw(Error);
+    });
 });

@@ -26,6 +26,9 @@ describe("RangeValue - constructor", () => {
         rangeV.getValueName();
         expect(rangeV.getValueName()).to.equal(name);
     });
+    it("Correct input - RangeValue", () => {
+        expect(() => new RangeValue(30, 50, "name1")).to.not.throw(Error);
+    });
 });
 
 describe("RangeValue - isValueType", () => {

@@ -18,6 +18,9 @@ describe("StringValue - constructor", () => {
     it("Empty value - Error", () => {
         expect(() => new StringValue("", "name1")).to.throw(Error, "invalid value parameter");
     });
+    it("Correct inputs - StringValue", () => {
+        expect(() => new StringValue("value1", "name1")).to.not.throw(Error);
+    });
 });
 
 describe("StringValue - isValueType", () => {

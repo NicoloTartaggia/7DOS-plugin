@@ -15,6 +15,9 @@ describe("BoolValue - constructor", () => {
         let str: boolean;
         expect(() => new BoolValue(str, "name1")).to.throw(Error, "invalid value parameter");
     });
+    it("Correct inputs - BoolValue", () => {
+        expect(() => new BoolValue(true, "name1")).to.not.throw(Error);
+    });
 });
 
 describe("BoolValue - isValueType", () => {

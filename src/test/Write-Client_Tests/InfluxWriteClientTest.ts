@@ -19,7 +19,7 @@ describe("InfluxWriteClient - constructor", () => {
         let unInflux: InfluxDB;
         expect(() => new InfluxWriteClient("http://localhost:8086/", "prova", unInflux)).to.throw(Error, "invalid influx parameter");
     });
-    it("All defined - InfluxWriteClient", () => {  
+    it("Correct inputs - InfluxWriteClient", () => {  
         expect(new InfluxWriteClient("http://localhost:8086/", "prova", influx).getAddress()).to.equal("http://localhost:8086/");
     });
 });

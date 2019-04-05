@@ -23,7 +23,7 @@ const IncorrectCptColumnsJsonString: string = JSON.stringify(require("../../Util
 
 describe("ConcreteNetworkFactory - parseNetwork", () => {
 
-  it("Correct network - Ok", () => {
+  it("Correct network - ConcreteNetworkAdapter", () => {
     const s: ConcreteNetworkAdapter = new ConcreteNetworkFactory().parseNetwork(correctJsonString, jsonSchemaString);
     expect(s.getNodeList().length).to.equal(2);
   });

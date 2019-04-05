@@ -10,6 +10,13 @@ describe("CalcResultAggregate - constructor", () => {
         let collection: Array<CalcResult> = new Array<CalcResult>();
         expect(()=> new CalcResultAggregate(collection)).to.throw(Error, "invalid collection parameter");
     });
+    it("Correct inputs - CalcResultAggregate", () => {
+        let collection: Array<CalcResult> = new Array<CalcResult>();
+        let itemsArray: Array<CalcResultItem> = new Array<CalcResultItem>();
+        itemsArray.push(new CalcResultItem("stringa", 1));
+        collection.push(new CalcResult("nodo", itemsArray));        
+        expect(()=> new CalcResultAggregate(collection)).to.not.throw(Error);
+    });
 });
 
 describe("CalcResultAggregate - createIterator", () => {
