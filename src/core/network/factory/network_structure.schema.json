@@ -54,14 +54,24 @@
                                 "rangeMin": {
                                     "title": "Minimum value of the range",
                                     "type": "number",
-                                    "minimum": 0,
-                                    "maximum": 100
+                                    "minimum": 0
                                 },
                                 "rangeMax": {
-                                    "title": "Maximum value of the range",
-                                    "type": "number",
-                                    "minimum": 0,
-                                    "maximum": 100
+                                    "oneOf": [
+                                        {
+                                            "title": "Maximum value of the range",
+                                            "type": "number",
+                                            "minimum": 0
+                                        },
+                                        {
+                                            "title": "Infinite max value",
+                                            "type": "string",
+                                            "enum": [
+                                                "+inf",
+                                                "-inf"
+                                            ]
+                                        }
+                                    ]
                                 }
                             },
                             "required": [
@@ -115,8 +125,7 @@
                             "items": {
                                 "type": "number",
                                 "minimum": 0,
-                                "maximum": 1,
-                                "multipleOf": 0.01
+                                "maximum": 1
                             }
                         }
                     }
