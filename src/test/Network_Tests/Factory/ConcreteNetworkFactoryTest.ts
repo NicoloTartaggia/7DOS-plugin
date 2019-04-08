@@ -67,9 +67,9 @@ describe("ConcreteNetworkFactory - parseNetwork", () => {
     expect(() => new ConcreteNetworkFactory().parseNetwork(EmptyCptJsonString, jsonSchemaString)).to.throw(Error, "Empty cpt");
   });
   it("Incorrect Cpt Rows - Error", () => {
-    expect(() => new ConcreteNetworkFactory().parseNetwork(IncorrectCptRowsJsonString, jsonSchemaString)).to.throw(Error, "Incorrect cpt's number of rows");
+    expect(() => new ConcreteNetworkFactory().parseNetwork(IncorrectCptRowsJsonString, jsonSchemaString)).to.throw(Error, "Incorrect cpt's number of columns for nodeExample (found:2 expected:1)");
   });
   it("Incorrect Cpt Columns - Error", () => {
-    expect(() => new ConcreteNetworkFactory().parseNetwork(IncorrectCptColumnsJsonString, jsonSchemaString)).to.throw(Error, "Incorrect cpt's number of columns");
+    expect(() => new ConcreteNetworkFactory().parseNetwork(IncorrectCptColumnsJsonString, jsonSchemaString)).to.throw(Error, "Incorrect cpt's number of columns for nodeExample (found:3 expected:2)");
   });
 });

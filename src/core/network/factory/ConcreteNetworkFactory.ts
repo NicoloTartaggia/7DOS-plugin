@@ -72,7 +72,23 @@ class ConcreteNetworkFactory implements NetworkFactory {
     if (current_value.type === "boolean") {
       return new BoolValue(current_value.value, current_value.name);
     } else if (current_value.type === "range") {
-      return new RangeValue(current_value.rangeMin, current_value.rangeMax, current_value.name);
+      let rangeMin: number = 0;
+      let rangeMax: number = 0;
+      if (current_value.rangeMin === "-inf") {
+        rangeMin = Number.MIN_SAFE_INTEGER;
+      } else if (current_value.rangeMin === "+inf") {
+        rangeMin = Number.MAX_SAFE_INTEGER;
+      } else {
+        rangeMin = Number(current_value.rangeMin);
+      }
+      if (current_value.rangeMax === "-inf") {
+        rangeMax = Number.MIN_SAFE_INTEGER;
+      } else if (current_value.rangeMax === "+inf") {
+        rangeMax = Number.MAX_SAFE_INTEGER;
+      } else {
+        rangeMax = Number(current_value.rangeMax);
+      }
+      return new RangeValue(rangeMin, rangeMax, current_value.name);
     } else if (current_value.type === "string") {
       return new StringValue(current_value.value, current_value.name);
     } else {
@@ -184,12 +200,14 @@ class ConcreteNetworkFactory implements NetworkFactory {
       if (numberOfRows === node.cpt.length) {
         for (const row of node.cpt) {
           if (row.length !== node.values.length) {
-            throw new Error("Incorrect cpt's number of columns");
+            throw new Error("Incorrect cpt's number of columns for node" + name + " (found:"
+              + row.length.toString() + " expected:" + node.values.length.toString() + ")");
           }
         }
         ConcreteNetworkFactory.setNodeCpt(node_dictionary[name], node.cpt);
       } else {
-        throw new Error("Incorrect cpt's number of rows");
+        throw new Error("Incorrect cpt's number of columns for node" + name + " (found:" + node.cpt.length.toString()
+          + " expected:" + numberOfRows.toString() + ")");
       }
 
     }

@@ -91,7 +91,7 @@ export class JsImportPanel extends PanelCtrl {
       console.log(this.loaded_network.getNodeList().length);
     } catch (e) {
       this.message = "Upload failed!";
-      this.result = "Impossible to read JSON, probably not valid...";
+      this.result = "Impossible to read JSON, probably not valid... Error:" + e.toString();
       return;
     }
     this.message = "Upload succeeded!";
