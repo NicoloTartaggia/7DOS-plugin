@@ -115,7 +115,7 @@ export default class InfluxWriteClient implements WriteClient {
   private parsePointData (point: CalcResult): IPoint {
     const pointRes: IPoint = {
       fields: {},
-      measurement: point.getNodeName().replace(" ", "_"),
+      measurement: point.getNodeName().replace(/ /g, "_"),
     };
     point.getValueProbs().forEach((item) => {
       const field: string = item.getValueName();
