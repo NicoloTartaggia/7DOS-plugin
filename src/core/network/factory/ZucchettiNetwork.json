@@ -1,0 +1,589 @@
+{
+    "nodes": [
+        {
+            "name": "CPU_Processor_Time",
+            "values": [
+                {
+                    "name": "Low Range",
+                    "type": "range",
+                    "rangeMin": 0,
+                    "rangeMax": 20
+                },
+                {
+                    "name": "Normal Range",
+                    "type": "range",
+                    "rangeMin": 21,
+                    "rangeMax": 80
+                },
+                {
+                    "name": "Alert Range",
+                    "type": "range",
+                    "rangeMin": 81,
+                    "rangeMax": 100
+                }
+            ],
+            "parents": [
+                "DISK_Percent_Disk_Time"
+            ],
+            "cpt": [
+                [
+                    0.3,
+                    0.4,
+                    0.3
+                ],
+                [
+                    0.2,
+                    0.6,
+                    0.2
+                ],
+                [
+                    0.5,
+                    0.3,
+                    0.2
+                ]
+            ]
+        },
+        {
+            "name": "CPU_User_Time",
+            "values": [
+                {
+                    "name": "Low Range",
+                    "type": "range",
+                    "rangeMin": 0,
+                    "rangeMax": 20
+                },
+                {
+                    "name": "Normal Range",
+                    "type": "range",
+                    "rangeMin": 21,
+                    "rangeMax": 80
+                },
+                {
+                    "name": "Alert Range",
+                    "type": "range",
+                    "rangeMin": 81,
+                    "rangeMax": 100
+                }
+            ],
+            "parents": [
+                "DISK_Percent_Disk_Time"
+            ],
+            "cpt": [
+                [
+                    0.3,
+                    0.4,
+                    0.3
+                ],
+                [
+                    0.2,
+                    0.6,
+                    0.2
+                ],
+                [
+                    0.5,
+                    0.3,
+                    0.2
+                ]
+            ]
+        },
+        {
+            "name": "DISK_Percent_Free_Space",
+            "values": [
+                {
+                    "name": "Disk almost full",
+                    "type": "range",
+                    "rangeMin": 0,
+                    "rangeMax": 25
+                },
+                {
+                    "name": "Normal Disk free space",
+                    "type": "range",
+                    "rangeMin": 26,
+                    "rangeMax": 100
+                }
+            ],
+            "parents": [],
+            "cpt": [
+                [
+                    0.3,
+                    0.7
+                ]
+            ]
+        },
+        {
+            "name": "DISK_Percent_Disk_Time",
+            "values": [
+                {
+                    "name": "Idle Range",
+                    "type": "range",
+                    "rangeMin": 0,
+                    "rangeMax": 20
+                },
+                {
+                    "name": "Working Range",
+                    "type": "range",
+                    "rangeMin": 21,
+                    "rangeMax": 60
+                },
+                {
+                    "name": "Reading Range",
+                    "type": "range",
+                    "rangeMin": 61,
+                    "rangeMax": 100
+                }
+            ],
+            "parents": [],
+            "cpt": [
+                [
+                    0.2,
+                    0.5,
+                    0.3
+                ]
+            ]
+        },
+        {
+            "name": "RAM_Available_Bytes",
+            "values": [
+                {
+                    "name": "Ram almost full",
+                    "type": "range",
+                    "rangeMin": 0,
+                    "rangeMax": 1000000000
+                },
+                {
+                    "name": "Ram normal",
+                    "type": "range",
+                    "rangeMin": 1000000001,
+                    "rangeMax": "+inf"
+                }
+            ],
+            "parents": [
+                "CPU_Processor_Time",
+                "DISK_Percent_Disk_Time"
+            ],
+            "cpt": [
+                [
+                    0.3,
+                    0.7
+                ],
+                [
+                    0.4,
+                    0.6
+                ],
+                [
+                    0.4,
+                    0.6
+                ],
+                [
+                    0.5,
+                    0.5
+                ],
+                [
+                    0.6,
+                    0.4
+                ],
+                [
+                    0.5,
+                    0.5
+                ],
+                [
+                    0.2,
+                    0.8
+                ],
+                [
+                    0.2,
+                    0.8
+                ],
+                [
+                    0.5,
+                    0.5
+                ]
+            ]
+        },
+        {
+            "name": "SYSTEM_System_Calls_persec",
+            "values": [
+                {
+                    "name": "System normal",
+                    "type": "range",
+                    "rangeMin": 0,
+                    "rangeMax": 1000000
+                },
+                {
+                    "name": "System full load",
+                    "type": "range",
+                    "rangeMin": 1000001,
+                    "rangeMax": "+inf"
+                }
+            ],
+            "parents": [],
+            "cpt": [
+                [
+                    0.7,
+                    0.3
+                ]
+            ]
+        },
+        {
+            "name": "NET_Packets_Received_persec",
+            "values": [
+                {
+                    "name": "Normal receive",
+                    "type": "range",
+                    "rangeMin": 0,
+                    "rangeMax": 1000
+                },
+                {
+                    "name": "Full load receive",
+                    "type": "range",
+                    "rangeMin": 1001,
+                    "rangeMax": 10000
+                },
+                {
+                    "name": "DDOS",
+                    "type": "range",
+                    "rangeMin": 10001,
+                    "rangeMax": "+inf"
+                }
+            ],
+            "parents": [
+                "CPU_User_Time"
+            ],
+            "cpt": [
+                [
+                    0.4,
+                    0.4,
+                    0.2
+                ],
+                [
+                    0.3,
+                    0.5,
+                    0.2
+                ],
+                [
+                    0.1,
+                    0.4,
+                    0.5
+                ]
+            ]
+        },
+        {
+            "name": "Update in progress",
+            "values": [
+                {
+                    "name": "True",
+                    "type": "boolean",
+                    "value": true
+                },
+                {
+                    "name": "False",
+                    "type": "boolean",
+                    "value": false
+                }
+            ],
+            "parents": [
+                "SYSTEM_System_Calls_persec",
+                "RAM_Available_Bytes",
+                "CPU_Processor_Time",
+                "CPU_User_Time"
+            ],
+            "cpt": [
+                [
+                    0.58,
+                    0.42
+                ],
+                [
+                    0.34,
+                    0.66
+                ],
+                [
+                    0.74,
+                    0.26
+                ],
+                [
+                    0.92,
+                    0.08
+                ],
+                [
+                    0.03,
+                    0.97
+                ],
+                [
+                    0.87,
+                    0.13
+                ],
+                [
+                    0.82,
+                    0.18
+                ],
+                [
+                    0.27,
+                    0.73
+                ],
+                [
+                    0.52,
+                    0.48
+                ],
+                [
+                    0.26,
+                    0.74
+                ],
+                [
+                    0.74,
+                    0.26
+                ],
+                [
+                    0.83,
+                    0.17
+                ],
+                [
+                    0.84,
+                    0.16
+                ],
+                [
+                    0.6,
+                    0.4
+                ],
+                [
+                    0.97,
+                    0.03
+                ],
+                [
+                    0.69,
+                    0.31
+                ],
+                [
+                    0.02,
+                    0.98
+                ],
+                [
+                    0.93,
+                    0.07
+                ],
+                [
+                    0.52,
+                    0.48
+                ],
+                [
+                    0.12,
+                    0.88
+                ],
+                [
+                    0.51,
+                    0.49
+                ],
+                [
+                    0.15,
+                    0.85
+                ],
+                [
+                    0.45,
+                    0.55
+                ],
+                [
+                    0.48,
+                    0.52
+                ],
+                [
+                    0.73,
+                    0.27
+                ],
+                [
+                    0.01,
+                    0.99
+                ],
+                [
+                    0.36,
+                    0.64
+                ],
+                [
+                    0.46,
+                    0.54
+                ],
+                [
+                    0.39,
+                    0.61
+                ],
+                [
+                    0.84,
+                    0.16
+                ],
+                [
+                    0.9,
+                    0.1
+                ],
+                [
+                    0.63,
+                    0.37
+                ],
+                [
+                    0.94,
+                    0.06
+                ],
+                [
+                    0.55,
+                    0.45
+                ],
+                [
+                    0.37,
+                    0.63
+                ],
+                [
+                    0.22,
+                    0.78
+                ]
+            ]
+        },
+        {
+            "name": "System crash",
+            "values": [
+                {
+                    "name": "Unlikely",
+                    "type": "range",
+                    "rangeMin": 0,
+                    "rangeMax": 40
+                },
+                {
+                    "name": "A little probable",
+                    "type": "range",
+                    "rangeMin": 41,
+                    "rangeMax": 60
+                },
+                {
+                    "name": "Very likely",
+                    "type": "range",
+                    "rangeMin": 61,
+                    "rangeMax": 100
+                }
+            ],
+            "parents": [
+                "SYSTEM_System_Calls_persec",
+                "RAM_Available_Bytes",
+                "DISK_Percent_Free_Space",
+                "NET_Packets_Received_persec"
+            ],
+            "cpt": [
+                [
+                    0.5,
+                    0.3,
+                    0.2
+                ],
+                [
+                    0.6,
+                    0.2,
+                    0.2
+                ],
+                [
+                    0.4,
+                    0.5,
+                    0.1
+                ],
+                [
+                    0.3,
+                    0.6,
+                    0.1
+                ],
+                [
+                    0.5,
+                    0.3,
+                    0.2
+                ],
+                [
+                    0.5,
+                    0.2,
+                    0.3
+                ],
+                [
+                    0.4,
+                    0.4,
+                    0.2
+                ],
+                [
+                    0.3,
+                    0.5,
+                    0.2
+                ],
+                [
+                    0.2,
+                    0.5,
+                    0.3
+                ],
+                [
+                    0.5,
+                    0.2,
+                    0.3
+                ],
+                [
+                    0.5,
+                    0.4,
+                    0.1
+                ],
+                [
+                    0.8,
+                    0.1,
+                    0.1
+                ],
+                [
+                    0.5,
+                    0.3,
+                    0.2
+                ],
+                [
+                    0.5,
+                    0.2,
+                    0.3
+                ],
+                [
+                    0.5,
+                    0.3,
+                    0.2
+                ],
+                [
+                    0.6,
+                    0.2,
+                    0.2
+                ],
+                [
+                    0.4,
+                    0.5,
+                    0.1
+                ],
+                [
+                    0.3,
+                    0.6,
+                    0.1
+                ],
+                [
+                    0.2,
+                    0.5,
+                    0.3
+                ],
+                [
+                    0.5,
+                    0.2,
+                    0.3
+                ],
+                [
+                    0.5,
+                    0.4,
+                    0.1
+                ],
+                [
+                    0.8,
+                    0.1,
+                    0.1
+                ],
+                [
+                    0.5,
+                    0.3,
+                    0.2
+                ],
+                [
+                    0.5,
+                    0.2,
+                    0.3
+                ]
+            ]
+        }
+    ]
+}
