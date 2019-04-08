@@ -23,8 +23,16 @@ export default class DataSource {
     this.host = urlParse.protocol + "//" + urlParse.hostname;
     this.port = urlParse.port;
     this.database = database;
-    this.username = username;
-    this.password = password;
+    if (username === "") {
+      this.username = null;
+    } else {
+      this.username = username;
+    }
+    if (password === "") {
+      this.password = null;
+    } else {
+      this.password = password;
+    }
     this.type = type;
     this.name = name;
     this.grafanaDatasourceId = grafanaDatasourceId;
