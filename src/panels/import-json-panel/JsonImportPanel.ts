@@ -55,6 +55,7 @@ export class JsImportPanel extends PanelCtrl {
   public doRefresh: boolean;
   public panelDefaults = {
     jsonContent: "",
+    save_datasources: [],
     secondToRefresh: 5,
   };
 
