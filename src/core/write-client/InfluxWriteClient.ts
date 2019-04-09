@@ -121,8 +121,6 @@ export default class InfluxWriteClient implements WriteClient {
       const field: string = item.getValueName();
       pointRes.fields[field] = item.getProbValue();
     });
-    console.log("parsato:");
-    console.log(pointRes);
     return pointRes;
   }
 }

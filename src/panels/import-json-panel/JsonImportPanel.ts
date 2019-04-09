@@ -69,6 +69,11 @@ export class JsImportPanel extends PanelCtrl {
 
     this.events.on("panel-teardown", this.stop.bind(this));
     this.events.on("init-edit-mode", this.onInitEditMode.bind(this));
+    console.log("On constructor");
+    if (this.panel.jsonContent !== "") {
+      this.onTextBoxRefresh();
+    }
+
   }
 
   public onInitEditMode () {
@@ -176,6 +181,10 @@ export class JsImportPanel extends PanelCtrl {
     // The error type can be alert-error or alert-warning, it basically just change box the icon
     // Example: appEvents.emit("alert-warning", ["Validation failed", "An error occurred doing something..."]);
     appEvents.emit("alert-error", [error_title, error_message]);
+  }
+
+  public onTextBoxRefresh() {
+    this.onUpload(JSON.parse(this.panel.jsonContent));
   }
 
   public link (scope, element) {
