@@ -43,7 +43,6 @@ export class SelectDB_Ctrl {
     this.panel.targets = this.panel.targets || [{}];
     this.dashboard = this.panelCtrl.dashboard;
     // Linking select_ts_tab to panel
-    this.panel.ts_tab_control = this.panelCtrl;
     console.log("SelectDB_Ctrl - Object build");
     console.log("SelectDB_Ctrl - Get datasources");
     this.getDatasources();

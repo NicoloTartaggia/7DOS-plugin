@@ -1,8 +1,8 @@
 import appEvents from "grafana/app/core/app_events";
 import {PanelCtrl} from "grafana/app/plugins/sdk";
 import {ConcreteWriteClientFactory} from "../../core/write-client/WriteClientFactory";
-import {SelectDB_Ctrl, SelectDB_Directive} from "./select_ts_tab";
-import {SetWriteConnection_Ctrl, SetWriteConnection_Directive} from "./set_write_connection_tab";
+import {SelectDB_Directive} from "./select_ts_tab";
+import {SetWriteConnection_Directive} from "./set_write_connection_tab";
 
 import _ from "lodash";
 import {NetManager} from "../../core/net-manager/NetManager";
@@ -49,9 +49,6 @@ export class JsImportPanel extends PanelCtrl {
   public netReader: NetReader;
   public netUpdater: NetUpdater;
   public netWriter: NetWriter;
-
-  public ts_tab_control: SelectDB_Ctrl;
-  public write_connection_control: SetWriteConnection_Ctrl;
 
   public secondToRefresh: number;
   public nextTickPromise: any;
@@ -108,8 +105,6 @@ export class JsImportPanel extends PanelCtrl {
     this.netWriter = new SingleNetWriter(await new ConcreteWriteClientFactory()
       .makeInfluxWriteClient("http://localhost", "8086", "myDB"));
     this.netManager = new NetManager(this.netReader, this.netUpdater, this.netWriter);
-    this.ts_tab_control.refreshNetwork();
-    this.write_connection_control.createDatabaseToWrite();
   }
 
   public onSubmit () { // Currently not used
@@ -146,7 +141,7 @@ export class JsImportPanel extends PanelCtrl {
     document.body.removeChild(element);
   }
 
-  public runUpdate() {
+  public runUpdate () {
     this.$timeout.cancel(this.nextTickPromise);
 
     this.netManager.updateNet();
@@ -157,7 +152,7 @@ export class JsImportPanel extends PanelCtrl {
     console.log("aggiornato");
   }
 
-  public setSecond() {
+  public setSecond () {
     this.secondToRefresh = Number(this.panel.secondToRefresh);
     if (Number.isNaN(this.secondToRefresh)) {
       this.secondToRefresh = 5;
@@ -169,21 +164,23 @@ export class JsImportPanel extends PanelCtrl {
     }
   }
 
-  public start() {
+  public start () {
     this.doRefresh = true;
     this.runUpdate();
   }
-  public stop() {
+
+  public stop () {
     this.doRefresh = false;
     this.$timeout.cancel(this.nextTickPromise);
   }
+
   public showError (error_title: string, error_message: string) {
     // The error type can be alert-error or alert-warning, it basically just change box the icon
     // Example: appEvents.emit("alert-warning", ["Validation failed", "An error occurred doing something..."]);
     appEvents.emit("alert-error", [error_title, error_message]);
   }
 
-  public onTextBoxRefresh() {
+  public onTextBoxRefresh () {
     this.onUpload(JSON.parse(this.panel.jsonContent));
   }
 

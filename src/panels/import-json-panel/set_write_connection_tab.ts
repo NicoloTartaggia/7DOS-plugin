@@ -32,10 +32,6 @@ export class SetWriteConnection_Ctrl {
     this.panel.datasource = this.panel.datasource || null;
     this.panel.targets = this.panel.targets || [{}];
     this.dashboard = this.panelCtrl.dashboard;
-
-    // Linking select_ts_tab to panel
-    this.panel.ts_tab_control = this.panelCtrl;
-
     this.database_name = "7DOS_default_DB";
     this.selected_datasource = null;
     this.writeCF = new ConcreteWriteClientFactory();
