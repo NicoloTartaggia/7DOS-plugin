@@ -44,7 +44,7 @@ const nodeAdapter: NodeAdapter = new ConcreteNodeAdapter(n1, arrayValue);
 const arrayResult: Array<InputResult> = new Array<InputResult>();
 arrayResult.push(new InputResult(nodeAdapter, "0"));
 
-describe("NetReader NetWriter NetUpdater (NetManager:updateNet)", () => {
+describe("NetUpdater NetWriter Integration Test", () => {
     it("Defined parameters - No error", async () => {
         const updater: NetUpdater = new NetUpdater(network);
         new ConcreteWriteClientFactory().makeInfluxWriteClient(

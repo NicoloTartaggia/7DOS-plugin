@@ -40,7 +40,7 @@ n2.cpt = [
 g.observe("n1", "0");
 g.sample(10000);
 
-describe("NetReader NetWriter NetUpdater (NetManager:updateNet)", () => {
+describe("NetReader NetUpdater Integration Test", () => {
     it("Defined parameters - No error", () => {
         const reader: NetReader = new NetReader(network);
         const updater: NetUpdater = new NetUpdater(network);
