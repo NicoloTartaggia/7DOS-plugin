@@ -2,7 +2,6 @@ import { NetworkAdapter, NodeAdapter, ConcreteNodeAdapter } from "../../core/net
 import { ConcreteNetworkFactory } from "../../core/network/factory/factory";
 import { InputResultAggregate, InputResult } from "../../core/net-manager/result/input-result/input-result";
 import { CalcResultAggregate } from "../../core/net-manager/result/calculation-result/calculation-result";
-import { NetReader } from "../../core/net-manager/reader/reader";
 import { AbstractValue, StringValue } from "../../core/network/value/value";
 import { NetUpdater } from "../../core/net-manager/updater/NetUpdater";
 import { ConcreteWriteClientFactory } from "../../core/write-client/write-client";
@@ -47,7 +46,6 @@ arrayResult.push(new InputResult(nodeAdapter, "0"));
 
 describe("NetReader NetWriter NetUpdater (NetManager:updateNet)", () => {
     it("Defined parameters - No error", async () => {
-        const reader: NetReader = new NetReader(network);
         const updater: NetUpdater = new NetUpdater(network);
         new ConcreteWriteClientFactory().makeInfluxWriteClient(
             "http://localhost", "8086", "prova", ["root", "root"]
@@ -55,12 +53,8 @@ describe("NetReader NetWriter NetUpdater (NetManager:updateNet)", () => {
             const writer: SingleNetWriter = new SingleNetWriter(writeClient);
             let error: boolean = false;
             // NetManager:updateNet's code
-            const read_res: InputResultAggregate = await reader.read()
-            .catch((err) => {
-                error=true;
-                throw new Error("Error while reading from input datasource. For more details, see error: " + err);
-            });
-            const update_res: CalcResultAggregate = updater.updateNet(read_res);
+            const ira: InputResultAggregate = new InputResultAggregate(arrayResult);
+            const update_res: CalcResultAggregate = updater.updateNet(ira);
             await writer.write(update_res)
                 .catch((err) => {
                     error=true;

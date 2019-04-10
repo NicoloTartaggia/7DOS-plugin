@@ -1,15 +1,14 @@
-import { NetworkAdapter, NodeAdapter, ConcreteNodeAdapter } from "../../core/network/adapter/adapter";
+import { NetworkAdapter } from "../../core/network/adapter/adapter";
 import { ConcreteNetworkFactory } from "../../core/network/factory/factory";
-import { InputResultAggregate, InputResult } from "../../core/net-manager/result/input-result/input-result";
 import { CalcResultAggregate } from "../../core/net-manager/result/calculation-result/calculation-result";
 import { NetReader } from "../../core/net-manager/reader/reader";
-import { AbstractValue, StringValue } from "../../core/network/value/value";
 import { NetUpdater } from "../../core/net-manager/updater/NetUpdater";
-import { ConcreteWriteClientFactory } from "../../core/write-client/write-client";
-import { SingleNetWriter } from "../../core/net-manager/writer/NetWriter";
 
-import jsbayes = require("jsbayes");
 import { expect } from "chai";
+import { ConcreteWriteClientFactory } from "../../core/write-client/write-client";
+import { InputResultAggregate } from "../../core/net-manager/result/result";
+import { AbstractValue, StringValue } from "../../core/network/value/value";
+import jsbayes = require("jsbayes");
 
 const schemaPath: string = "../../core/network/factory/network_structure.schema.json";
 const jsonSchema = require(schemaPath);
@@ -41,18 +40,13 @@ n2.cpt = [
 g.observe("n1", "0");
 g.sample(10000);
 
-const nodeAdapter: NodeAdapter = new ConcreteNodeAdapter(n1, arrayValue);
-const arrayResult: Array<InputResult> = new Array<InputResult>();
-arrayResult.push(new InputResult(nodeAdapter, "0"));
-
 describe("NetReader NetWriter NetUpdater (NetManager:updateNet)", () => {
-    it("Defined parameters - No error", async () => {
+    it("Defined parameters - No error", () => {
         const reader: NetReader = new NetReader(network);
         const updater: NetUpdater = new NetUpdater(network);
         new ConcreteWriteClientFactory().makeInfluxWriteClient(
             "http://localhost", "8086", "prova", ["root", "root"]
         ).then(async function(writeClient){
-            const writer: SingleNetWriter = new SingleNetWriter(writeClient);
             let error: boolean = false;
             // NetManager:updateNet's code
             const read_res: InputResultAggregate = await reader.read()
@@ -61,14 +55,11 @@ describe("NetReader NetWriter NetUpdater (NetManager:updateNet)", () => {
                 throw new Error("Error while reading from input datasource. For more details, see error: " + err);
             });
             const update_res: CalcResultAggregate = updater.updateNet(read_res);
-            await writer.write(update_res)
-                .catch((err) => {
-                    error=true;
-                    throw new Error("Error while writing to output datasource. For more details, see error: " + err);
-                }); 
+            expect(update_res.createIterator().next().value.getNodeName()).to.equal("n1");
             expect(error).to.equal(false);      
         }).catch(function(e){
             console.log("SingleNetWriter constructor ERROR: " + e);
         });
     });
 });
+
