@@ -77,12 +77,12 @@ export class JsImportPanel extends PanelCtrl {
   }
 
   public onInitEditMode () {
-    this.addEditorTab("JSON-Import-or-edit",
+    this.addEditorTab("Import or edit network",
       "public/plugins/app-jsbayes/panels/import-json-panel/partials/optionTab_importEditJson.html",
       1);
-    this.addEditorTab("Network-Connection-to-Grafana", SelectDB_Directive, 2);
-    this.addEditorTab("Setup-Results-Influx", SetWriteConnection_Directive, 3);
-    this.addEditorTab("Network-Calculation-SetUp",
+    this.addEditorTab("Connect nodes to data", SelectDB_Directive, 2);
+    this.addEditorTab("Setup results datasource", SetWriteConnection_Directive, 3);
+    this.addEditorTab("Manage monitoring",
       "public/plugins/app-jsbayes/panels/import-json-panel/partials/network_Calculation_SetUp.html",
       4);
 

@@ -1,12 +1,12 @@
 <div class="editor-row">
     <div class="section gf-form-group">
-        <h5 class="section-heading">Import or edit JSON network</h5>
+        <h5 class="section-heading">Import, edit or download network</h5>
         <div class="gf-form">
-            <label class="gf-form-label width-20">Upload JSON file</label>
+            <label class="gf-form-label width-20">Upload network</label>
             <dash-upload on-upload="ctrl.onUpload(dash)"></dash-upload>
         </div>
         <div class="gf-form">
-            <label class="gf-form-label width-20">Edit or insert network</label>
+            <label class="gf-form-label width-20">Edit network</label>
             <textarea id="network-txt" class="gf-form-input width-20 height-20" ng-model="ctrl.panel.jsonContent" ng-change="ctrl.render()" ng-model-onblur></textarea>
         </div>
         <div class="gf-form">
