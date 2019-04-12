@@ -22,6 +22,7 @@
     "exclude": [
       "src/panels/graph-panel/**",
       "src/test/**",
+      "dist/**",
       "webpack.config.js"
     ],
     "all": true
