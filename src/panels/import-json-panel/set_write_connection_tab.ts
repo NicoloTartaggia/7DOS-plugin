@@ -81,7 +81,7 @@ export class SetWriteConnection_Ctrl {
     );
   }
 
-  public createDatabaseToWrite() {
+  public async createDatabaseToWrite() {
     // if user doesn't provide a specific name
     if (this.database_name === null || this.database_name.length === 0) {
       this.database_name = "7DOS_default_DB";
@@ -90,8 +90,8 @@ export class SetWriteConnection_Ctrl {
       const hostname: string = this.datasources[this.selected_datasource].getHost();
       const port: string = this.datasources[this.selected_datasource].getPort();
       console.log("Trying to write result on database: " + this.database_name +
-        " on URL: " + hostname + port);
-      this.writeCF.makeInfluxWriteClient(hostname, port, this.database_name);
+        " on URL: " + hostname + ":" + port);
+      this.panelCtrl.updateNetWriter(await this.writeCF.makeInfluxWriteClient(hostname, port, this.database_name));
     } catch (err) {
       console.error(err);
     }

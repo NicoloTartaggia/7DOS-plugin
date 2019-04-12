@@ -1,5 +1,6 @@
 import appEvents from "grafana/app/core/app_events";
 import {PanelCtrl} from "grafana/app/plugins/sdk";
+import {WriteClient} from "../../core/write-client/WriteClient";
 import {ConcreteWriteClientFactory} from "../../core/write-client/WriteClientFactory";
 import {SelectDB_Ctrl, SelectDB_Directive} from "./select_ts_tab";
 import {SetWriteConnection_Ctrl, SetWriteConnection_Directive} from "./set_write_connection_tab";
@@ -113,6 +114,13 @@ export class JsImportPanel extends PanelCtrl {
     this.write_connection_control.createDatabaseToWrite();
   }
 
+  public async updateNetWriter (write_client: WriteClient) {
+    console.log("updateNetWriter() - Updating net writer");
+    this.netWriter = new SingleNetWriter(write_client);
+    this.netManager = new NetManager(this.netReader, this.netUpdater, this.netWriter);
+    console.log("updateNetWriter() - done");
+  }
+
   public onSubmit () { // Currently not used
     console.log("onSubmit() called");
     /*console.log("Node name:" + this.node_name);
@@ -147,7 +155,7 @@ export class JsImportPanel extends PanelCtrl {
     document.body.removeChild(element);
   }
 
-  public runUpdate() {
+  public runUpdate () {
     this.$timeout.cancel(this.nextTickPromise);
 
     this.netManager.updateNet();
@@ -158,7 +166,7 @@ export class JsImportPanel extends PanelCtrl {
     console.log("aggiornato");
   }
 
-  public setSecond() {
+  public setSecond () {
     this.secondToRefresh = Number(this.panel.secondToRefresh);
     if (Number.isNaN(this.secondToRefresh)) {
       this.secondToRefresh = 5;
@@ -170,21 +178,23 @@ export class JsImportPanel extends PanelCtrl {
     }
   }
 
-  public start() {
+  public start () {
     this.doRefresh = true;
     this.runUpdate();
   }
-  public stop() {
+
+  public stop () {
     this.doRefresh = false;
     this.$timeout.cancel(this.nextTickPromise);
   }
+
   public showError (error_title: string, error_message: string) {
     // The error type can be alert-error or alert-warning, it basically just change box the icon
     // Example: appEvents.emit("alert-warning", ["Validation failed", "An error occurred doing something..."]);
     appEvents.emit("alert-error", [error_title, error_message]);
   }
 
-  public onTextBoxRefresh() {
+  public onTextBoxRefresh () {
     this.onUpload(JSON.parse(this.panel.jsonContent));
   }
 
