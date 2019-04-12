@@ -1,0 +1,16 @@
+<div class="" >
+    <dash-upload on-upload="ctrl.onUpload(dash)"></dash-upload>
+    <p class="">
+        {{ctrl.message}}
+    </p>
+    <p class="">
+        {{ctrl.result}}
+    </p>
+    <p>Name of the node to observe:<input type="text" ng-model="ctrl.node_name" /></p>
+    <p>Value to observe (the name, ex. "False"):<input type="text" ng-model="ctrl.observe_value" /></p>
+    <p>Samples:<input type="number" value="1000" ng-model="ctrl.samples" /></p>
+    <button type="button" class="btn btn-secondary" ng-click="ctrl.onSubmit()" >Calculate</button>
+    <p class="">
+        {{ctrl.jsonContent}}
+    </p>
+</div>

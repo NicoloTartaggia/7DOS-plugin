@@ -1,0 +1,15 @@
+<div class="editor-row">
+    <div class="section gf-form-group">
+        <h5 class="section-heading">Monitoring refresh rate</h5>
+        <div class="gf-form">
+            <label class="gf-form-label width-10">Seconds</label>
+            <input type="number" class="gf-form-input" ng-model="ctrl.panel.secondToRefresh" ng-change="ctrl.setSecond()" ></input>
+            <button ng-click="ctrl.start()" id="upd-btn" class="btn btn-inverse">Start</button>
+            <button ng-click="ctrl.stop()" id="upd-btn" class="btn btn-inverse">Stop</button>
+        </div>
+        <div class="gf-form">
+        <button ng-click="ctrl.runUpdate()" id="upd-btn" class="btn btn-inverse">Manual refresh</button>
+        </div>
+
+    </div>
+</div>
