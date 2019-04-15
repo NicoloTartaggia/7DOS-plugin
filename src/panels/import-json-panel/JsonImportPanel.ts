@@ -13,6 +13,9 @@ import {NetWriter, SingleNetWriter} from "../../core/net-manager/writer/NetWrite
 import {NetworkAdapter} from "../../core/network/adapter/NetworkAdapter";
 import {ConcreteNetworkFactory} from "../../core/network/factory/ConcreteNetworkFactory";
 
+import jsbayes from "jsbayes";
+import jsbayesviz = require("jsbayes-viz");
+
 export class JsImportPanel extends PanelCtrl {
   public static templateUrl: string = "panels/import-json-panel/partials/panelTemplate.html";
   public static scrollable: boolean = true;
@@ -87,6 +90,40 @@ export class JsImportPanel extends PanelCtrl {
       // TODO FINISH THIS - TO AUTO RESTART WE MUST RI-CREATE THE OBJECTS
       this.start();
     }*/
+
+    this.nextTickPromise = this.$timeout(this.late_draw.bind(this), 10 * 1000);
+    console.log("time set");
+  }
+
+  public late_draw() {
+    console.log("called");
+    const g = jsbayes.newGraph();
+    const n1 = g.addNode("n1", ["true", "false"]);
+    const n2 = g.addNode("n2", ["true", "false"]);
+    const n3 = g.addNode("n3", ["true", "false"]);
+
+    n2.addParent(n1);
+    n3.addParent(n2);
+    g.reinit();
+    g.sample(10000);
+
+    const graph: VGraph = jsbayesviz.fromGraph(g);
+    console.log(graph);
+    const options: DrawOptions = {graph: undefined, height: undefined, id: "", samples: 0, width: undefined};
+    options.id = "bbn";
+    options.width = 800;
+    options.height = 800;
+    options.graph = graph;
+    options.samples = 1000;
+    console.log(options);
+
+    console.log("Pre-draw");
+    const obj = (document.getElementById("bbn") as HTMLObjectElement);
+    console.log(obj);
+    console.log("ready?");
+    console.log("this log");
+    console.log(document.getElementById("bbn"));
+    jsbayesviz.draw(options);
   }
 
   public onInitEditMode () {
