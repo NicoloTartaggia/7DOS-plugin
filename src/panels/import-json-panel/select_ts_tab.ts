@@ -5,23 +5,33 @@ import {coreModule} from "grafana/app/core/core";
 import {DashboardModel} from "grafana/app/features/dashboard/model";
 import DataSource from "../../core/net-manager/reader/Datasource";
 
+/**
+ * Class used to save a database found in a datasource, with all its tables
+ */
 class Script_Found_Database {
   public name: string;
   public tables: { [table_name: string]: Script_Found_Table; } = {};
 }
 
+/**
+ * Class used to save a table found in a database present in a datasource
+ */
 class Script_Found_Table {
   public name: string;
   public fields: Array<string> = [];
 }
 
+/**
+ * Class used to save a connection in the panel
+ */
 class Saved_Connecton {
   public nodename: string;
   public datasource: DataSource;
   public table: string;
   public field: string;
 
-  public setTableField (query: string) {
+  // Given the query, this method split the string in table and field
+  public setTableField (query: string): void {
     this.field = query.substring(
       query.toLowerCase().indexOf("select") + 7,
       query.toLowerCase().indexOf("from"),
@@ -115,15 +125,13 @@ export class SelectDB_Ctrl {
       // Copy datasource, this is necessary to use DataSource functions
       const c_datasource: DataSource = DataSource.copy(element.datasource as DataSource);
       // Get the datasource id and set it as the currently selected datasource for the node
-      const datasourceId: string = c_datasource.getGrafanaDatasourceId().toString();
-      this.selected_datasource[element.nodename] = datasourceId;
+      this.selected_datasource[element.nodename] = c_datasource.getGrafanaDatasourceId().toString();
       // Get the db name, set it as currently selected database and update the objects
-      const db: string = c_datasource.getDatabase();
-      this.selected_database_name[element.nodename] = db;
+      this.selected_database_name[element.nodename] = c_datasource.getDatabase();
       this.update_selected_database(element.nodename);
       // Get the selected table from the db and set is as currently selected
-      const tb: Script_Found_Table = this.getTableObjFromName(this.selected_database[element.nodename], element.table);
-      this.selected_table[element.nodename] = tb;
+      this.selected_table[element.nodename] = this.getTableObjFromName(
+        this.selected_database[element.nodename], element.table);
       // Set the table field as currently selected
       this.selected_field[element.nodename] = element.field;
     }
@@ -284,13 +292,17 @@ export class SelectDB_Ctrl {
   // Private functions
   // ------------------------------------------------------
 
-  private save_connections() {
+  private save_connections () {
     for (let i = 0; i < this.nodes.length; i++) {
       const [query, datasource] = this.getQuery(i);
       if (datasource !== null) {
+        // Create the object to save
         const saved_to_add: Saved_Connecton = new Saved_Connecton();
+        // Set the node name
         saved_to_add.nodename = this.nodes[i].getName();
+        // Set the datasource
         saved_to_add.datasource = datasource;
+        // Set the query to save
         saved_to_add.setTableField(query);
         // Check if is already in the array
         let indexof = -1;
@@ -309,11 +321,12 @@ export class SelectDB_Ctrl {
     }
   }
 
-  private getTableObjFromName (database: Script_Found_Database, tableName: string) {
+  private getTableObjFromName (database: Script_Found_Database, tableName: string): Script_Found_Table {
     return database.tables[tableName];
   }
 
-  private update_selected_database (node: string) {
+  // This method update the this.selected_database dict from the this.selected_database_name value for a node
+  private update_selected_database (node: string): void {
     this.selected_database[node] = this.databases[this.selected_datasource[node]][this.selected_database_name[node]];
   }
 
