@@ -91,7 +91,7 @@ export class JsImportPanel extends PanelCtrl {
       this.start();
     }*/
 
-    this.nextTickPromise = this.$timeout(this.late_draw.bind(this), 10 * 1000);
+    this.nextTickPromise = this.$timeout(this.late_draw.bind(this), 5 * 1000);
     console.log("time set");
   }
 
@@ -110,7 +110,7 @@ export class JsImportPanel extends PanelCtrl {
     const graph: VGraph = jsbayesviz.fromGraph(g);
     console.log(graph);
     const options: DrawOptions = {graph: undefined, height: undefined, id: "", samples: 0, width: undefined};
-    options.id = "bbn";
+    options.id = "#bbn";
     options.width = 800;
     options.height = 800;
     options.graph = graph;
