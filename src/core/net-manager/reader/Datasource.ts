@@ -1,4 +1,8 @@
 export default class DataSource {
+  public static copy (other: DataSource): DataSource {
+    return new DataSource((other.host + ":" + other.port), other.database, other.username, other.password,
+      other.type, this.name, other.grafanaDatasourceId);
+  }
   private readonly host: string;
   private readonly port: string;
   private readonly database: string;
@@ -84,7 +88,6 @@ export default class DataSource {
   public cloneWithDB (database_name: string): DataSource {
     return new DataSource((this.host + ":" + this.port), database_name, this.username, this.password,
       this.type, this.name, this.grafanaDatasourceId);
-
   }
 
 }

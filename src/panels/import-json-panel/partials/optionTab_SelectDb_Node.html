@@ -10,8 +10,8 @@
             <option ng-repeat="(datasource_id, object) in ctrl.datasources" value="{{object.getGrafanaDatasourceId()}}">{{object.getName()}} - {{object.getUrl()}}</option>
         </select>
         <select ng-change="ctrl.select_database('{{value.getName()}}')"
-                ng-options="database_name for (database_name, object) in ctrl.databases[ctrl.selected_datasource[value.getName()]] track by database_name"
-                ng-model="ctrl.selected_database[value.getName()]">
+                ng-options="database_name for database_name in ctrl.databases_names[ctrl.selected_datasource[value.getName()]] track by database_name"
+                ng-model="ctrl.selected_database_name[value.getName()]">
             <option value="">-- Choose a database --</option>
         </select>
         <select ng-change="ctrl.select_table('{{value.getName()}}')"

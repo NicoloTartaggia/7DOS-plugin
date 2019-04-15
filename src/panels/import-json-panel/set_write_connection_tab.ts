@@ -17,8 +17,6 @@ export class SetWriteConnection_Ctrl {
   // ANGULARJS <select> stuff - save all the node selections
   // @ts-ignore
   private selected_datasource: string;
-  // @ts-ignore
-  private database_name: string;
 
   // WriteClientFactory field to set the database written in the textbox by the user
   private writeCF: WriteClientFactory;
@@ -32,11 +30,6 @@ export class SetWriteConnection_Ctrl {
     this.panel.datasource = this.panel.datasource || null;
     this.panel.targets = this.panel.targets || [{}];
     this.dashboard = this.panelCtrl.dashboard;
-
-    // Linking select_ts_tab to panel
-    this.panel.ts_tab_control = this.panelCtrl;
-
-    this.database_name = "7DOS_default_DB";
     this.selected_datasource = null;
     this.writeCF = new ConcreteWriteClientFactory();
 
@@ -51,6 +44,9 @@ export class SetWriteConnection_Ctrl {
   // ------------------------------------------------------
   public loadData() {
     (document.getElementById("load-btn") as HTMLButtonElement).disabled = true;
+    if (this.panel.write_datasource_id.length > 0) {
+      this.selected_datasource = this.panel.write_datasource_id;
+    }
   }
 
   public getDatasources() {
@@ -83,15 +79,24 @@ export class SetWriteConnection_Ctrl {
 
   public async createDatabaseToWrite() {
     // if user doesn't provide a specific name
-    if (this.database_name === null || this.database_name.length === 0) {
-      this.database_name = "7DOS_default_DB";
+    if (this.panel.write_db_name === null || this.panel.write_db_name.length === 0) {
+      // TODO EMIT ERROR
+      this.panel.write_db_name = "7DOS_default_DB";
+    }
+    if (typeof this.datasources[this.selected_datasource] === "undefined") {
+      // no datasource set
+      // TODO EMIT ERROR
     }
     try {
       const hostname: string = this.datasources[this.selected_datasource].getHost();
       const port: string = this.datasources[this.selected_datasource].getPort();
-      console.log("Trying to write result on database: " + this.database_name +
-        " on URL: " + hostname + ":" + port);
+      console.log("Trying to write result on database: " + this.panel.write_db_name +
+        " on URL: " + hostname + port);
       this.panelCtrl.updateNetWriter(await this.writeCF.makeInfluxWriteClient(hostname, port, this.database_name));
+      // Save info
+      this.panel.write_datasource_id = this.selected_datasource;
+      // Create data
+      this.writeCF.makeInfluxWriteClient(hostname, port, this.panel.write_db_name);
     } catch (err) {
       console.error(err);
     }
