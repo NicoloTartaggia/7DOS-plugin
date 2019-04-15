@@ -92,7 +92,8 @@ export class SetWriteConnection_Ctrl {
       const port: string = this.datasources[this.selected_datasource].getPort();
       console.log("Trying to write result on database: " + this.panel.write_db_name +
         " on URL: " + hostname + port);
-      this.panelCtrl.updateNetWriter(await this.writeCF.makeInfluxWriteClient(hostname, port, this.database_name));
+      this.panelCtrl.updateNetWriter(await this.writeCF.makeInfluxWriteClient(hostname, port,
+        this.panel.write_db_name));
       // Save info
       this.panel.write_datasource_id = this.selected_datasource;
       // Create data
