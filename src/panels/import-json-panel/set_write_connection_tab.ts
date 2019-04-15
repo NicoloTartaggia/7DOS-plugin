@@ -1,8 +1,7 @@
-import { RxHR } from "@akanass/rx-http-request/browser/index.js";
+import {RxHR} from "@akanass/rx-http-request/browser/index.js";
 
-// import { NodeAdapter } from "core/network/adapter/NodeAdapter";
-import { coreModule } from "grafana/app/core/core";
-import { DashboardModel } from "grafana/app/features/dashboard/model";
+import {coreModule} from "grafana/app/core/core";
+import {DashboardModel} from "grafana/app/features/dashboard/model";
 import DataSource from "../../core/net-manager/reader/Datasource";
 import {ConcreteWriteClientFactory, WriteClientFactory} from "../../core/write-client/WriteClientFactory";
 
@@ -11,10 +10,9 @@ export class SetWriteConnection_Ctrl {
   public panelCtrl: any;
   public dashboard: DashboardModel;
 
-  // private genericModel: any;
   private datasources: { [datasource_id: string]: DataSource; } = {};
 
-  // ANGULARJS <select> stuff - save all the node selections
+  // ANGULARJS <select> stuff - save the selected datasource to write
   // @ts-ignore
   private selected_datasource: string;
 
@@ -22,8 +20,7 @@ export class SetWriteConnection_Ctrl {
   private writeCF: WriteClientFactory;
 
   // @ts-ignore
-  constructor($scope, private $sce, datasourceSrv, private backendSrv) {
-    console.log("SelectDB_Ctrl - Start constructor");
+  constructor ($scope, private $sce, datasourceSrv, private backendSrv) {
     this.panelCtrl = $scope.ctrl;
     $scope.ctrl = this;
     this.panel = this.panelCtrl.panel;
@@ -32,24 +29,22 @@ export class SetWriteConnection_Ctrl {
     this.dashboard = this.panelCtrl.dashboard;
     this.selected_datasource = null;
     this.writeCF = new ConcreteWriteClientFactory();
-
-    console.log("SelectDB_Ctrl - Object build");
-    console.log("SelectDB_Ctrl - Get datasources");
-
     this.getDatasources();
   }
 
   // ------------------------------------------------------
   // Get all database structure
   // ------------------------------------------------------
-  public loadData() {
+
+  public loadData () {
     (document.getElementById("load-btn") as HTMLButtonElement).disabled = true;
+    // If the field is not empty, let's save the selected datasource in the panel
     if (this.panel.write_datasource_id.length > 0) {
       this.selected_datasource = this.panel.write_datasource_id;
     }
   }
 
-  public getDatasources() {
+  public getDatasources () {
     this.datasources = {};
 
     const protocol = window.location.protocol;
@@ -63,9 +58,8 @@ export class SetWriteConnection_Ctrl {
           const datasources = JSON.parse(data.body);
           for (const entry of datasources) {
             if (entry.type === "influxdb") {
-              const datas = new DataSource(entry.url, entry.database, entry.user,
+              this.datasources[entry.id] = new DataSource(entry.url, entry.database, entry.user,
                 entry.password, entry.type, entry.name, entry.id);
-              this.datasources[entry.id] = datas;
               // this.getDatabases(entry.id);
             } else {
               console.log("False for:" + entry.name);
@@ -77,7 +71,7 @@ export class SetWriteConnection_Ctrl {
     );
   }
 
-  public async createDatabaseToWrite() {
+  public async createDatabaseToWrite () {
     // if user doesn't provide a specific name
     if (this.panel.write_db_name === null || this.panel.write_db_name.length === 0) {
       // TODO EMIT ERROR
@@ -102,72 +96,6 @@ export class SetWriteConnection_Ctrl {
       console.error(err);
     }
   }
-
-  // ------------------------------------------------------
-  // Change select
-  // ------------------------------------------------------
-
-  // This function, currently does nothing, is just for printing debug stuff when the select change
-  /*public select_datasource(id: string) {
-    console.log("select_datasource");
-    console.log("Received id:" + id);
-    for (const key of Object.keys(this.selected_datasource)) {
-      const value = this.selected_datasource[key];
-      console.log(`${key} -> ${value}`);
-    }
-  }
-
-  // This function, currently does nothing, is just for printing debug stuff when the select change
-  public select_database(id: string) {
-    console.log("select_database");
-    for (const key of Object.keys(this.selected_database)) {
-      const value = this.selected_database[key].name;
-      console.log(`${key} -> ${value}`);
-    }
-  }
-
-  // This function, currently does nothing, is just for printing debug stuff when the select change
-  public select_table(id: string) {
-    console.log("select_table");
-    for (const key of Object.keys(this.selected_table)) {
-      const value = this.selected_table[key].name;
-      console.log(`${key} -> ${value}`);
-    }
-  }
-
-  // This function, currently does nothing, is just for printing debug stuff when the select change
-  public select_field(id: string) {
-    console.log("select_field");
-    for (const key of Object.keys(this.selected_field)) {
-      const value = this.selected_field[key];
-      console.log(`${key} -> ${value}`);
-    }
-  }
-
-  public queryComposer(nodesIndex: number) {
-    const nI = 0;   // used for tests, to be replaced with parameter nodesIndex
-    const nodeName = this.nodes[nI].getName(); // ^ used only here
-
-    const datasource = this.datasources[this.selected_datasource[nodeName]];
-    const url = datasource.getUrl();
-    const database = datasource.getDatabase();
-    const table = this.selected_table[nodeName].name;
-    const field = this.selected_field[nodeName];
-    const query = url + "/query?db=" + database + "&q=SELECT " + field + " FROM " + table;
-    console.log(query);
-    this.queryIssuer(query);
-  }
-
-  public queryIssuer(query: string) {
-    RxHR.get(query).subscribe(
-      (data) => {
-        if (data.response.statusCode === 200) {
-          console.log(data.body); // Show the HTML for the Google homepage.
-        }
-      },
-      (err) => console.error(err), // Show error in console
-    );
-  }*/
 
 }
 

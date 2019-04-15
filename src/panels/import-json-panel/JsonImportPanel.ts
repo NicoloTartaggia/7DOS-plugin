@@ -17,6 +17,16 @@ export class JsImportPanel extends PanelCtrl {
   public static templateUrl: string = "panels/import-json-panel/partials/panelTemplate.html";
   public static scrollable: boolean = true;
 
+  public static showErrorMessage (error_title: string, error_message: string) {
+    // The error type can be alert-error or alert-warning, it basically just change box the icon
+    // Example: appEvents.emit("alert-warning", ["Validation failed", "An error occurred doing something..."]);
+    appEvents.emit("alert-error", [error_title, error_message]);
+  }
+
+  public static showSuccessMessage (success_message: string, success_title: string = "Success") {
+    appEvents.emit("alert-success", [success_title, success_message]);
+  }
+
   // Test metric panel
   public scope: any;
   public datasource: any;
@@ -112,6 +122,8 @@ export class JsImportPanel extends PanelCtrl {
     this.netWriter = new SingleNetWriter(await new ConcreteWriteClientFactory()
       .makeInfluxWriteClient("http://localhost", "8086", "myDB"));
     this.netManager = new NetManager(this.netReader, this.netUpdater, this.netWriter);
+    // Show success message
+    JsImportPanel.showSuccessMessage("Bayesian network loaded successfully!");
   }
 
   public async updateNetWriter (write_client: WriteClient) {
@@ -119,26 +131,6 @@ export class JsImportPanel extends PanelCtrl {
     this.netWriter = new SingleNetWriter(write_client);
     this.netManager = new NetManager(this.netReader, this.netUpdater, this.netWriter);
     console.log("updateNetWriter() - done");
-  }
-
-  public onSubmit () { // Currently not used
-    console.log("onSubmit() called");
-    /*console.log("Node name:" + this.node_name);
-    console.log("observe value:" + this.observe_value);
-    console.log("Samples:" + this.samples);
-    this.message = "Calculating...";
-    this.loaded_network.observe(this.node_name, new SingleValue(this.observe_value, "0"));
-    const sample_promise = this.loaded_network.sample(this.samples);
-    const this_ref = this;
-    let sample_result = -1;
-    sample_promise.then(function (result) {
-      sample_result = result / this_ref.samples;
-      console.log(sample_result);
-      this_ref.result = "Samples calculation done!";
-      alert("Sample result:" + result / this_ref.samples);
-    });
-    this.message = "Done!";
-    console.log("Out-Done");*/
   }
 
   public downloadNetwork (filename, id) {
@@ -154,6 +146,14 @@ export class JsImportPanel extends PanelCtrl {
 
     document.body.removeChild(element);
   }
+
+  public onTextBoxRefresh () {
+    this.onUpload(JSON.parse(this.panel.jsonContent));
+  }
+
+  // ------------------------------------------------------
+  // Continuous update functions
+  // ------------------------------------------------------
 
   public runUpdate () {
     this.$timeout.cancel(this.nextTickPromise);
@@ -186,16 +186,6 @@ export class JsImportPanel extends PanelCtrl {
   public stop () {
     this.panel.is_calc_running = false;
     this.$timeout.cancel(this.nextTickPromise);
-  }
-
-  public showError (error_title: string, error_message: string) {
-    // The error type can be alert-error or alert-warning, it basically just change box the icon
-    // Example: appEvents.emit("alert-warning", ["Validation failed", "An error occurred doing something..."]);
-    appEvents.emit("alert-error", [error_title, error_message]);
-  }
-
-  public onTextBoxRefresh () {
-    this.onUpload(JSON.parse(this.panel.jsonContent));
   }
 
   public link (scope, element) {
