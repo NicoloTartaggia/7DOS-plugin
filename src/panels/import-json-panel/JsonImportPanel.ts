@@ -1,5 +1,6 @@
 import appEvents from "grafana/app/core/app_events";
 import {PanelCtrl} from "grafana/app/plugins/sdk";
+import {WriteClient} from "../../core/write-client/WriteClient";
 import {ConcreteWriteClientFactory} from "../../core/write-client/WriteClientFactory";
 import {SelectDB_Directive} from "./select_ts_tab";
 import {SetWriteConnection_Directive} from "./set_write_connection_tab";
@@ -79,14 +80,15 @@ export class JsImportPanel extends PanelCtrl {
   }
 
   public onInitEditMode () {
-    this.addEditorTab("JSON-Import-or-edit",
+    this.addEditorTab("Manage network",
       "public/plugins/app-jsbayes/panels/import-json-panel/partials/optionTab_importEditJson.html",
       1);
-    this.addEditorTab("Network-Connection-to-Grafana", SelectDB_Directive, 2);
-    this.addEditorTab("Network-Calculation-SetUp",
+    this.addEditorTab("Connect nodes", SelectDB_Directive, 2);
+    this.addEditorTab("Destination datasource", SetWriteConnection_Directive, 3);
+    this.addEditorTab("Manage monitoring",
       "public/plugins/app-jsbayes/panels/import-json-panel/partials/network_Calculation_SetUp.html",
-      3);
-    this.addEditorTab("Setup-Results-Influx", SetWriteConnection_Directive, 4);
+      4);
+
     this.events.emit("data-received", null);
 
   }
@@ -110,6 +112,13 @@ export class JsImportPanel extends PanelCtrl {
     this.netWriter = new SingleNetWriter(await new ConcreteWriteClientFactory()
       .makeInfluxWriteClient("http://localhost", "8086", "myDB"));
     this.netManager = new NetManager(this.netReader, this.netUpdater, this.netWriter);
+  }
+
+  public async updateNetWriter (write_client: WriteClient) {
+    console.log("updateNetWriter() - Updating net writer");
+    this.netWriter = new SingleNetWriter(write_client);
+    this.netManager = new NetManager(this.netReader, this.netUpdater, this.netWriter);
+    console.log("updateNetWriter() - done");
   }
 
   public onSubmit () { // Currently not used
