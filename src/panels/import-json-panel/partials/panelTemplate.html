@@ -1,11 +1,46 @@
 <style>
-svg g text.node-name { font-weight: 800; fill:white !important }
-svg g rect.node-bar { fill: green !important }
-svg g text.node-value { fill:white !important; font-size: 15px; cursor: pointer;}
-svg text.node-pct {fill:white}
-svg line.node-bar {fill:white}
-svg line.edge-line { stroke:#920101 !important }
-svg path.edge-head { fill:#920101 !important }	
+    /*The name of a node*/
+    svg g text.node-name {
+        font-weight: 800;
+        fill: white !important
+    }
+
+    /*the node values*/
+    svg g text.node-value {
+        fill: white !important;
+        font-size: 15px;
+        cursor: pointer;
+    }
+
+    /*The belief bars*/
+    svg g rect.node-bar {
+        fill: green !important
+    }
+
+    /*The node marginal probabilities correspoding to the values*/
+    svg text.node-pct {
+        fill: white
+    }
+
+    /*The belief bars*/
+    svg line.node-bar {
+        fill: white
+    }
+
+    /*The interquartile lines (e.g. 25%, 50%, 75%)*/
+    svg line.node-iqline {
+        stroke: white !important
+    }
+
+    /*The arc between two nodes*/
+    svg line.edge-line {
+        stroke: #920101 !important
+    }
+
+    /*The arrow head at the end of an arc*/
+    svg path.edge-head {
+        fill: #920101 !important
+    }
 </style>
 
 <div>
