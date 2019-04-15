@@ -52,18 +52,19 @@ export class JsImportPanel extends PanelCtrl {
 
   public secondToRefresh: number;
   public nextTickPromise: any;
-  public doRefresh: boolean;
   public panelDefaults = {
+    is_calc_running: false,
     jsonContent: "",
     save_datasources: [],
     secondToRefresh: 5,
+    write_datasource_id: "",
+    write_db_name: "7DOS_default_DB",
   };
 
   constructor ($scope, $injector) {
     super($scope, $injector);
     _.defaults(this.panel, this.panelDefaults);
     this.secondToRefresh = 5;
-    this.doRefresh = false;
 
     this.events.on("panel-teardown", this.stop.bind(this));
     this.events.on("init-edit-mode", this.onInitEditMode.bind(this));
@@ -71,7 +72,10 @@ export class JsImportPanel extends PanelCtrl {
     if (this.panel.jsonContent !== "") {
       this.onTextBoxRefresh();
     }
-
+    /*if (this.panel.is_calc_running) {
+      // TODO FINISH THIS - TO AUTO RESTART WE MUST RI-CREATE THE OBJECTS
+      this.start();
+    }*/
   }
 
   public onInitEditMode () {
@@ -146,7 +150,7 @@ export class JsImportPanel extends PanelCtrl {
     this.$timeout.cancel(this.nextTickPromise);
 
     this.netManager.updateNet();
-    if (this.doRefresh) {
+    if (this.panel.is_calc_running) {
       this.nextTickPromise = this.$timeout(this.runUpdate.bind(this), this.secondToRefresh * 1000);
     }
 
@@ -166,12 +170,12 @@ export class JsImportPanel extends PanelCtrl {
   }
 
   public start () {
-    this.doRefresh = true;
+    this.panel.is_calc_running = true;
     this.runUpdate();
   }
 
   public stop () {
-    this.doRefresh = false;
+    this.panel.is_calc_running = false;
     this.$timeout.cancel(this.nextTickPromise);
   }
 
