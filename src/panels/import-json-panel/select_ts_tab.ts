@@ -38,16 +38,18 @@ export class SelectDB_Ctrl {
   public panelCtrl: any;
   public dashboard: DashboardModel;
 
-  // Private class stuff - do not touch
+  // Private class stuff - used to store infos about the <select> options
   private nodes: Array<NodeAdapter>;
-  // private genericModel: any;
   private datasources: { [datasource_id: string]: DataSource; } = {};
+  private databases_names: { [datasource_id: string]: Array<string>; } = {};
   private databases: { [datasource_id: string]: { [database_name: string]: Script_Found_Database; } } = {};
 
   // ANGULARJS <select> stuff - save all the node selections
   // Every dictionary associate the node with a part of the query (url-db-table-field)
   private selected_datasource: { [node_id: string]: string; } = {};
   private selected_database: { [node_id: string]: Script_Found_Database; } = {};
+  // This second dict for the database is necessary to simplify the saving of the current database
+  private selected_database_name: { [node_id: string]: string; } = {};
   private selected_table: { [node_id: string]: Script_Found_Table; } = {};
   private selected_field: { [node_id: string]: string; } = {};
 
@@ -102,46 +104,27 @@ export class SelectDB_Ctrl {
       const [query, datasource] = this.getQuery(i);
       if (datasource !== null) {
         this.panelCtrl.netReader.connectNode(this.nodes[i].getName(), datasource, query);
-        const saved_to_add: Saved_Connecton = new Saved_Connecton();
-        saved_to_add.nodename = this.nodes[i].getName();
-        saved_to_add.datasource = datasource;
-        saved_to_add.setTableField(query);
-        // Add to array
-        let indexof = -1;
-        for (let k = 0; k < this.panel.save_datasources.length; k++) {
-          if (this.panel.save_datasources[k].nodename === saved_to_add.nodename) {
-            indexof = k;
-          }
-        }
-        console.log("END:" + indexof);
-        if (indexof === -1) {
-          this.panel.save_datasources.push(saved_to_add);
-        } else {
-          this.panel.save_datasources[i] = saved_to_add;
-        }
       }
     }
+    this.save_connections();
   }
 
   public loadData () {
     console.log("loaddata()");
-    console.log(this.panel.save_datasources);
     for (const element of this.panel.save_datasources) {
+      // Copy datasource, this is necessary to use DataSource functions
       const c_datasource: DataSource = DataSource.copy(element.datasource as DataSource);
-      console.log(c_datasource);
+      // Get the datasource id and set it as the currently selected datasource for the node
       const datasourceId: string = c_datasource.getGrafanaDatasourceId().toString();
       this.selected_datasource[element.nodename] = datasourceId;
-      const db: Script_Found_Database = this.getDatabaseObjFromName(datasourceId, c_datasource.getDatabase());
-      const otherDB: Script_Found_Database = this.databases[2].telegraf;
-      this.selected_database[element.nodename] = db;
-      console.log("DB:");
-      console.log(db);
-      console.log("Other DB:");
-      console.log(otherDB);
-      console.log(db === otherDB);
-      console.log(db === this.selected_database[element.nodename]);
-      const tb: Script_Found_Table = this.getTableObjFromName(db, element.table);
+      // Get the db name, set it as currently selected database and update the objects
+      const db: string = c_datasource.getDatabase();
+      this.selected_database_name[element.nodename] = db;
+      this.update_selected_database(element.nodename);
+      // Get the selected table from the db and set is as currently selected
+      const tb: Script_Found_Table = this.getTableObjFromName(this.selected_database[element.nodename], element.table);
       this.selected_table[element.nodename] = tb;
+      // Set the table field as currently selected
       this.selected_field[element.nodename] = element.field;
     }
     (document.getElementById("load-btn") as HTMLButtonElement).disabled = true;
@@ -192,6 +175,12 @@ export class SelectDB_Ctrl {
                 this.databases[datasource_id] = {};
               }
               this.databases[datasource_id][databaseOBJ.name] = databaseOBJ;
+              // Simple names of database
+              if (typeof this.databases_names[datasource_id] === "undefined") {
+                this.databases_names[datasource_id] = new Array<string>();
+              }
+              this.databases_names[datasource_id].push(entry[0]);
+              // Get database tables
               this.getTables(datasource_id, databaseOBJ);
             }
           }
@@ -247,39 +236,23 @@ export class SelectDB_Ctrl {
 
   // This function, currently does nothing, is just for printing debug stuff when the select change
   public select_datasource (id: string) {
-    console.log("select_datasource");
-    console.log("Received id:" + id);
-    for (const key of Object.keys(this.selected_datasource)) {
-      const value = this.selected_datasource[key];
-      console.log(`${key} -> ${value}`);
-    }
+    console.log("select_datasource()");
   }
 
-  // This function, currently does nothing, is just for printing debug stuff when the select change
+  // This function, has to update the selected db obj according to the selected name
   public select_database (id: string) {
-    console.log("select_database");
-    for (const key of Object.keys(this.selected_database)) {
-      const value = this.selected_database[key].name;
-      console.log(`${key} -> ${value}`);
-    }
+    console.log("select_database()");
+    this.update_selected_database(id);
   }
 
   // This function, currently does nothing, is just for printing debug stuff when the select change
   public select_table (id: string) {
-    console.log("select_table");
-    for (const key of Object.keys(this.selected_table)) {
-      const value = this.selected_table[key].name;
-      console.log(`${key} -> ${value}`);
-    }
+    console.log("select_table()");
   }
 
   // This function, currently does nothing, is just for printing debug stuff when the select change
   public select_field (id: string) {
-    console.log("select_field");
-    for (const key of Object.keys(this.selected_field)) {
-      const value = this.selected_field[key];
-      console.log(`${key} -> ${value}`);
-    }
+    console.log("select_field()");
   }
 
   public queryComposer (nodesIndex: number) {
@@ -307,12 +280,41 @@ export class SelectDB_Ctrl {
     );
   }
 
-  private getDatabaseObjFromName (datasourceId: string, databasename: string) {
-    return this.databases[datasourceId][databasename];
+  // ------------------------------------------------------
+  // Private functions
+  // ------------------------------------------------------
+
+  private save_connections() {
+    for (let i = 0; i < this.nodes.length; i++) {
+      const [query, datasource] = this.getQuery(i);
+      if (datasource !== null) {
+        const saved_to_add: Saved_Connecton = new Saved_Connecton();
+        saved_to_add.nodename = this.nodes[i].getName();
+        saved_to_add.datasource = datasource;
+        saved_to_add.setTableField(query);
+        // Check if is already in the array
+        let indexof = -1;
+        for (let k = 0; k < this.panel.save_datasources.length; k++) {
+          if (this.panel.save_datasources[k].nodename === saved_to_add.nodename) {
+            indexof = k;
+          }
+        }
+        // Add to save array
+        if (indexof === -1) {
+          this.panel.save_datasources.push(saved_to_add);
+        } else {
+          this.panel.save_datasources[i] = saved_to_add;
+        }
+      }
+    }
   }
 
   private getTableObjFromName (database: Script_Found_Database, tableName: string) {
     return database.tables[tableName];
+  }
+
+  private update_selected_database (node: string) {
+    this.selected_database[node] = this.databases[this.selected_datasource[node]][this.selected_database_name[node]];
   }
 
 }
