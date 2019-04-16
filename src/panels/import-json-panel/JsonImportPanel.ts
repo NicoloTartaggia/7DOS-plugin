@@ -13,6 +13,8 @@ import {NetWriter, SingleNetWriter} from "../../core/net-manager/writer/NetWrite
 import {NetworkAdapter} from "../../core/network/adapter/NetworkAdapter";
 import {ConcreteNetworkFactory} from "../../core/network/factory/ConcreteNetworkFactory";
 
+import jsbayesviz = require("jsbayes-viz");
+
 export class JsImportPanel extends PanelCtrl {
   public static templateUrl: string = "panels/import-json-panel/partials/panelTemplate.html";
   public static scrollable: boolean = true;
@@ -47,9 +49,8 @@ export class JsImportPanel extends PanelCtrl {
   public dataList: any;
   public nextRefId: string;
 
-  // Tests strings
+  // Panel output string
   public message: string;
-  public result: string;
 
   // Form
   public node_name: string;
@@ -60,8 +61,6 @@ export class JsImportPanel extends PanelCtrl {
   public netReader: NetReader;
   public netUpdater: NetUpdater;
   public netWriter: NetWriter;
-
-  public secondToRefresh: number;
   public nextTickPromise: any;
   public panelDefaults = {
     is_calc_running: false,
@@ -75,13 +74,15 @@ export class JsImportPanel extends PanelCtrl {
   constructor ($scope, $injector) {
     super($scope, $injector);
     _.defaults(this.panel, this.panelDefaults);
-    this.secondToRefresh = 5;
 
     this.events.on("panel-teardown", this.stop.bind(this));
     this.events.on("init-edit-mode", this.onInitEditMode.bind(this));
     console.log("On constructor");
     if (this.panel.jsonContent !== "") {
+      this.message = "";
       this.onTextBoxRefresh();
+    } else {
+      this.message = "Open 'edit' window to configure panel with a Bayesian network";
     }
     /*if (this.panel.is_calc_running) {
       // TODO FINISH THIS - TO AUTO RESTART WE MUST RI-CREATE THE OBJECTS
@@ -110,11 +111,11 @@ export class JsImportPanel extends PanelCtrl {
       console.log(this.loaded_network.getNodeList().length);
     } catch (e) {
       this.message = "Upload failed!";
-      this.result = "Impossible to read JSON, probably not valid... Error:" + e.toString();
+      JsImportPanel.showErrorMessage("JSON load failed!",
+        "Unable to load JSON! Error:" + e.toString());
       return;
     }
-    this.message = "Upload succeeded!";
-    this.result = "Network ready!";
+    this.message = "";
     this.panel.jsonContent = JSON.stringify(net, null, "\t");
     this.events.emit("data-received", null);
     this.netUpdater = new NetUpdater(this.loaded_network);
@@ -123,6 +124,7 @@ export class JsImportPanel extends PanelCtrl {
       .makeInfluxWriteClient("http://localhost", "8086", "myDB"));
     this.netManager = new NetManager(this.netReader, this.netUpdater, this.netWriter);
     // Show success message
+    this.draw_network();
     JsImportPanel.showSuccessMessage("Bayesian network loaded successfully!");
   }
 
@@ -152,6 +154,48 @@ export class JsImportPanel extends PanelCtrl {
   }
 
   // ------------------------------------------------------
+  // Network draw
+  // ------------------------------------------------------
+
+  public draw_network () {
+    console.log("draw_network()");
+    if (document.getElementById("bbn") == null) {
+      console.log("draw_network(): Element is null - waiting 0.1s");
+      this.nextTickPromise = this.$timeout(this.draw_network.bind(this), 0.1 * 1000);
+    }
+    // Clear current draw
+    this.clear_current_draw();
+
+    const g = this.loaded_network.getJgraphCopy();
+    g.reinit();
+    g.sample(10000);
+
+    const graph: VGraph = jsbayesviz.fromGraph(g);
+    const options: DrawOptions = {graph: undefined, height: undefined, id: "", samples: 0, width: undefined};
+    options.id = "#bbn";
+    options.width = 800;
+    options.height = 800;
+    options.graph = graph;
+    options.samples = 1000;
+
+    console.log("jsbayesviz.draw()");
+    jsbayesviz.draw(options);
+    console.log("draw_network() done");
+  }
+
+  public clear_current_draw () {
+    const ogg = (document.getElementById("bbn") as HTMLObjectElement);
+    if (ogg != null) {
+      // If the element exist, clear it, removing all its children
+      console.log("Starting clear_current_draw()");
+      while (ogg.childElementCount > 0) {
+        ogg.removeChild(ogg.lastChild);
+      }
+      console.log("clear_current_draw() done");
+    }
+  }
+
+  // ------------------------------------------------------
   // Continuous update functions
   // ------------------------------------------------------
 
@@ -160,20 +204,17 @@ export class JsImportPanel extends PanelCtrl {
 
     this.netManager.updateNet();
     if (this.panel.is_calc_running) {
-      this.nextTickPromise = this.$timeout(this.runUpdate.bind(this), this.secondToRefresh * 1000);
+      this.nextTickPromise = this.$timeout(this.runUpdate.bind(this), this.panel.secondToRefresh * 1000);
     }
 
     console.log("aggiornato");
   }
 
   public setSecond () {
-    this.secondToRefresh = Number(this.panel.secondToRefresh);
-    if (Number.isNaN(this.secondToRefresh)) {
-      this.secondToRefresh = 5;
+    if (Number.isNaN(this.panel.secondToRefresh)) {
       this.panel.secondToRefresh = 5;
     }
-    if (this.secondToRefresh === 0) {
-      this.secondToRefresh = 1;
+    if (this.panel.secondToRefresh <= 0) {
       this.panel.secondToRefresh = 1;
     }
   }

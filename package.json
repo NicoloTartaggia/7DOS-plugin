@@ -70,6 +70,7 @@
     "coveralls": "^3.0.3",
     "influx": "^5.0.7",
     "jsbayes": "^0.1.0",
+    "jsbayes-viz": "0.0.7",
     "lodash": "^4.17.11",
     "nyc": "^13.3.0",
     "rxjs": "^6.4.0",

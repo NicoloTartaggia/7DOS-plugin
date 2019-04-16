@@ -11,4 +11,5 @@ export interface NetworkAdapter {
 
   getNodeList (): Array<NodeAdapter>;
 
+  getJgraphCopy(): JGraph;
 }
