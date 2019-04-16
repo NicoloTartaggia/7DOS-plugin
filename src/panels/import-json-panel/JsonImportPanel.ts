@@ -62,8 +62,6 @@ export class JsImportPanel extends PanelCtrl {
   public netReader: NetReader;
   public netUpdater: NetUpdater;
   public netWriter: NetWriter;
-
-  public secondToRefresh: number;
   public nextTickPromise: any;
   public panelDefaults = {
     is_calc_running: false,
@@ -77,7 +75,6 @@ export class JsImportPanel extends PanelCtrl {
   constructor ($scope, $injector) {
     super($scope, $injector);
     _.defaults(this.panel, this.panelDefaults);
-    this.secondToRefresh = 5;
 
     this.events.on("panel-teardown", this.stop.bind(this));
     this.events.on("init-edit-mode", this.onInitEditMode.bind(this));
@@ -205,20 +202,17 @@ export class JsImportPanel extends PanelCtrl {
 
     this.netManager.updateNet();
     if (this.panel.is_calc_running) {
-      this.nextTickPromise = this.$timeout(this.runUpdate.bind(this), this.secondToRefresh * 1000);
+      this.nextTickPromise = this.$timeout(this.runUpdate.bind(this), this.panel.secondToRefresh * 1000);
     }
 
     console.log("aggiornato");
   }
 
   public setSecond () {
-    this.secondToRefresh = Number(this.panel.secondToRefresh);
-    if (Number.isNaN(this.secondToRefresh)) {
-      this.secondToRefresh = 5;
+    if (Number.isNaN(this.panel.secondToRefresh)) {
       this.panel.secondToRefresh = 5;
     }
-    if (this.secondToRefresh === 0) {
-      this.secondToRefresh = 1;
+    if (this.panel.secondToRefresh <= 0) {
       this.panel.secondToRefresh = 1;
     }
   }
