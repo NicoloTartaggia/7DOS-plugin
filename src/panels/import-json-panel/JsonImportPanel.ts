@@ -173,8 +173,8 @@ export class JsImportPanel extends PanelCtrl {
     const graph: VGraph = jsbayesviz.fromGraph(g);
     const options: DrawOptions = {graph: undefined, height: undefined, id: "", samples: 0, width: undefined};
     options.id = "#bbn";
-    options.width = 800;
-    options.height = 800;
+    options.width = 2000;
+    options.height = 1000;
     options.graph = graph;
     options.samples = 1000;
 
