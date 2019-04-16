@@ -1,4 +1,10 @@
 <style>
+    /*The rectangle that encloses all the elements belonging to a node*/
+    svg g rect.node-shape {
+        border-radius: 5px !important;
+        cursor: move;
+    }
+
     /*The name of a node*/
     svg g text.node-name {
         font-weight: 800;
@@ -44,5 +50,5 @@
 </style>
 
 <div>
-    <svg id="bbn"></svg>
+    <svg id="bbn" style="height: 100%; width: 100%; overflow-x: auto; overflow-y: auto;"></svg>
 </div>

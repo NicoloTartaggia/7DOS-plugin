@@ -94,8 +94,8 @@ export class JsImportPanel extends PanelCtrl {
   public draw_network() {
     console.log("draw_network()");
     if (document.getElementById("bbn") == null) {
-      console.log("element is null");
-      this.nextTickPromise = this.$timeout(this.draw_network.bind(this), 0.5 * 1000);
+      console.log("Element is null - waiting 0.1s");
+      this.nextTickPromise = this.$timeout(this.draw_network.bind(this), 0.1 * 1000);
     }
     console.log("draw_network() passed if");
     const g = this.loaded_network.getJgraphCopy();
@@ -103,21 +103,14 @@ export class JsImportPanel extends PanelCtrl {
     g.sample(10000);
 
     const graph: VGraph = jsbayesviz.fromGraph(g);
-    console.log(graph);
     const options: DrawOptions = {graph: undefined, height: undefined, id: "", samples: 0, width: undefined};
     options.id = "#bbn";
     options.width = 800;
     options.height = 800;
     options.graph = graph;
     options.samples = 1000;
-    console.log(options);
 
-    console.log("Pre-draw");
-    const obj = (document.getElementById("bbn") as HTMLObjectElement);
-    console.log(obj);
-    console.log("ready?");
-    console.log("this log");
-    console.log(document.getElementById("bbn"));
+    console.log("jsbayesviz.draw()");
     jsbayesviz.draw(options);
   }
 
