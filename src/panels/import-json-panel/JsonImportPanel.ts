@@ -13,7 +13,6 @@ import {NetWriter, SingleNetWriter} from "../../core/net-manager/writer/NetWrite
 import {NetworkAdapter} from "../../core/network/adapter/NetworkAdapter";
 import {ConcreteNetworkFactory} from "../../core/network/factory/ConcreteNetworkFactory";
 
-import jsbayes from "jsbayes";
 import jsbayesviz = require("jsbayes-viz");
 
 export class JsImportPanel extends PanelCtrl {
@@ -90,20 +89,16 @@ export class JsImportPanel extends PanelCtrl {
       // TODO FINISH THIS - TO AUTO RESTART WE MUST RI-CREATE THE OBJECTS
       this.start();
     }*/
-
-    this.nextTickPromise = this.$timeout(this.late_draw.bind(this), 5 * 1000);
-    console.log("time set");
   }
 
-  public late_draw() {
-    console.log("called");
-    const g = jsbayes.newGraph();
-    const n1 = g.addNode("n1", ["true", "false"]);
-    const n2 = g.addNode("n2", ["true", "false"]);
-    const n3 = g.addNode("n3", ["true", "false"]);
-
-    n2.addParent(n1);
-    n3.addParent(n2);
+  public draw_network() {
+    console.log("draw_network()");
+    if (document.getElementById("bbn") == null) {
+      console.log("element is null");
+      this.nextTickPromise = this.$timeout(this.draw_network.bind(this), 0.5 * 1000);
+    }
+    console.log("draw_network() passed if");
+    const g = this.loaded_network.getJgraphCopy();
     g.reinit();
     g.sample(10000);
 
@@ -160,6 +155,7 @@ export class JsImportPanel extends PanelCtrl {
       .makeInfluxWriteClient("http://localhost", "8086", "myDB"));
     this.netManager = new NetManager(this.netReader, this.netUpdater, this.netWriter);
     // Show success message
+    this.draw_network();
     JsImportPanel.showSuccessMessage("Bayesian network loaded successfully!");
   }
 

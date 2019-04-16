@@ -103,4 +103,8 @@ export class ConcreteNetworkAdapter implements NetworkAdapter {
   // tslint:disable-next-line: prefer-object-spread
     return Object.assign([], this.nodeList); // returns deep copy
   }
+
+  public getJgraphCopy(): JGraph {
+    return Object.assign({}, this.graph);
+  }
 }
