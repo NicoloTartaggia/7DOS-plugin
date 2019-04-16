@@ -49,9 +49,8 @@ export class JsImportPanel extends PanelCtrl {
   public dataList: any;
   public nextRefId: string;
 
-  // Tests strings
+  // Panel output string
   public message: string;
-  public result: string;
 
   // Form
   public node_name: string;
@@ -80,7 +79,10 @@ export class JsImportPanel extends PanelCtrl {
     this.events.on("init-edit-mode", this.onInitEditMode.bind(this));
     console.log("On constructor");
     if (this.panel.jsonContent !== "") {
+      this.message = "";
       this.onTextBoxRefresh();
+    } else {
+      this.message = "Open 'edit' window to configure panel with a Bayesian network";
     }
     /*if (this.panel.is_calc_running) {
       // TODO FINISH THIS - TO AUTO RESTART WE MUST RI-CREATE THE OBJECTS
@@ -109,11 +111,11 @@ export class JsImportPanel extends PanelCtrl {
       console.log(this.loaded_network.getNodeList().length);
     } catch (e) {
       this.message = "Upload failed!";
-      this.result = "Impossible to read JSON, probably not valid... Error:" + e.toString();
+      JsImportPanel.showErrorMessage("JSON load failed!",
+        "Unable to load JSON! Error:" + e.toString());
       return;
     }
-    this.message = "Upload succeeded!";
-    this.result = "Network ready!";
+    this.message = "";
     this.panel.jsonContent = JSON.stringify(net, null, "\t");
     this.events.emit("data-received", null);
     this.netUpdater = new NetUpdater(this.loaded_network);
