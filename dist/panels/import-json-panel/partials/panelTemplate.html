@@ -1,12 +1,58 @@
-<div class="" >
-    <h2>Open 'edit' window to configure panel with a Bayesian network</h2>
-    <p class="">
+<div>
+    <style>
+        /*The rectangle that encloses all the elements belonging to a node*/
+        svg g rect.node-shape {
+            border-radius: 5px !important;
+            cursor: move;
+        }
+
+        /*The name of a node*/
+        svg g text.node-name {
+            font-weight: 800;
+            fill: white !important
+        }
+
+        /*the node values*/
+        svg g text.node-value {
+            fill: white !important;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        /*The belief bars*/
+        svg g rect.node-bar {
+            fill: green !important
+        }
+
+        /*The node marginal probabilities correspoding to the values*/
+        svg text.node-pct {
+            fill: white
+        }
+
+        /*The belief bars*/
+        svg line.node-bar {
+            fill: white
+        }
+
+        /*The interquartile lines (e.g. 25%, 50%, 75%)*/
+        svg line.node-iqline {
+            stroke: white !important
+        }
+
+        /*The arc between two nodes*/
+        svg line.edge-line {
+            stroke: #920101 !important
+        }
+
+        /*The arrow head at the end of an arc*/
+        svg path.edge-head {
+            fill: #920101 !important
+        }
+    </style>
+
+    <h2>
         {{ctrl.message}}
-    </p>
-    <p class="">
-        {{ctrl.result}}
-    </p>
-    <p class="">
-        {{ctrl.panel.jsonContent}}
-    </p>
+    </h2>
+
+    <svg id="bbn" height="800" width="800"></svg>
 </div>
