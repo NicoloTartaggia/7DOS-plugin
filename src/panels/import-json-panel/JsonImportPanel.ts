@@ -91,29 +91,6 @@ export class JsImportPanel extends PanelCtrl {
     }*/
   }
 
-  public draw_network() {
-    console.log("draw_network()");
-    if (document.getElementById("bbn") == null) {
-      console.log("Element is null - waiting 0.1s");
-      this.nextTickPromise = this.$timeout(this.draw_network.bind(this), 0.1 * 1000);
-    }
-    console.log("draw_network() passed if");
-    const g = this.loaded_network.getJgraphCopy();
-    g.reinit();
-    g.sample(10000);
-
-    const graph: VGraph = jsbayesviz.fromGraph(g);
-    const options: DrawOptions = {graph: undefined, height: undefined, id: "", samples: 0, width: undefined};
-    options.id = "#bbn";
-    options.width = 800;
-    options.height = 800;
-    options.graph = graph;
-    options.samples = 1000;
-
-    console.log("jsbayesviz.draw()");
-    jsbayesviz.draw(options);
-  }
-
   public onInitEditMode () {
     this.addEditorTab("Manage network",
       "public/plugins/app-jsbayes/panels/import-json-panel/partials/optionTab_importEditJson.html",
@@ -175,6 +152,48 @@ export class JsImportPanel extends PanelCtrl {
 
   public onTextBoxRefresh () {
     this.onUpload(JSON.parse(this.panel.jsonContent));
+  }
+
+  // ------------------------------------------------------
+  // Network draw
+  // ------------------------------------------------------
+
+  public draw_network () {
+    console.log("draw_network()");
+    if (document.getElementById("bbn") == null) {
+      console.log("draw_network(): Element is null - waiting 0.1s");
+      this.nextTickPromise = this.$timeout(this.draw_network.bind(this), 0.1 * 1000);
+    }
+    // Clear current draw
+    this.clear_current_draw();
+
+    const g = this.loaded_network.getJgraphCopy();
+    g.reinit();
+    g.sample(10000);
+
+    const graph: VGraph = jsbayesviz.fromGraph(g);
+    const options: DrawOptions = {graph: undefined, height: undefined, id: "", samples: 0, width: undefined};
+    options.id = "#bbn";
+    options.width = 800;
+    options.height = 800;
+    options.graph = graph;
+    options.samples = 1000;
+
+    console.log("jsbayesviz.draw()");
+    jsbayesviz.draw(options);
+    console.log("draw_network() done");
+  }
+
+  public clear_current_draw () {
+    const ogg = (document.getElementById("bbn") as HTMLObjectElement);
+    if (ogg != null) {
+      // If the element exist, clear it, removing all its children
+      console.log("Starting clear_current_draw()");
+      while (ogg.childElementCount > 0) {
+        ogg.removeChild(ogg.lastChild);
+      }
+      console.log("clear_current_draw() done");
+    }
   }
 
   // ------------------------------------------------------
