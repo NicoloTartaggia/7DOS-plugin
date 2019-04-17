@@ -13,7 +13,7 @@ import {NetWriter, SingleNetWriter} from "../../core/net-manager/writer/NetWrite
 import {NetworkAdapter} from "../../core/network/adapter/NetworkAdapter";
 import {ConcreteNetworkFactory} from "../../core/network/factory/ConcreteNetworkFactory";
 
-import jsbayesviz = require("jsbayes-viz");
+import jsbayesviz = require("better-jsbayes-viz");
 
 export class JsImportPanel extends PanelCtrl {
   public static templateUrl: string = "panels/import-json-panel/partials/panelTemplate.html";
@@ -174,7 +174,7 @@ export class JsImportPanel extends PanelCtrl {
     g.reinit();
     g.sample(10000);
 
-    const graph: VGraph = jsbayesviz.fromGraph(g);
+    const graph: VGraph = jsbayesviz.fromGraph(g, this.panel.draw_area_id);
     const options: DrawOptions = {graph: undefined, height: undefined, id: "", samples: 0, width: undefined};
     options.id = "#" + this.panel.draw_area_id;
     options.width = 2000;
