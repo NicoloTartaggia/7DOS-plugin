@@ -163,7 +163,7 @@ export class JsImportPanel extends PanelCtrl {
 
   public draw_network () {
     console.log("draw_network()");
-    if (document.getElementById("bbn") == null) {
+    if (document.getElementById(this.panel.draw_area_id) == null) {
       console.log("draw_network(): Element is null - waiting 0.1s");
       this.nextTickPromise = this.$timeout(this.draw_network.bind(this), 0.1 * 1000);
     }
@@ -188,7 +188,7 @@ export class JsImportPanel extends PanelCtrl {
   }
 
   public clear_current_draw () {
-    const ogg = (document.getElementById("bbn") as HTMLObjectElement);
+    const ogg = (document.getElementById(this.panel.draw_area_id) as HTMLObjectElement);
     if (ogg != null) {
       // If the element exist, clear it, removing all its children
       console.log("Starting clear_current_draw()");
