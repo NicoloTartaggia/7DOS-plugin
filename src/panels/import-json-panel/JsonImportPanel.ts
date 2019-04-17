@@ -63,6 +63,7 @@ export class JsImportPanel extends PanelCtrl {
   public netWriter: NetWriter;
   public nextTickPromise: any;
   public panelDefaults = {
+    draw_area_id: "",
     is_calc_running: false,
     jsonContent: "",
     save_datasources: [],
@@ -78,6 +79,9 @@ export class JsImportPanel extends PanelCtrl {
     this.events.on("panel-teardown", this.stop.bind(this));
     this.events.on("init-edit-mode", this.onInitEditMode.bind(this));
     console.log("On constructor");
+    // Generate an unique id for the <svg> element
+    this.generate_draw_area_id();
+    // Load data
     if (this.panel.jsonContent !== "") {
       this.message = "";
       this.onTextBoxRefresh();
@@ -172,7 +176,7 @@ export class JsImportPanel extends PanelCtrl {
 
     const graph: VGraph = jsbayesviz.fromGraph(g);
     const options: DrawOptions = {graph: undefined, height: undefined, id: "", samples: 0, width: undefined};
-    options.id = "#bbn";
+    options.id = "#" + this.panel.draw_area_id;
     options.width = 2000;
     options.height = 1000;
     options.graph = graph;
@@ -230,5 +234,19 @@ export class JsImportPanel extends PanelCtrl {
   }
 
   public link (scope, element) {
+  }
+
+  private generate_draw_area_id(): void {
+    if (this.panel.draw_area_id === "") {
+      let text = "";
+      const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
+      for (let i = 0; i < 5; i++) {
+        text += alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+      }
+
+      // Generate a random id made of 5 random chars and the panel id
+      this.panel.draw_area_id = text + this.panel.id.toString();
+    }
   }
 }
