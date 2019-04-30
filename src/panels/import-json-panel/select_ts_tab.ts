@@ -4,6 +4,7 @@ import {NodeAdapter} from "core/network/adapter/NodeAdapter";
 import {coreModule} from "grafana/app/core/core";
 import {DashboardModel} from "grafana/app/features/dashboard/model";
 import DataSource from "../../core/net-manager/reader/Datasource";
+import {JsImportPanel} from "./JsonImportPanel";
 
 /**
  * Class used to save a database found in a datasource, with all its tables
@@ -93,12 +94,19 @@ export class SelectDB_Ctrl {
     const datasource: DataSource = this.datasources[this.selected_datasource[nodeName]];
     if (datasource !== undefined && datasource !== null) {
       // Create a clone of the selected datasource with the specified database name
-      const database: string = this.selected_database[nodeName].name;
-      const return_datasource = datasource.cloneWithDB(database);
-      const table: string = this.selected_table[nodeName].name;
-      const field: string = this.selected_field[nodeName];
-      const query: string = "SELECT " + field + " FROM " + table;
-      return ([query, return_datasource]);
+      try {
+        const database: string = this.selected_database[nodeName].name;
+        const return_datasource = datasource.cloneWithDB(database);
+        const table: string = this.selected_table[nodeName].name;
+        const field: string = this.selected_field[nodeName];
+        const query: string = "SELECT " + field + " FROM " + table;
+        return ([query, return_datasource]);
+      } catch (e) {
+        JsImportPanel.showErrorMessage("Error saving nodes connections",
+          "An error occurred saving the connections, " +
+          "check that every line is complete or check console for more informations!");
+        throw new Error("[7DOS G&B][SelectDB_Ctrl]getQuery() - Error in getQuery()" + e.toString());
+      }
     }
     return ([null, null]);
   }
@@ -112,6 +120,7 @@ export class SelectDB_Ctrl {
       }
     }
     console.log("[7DOS G&B][SelectDB_Ctrl]connectNodes() - connection done!");
+    JsImportPanel.showSuccessMessage("Connections saved succesfully!");
     this.save_connections();
   }
 
@@ -130,6 +139,11 @@ export class SelectDB_Ctrl {
         this.selected_database[element.nodename], element.table);
       // Set the table field as currently selected
       this.selected_field[element.nodename] = element.field;
+    }
+    if (this.panel.save_datasources.length > 0) {
+      JsImportPanel.showSuccessMessage("Saved data loaded succesfully!");
+    } else {
+      JsImportPanel.showSuccessMessage("List of available datasources loaded succesfully!");
     }
     (document.getElementById("load-btn") as HTMLButtonElement).disabled = true;
     console.log("[7DOS G&B][SelectDB_Ctrl]loaddata() - loading completed!");

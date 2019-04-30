@@ -45,6 +45,9 @@ export class ConcreteNodeAdapter implements NodeAdapter {
         throw e;
       }
     }
-    return null;
+    console.error("[7DOS G&B][ConcreteNodeAdapter]ERROR: The value " + currentValue.toString()
+      + " is not a suitable value for this node(" + this.getName() + ") values! Check your network structure!");
+    throw new Error("[7DOS G&B][ConcreteNodeAdapter]ERROR: The value " + currentValue.toString()
+      + " is not a suitable value for this node(" + this.getName() + ") values! Check your network structure!");
   }
 }

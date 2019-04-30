@@ -117,7 +117,7 @@ export class JsImportPanel extends PanelCtrl {
       this.message = "Upload failed!";
       JsImportPanel.showErrorMessage("JSON load failed!",
         "Unable to load JSON! Error:" + e.toString());
-      return;
+      throw new Error("[7DOS G&B][JsImportPanel]onUpload() - Error parsing the JSON:" + e.toString());
     }
     this.message = "";
     this.panel.jsonContent = JSON.stringify(net, null, "\t");
@@ -206,9 +206,17 @@ export class JsImportPanel extends PanelCtrl {
   public runUpdate () {
     this.$timeout.cancel(this.nextTickPromise);
 
-    this.netManager.updateNet();
+    this.netManager.updateNet().catch((err) => {
+      JsImportPanel.showErrorMessage("Error during network update",
+        "An error occurred during network update, check you have saved " +
+        "all the connections with read and write datasources. For more details, check the console.");
+      console.error("[7DOS G&B][JsImportPanel]runUpdate() - updateNet() ERROR:" + err.toString());
+    });
+
     if (this.panel.is_calc_running) {
       this.nextTickPromise = this.$timeout(this.runUpdate.bind(this), this.panel.secondToRefresh * 1000);
+    } else {
+      JsImportPanel.showSuccessMessage("Manual network update done!");
     }
   }
 

@@ -1,9 +1,10 @@
 import {NetworkAdapter} from "../../network/adapter/NetworkAdapter";
-import { CalcResult } from "../result/calculation-result/CalcResult";
-import { CalcResultAggregate } from "../result/calculation-result/CalcResultAggregate";
-import { CalcResultItem } from "../result/calculation-result/CalcResultItem";
-import { InputResult } from "../result/input-result/InputResult";
-import { InputResultAggregate } from "../result/input-result/InputResultAggregate";
+import {AbstractValue} from "../../network/value/AbstractValue";
+import {CalcResult} from "../result/calculation-result/CalcResult";
+import {CalcResultAggregate} from "../result/calculation-result/CalcResultAggregate";
+import {CalcResultItem} from "../result/calculation-result/CalcResultItem";
+import {InputResult} from "../result/input-result/InputResult";
+import {InputResultAggregate} from "../result/input-result/InputResultAggregate";
 
 export class NetUpdater {
   private readonly network: NetworkAdapter;
@@ -23,10 +24,10 @@ export class NetUpdater {
 
     // ciclo che itera tutti i InputResult e fissa gli observe
     for (const res of results) {
+      const found_value: AbstractValue = res.getNode().findValue(res.getCurrentValue());
       this.network.observeNode(
         res.getNode().getName(),
-        res.getNode().findValue(
-          res.getCurrentValue()).getValueName(),
+        found_value.getValueName(),
       );
     }
 
