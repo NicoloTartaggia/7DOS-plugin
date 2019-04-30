@@ -1,4 +1,4 @@
-import {WriteClient} from "../../write-client/write-client";
+import {WriteClient} from "../../write-client/WriteClient";
 import {CalcResultAggregate} from "../result/calculation-result/calculation-result";
 
 export interface NetWriter {
