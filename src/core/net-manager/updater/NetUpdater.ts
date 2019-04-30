@@ -8,7 +8,7 @@ import { InputResultAggregate } from "../result/input-result/InputResultAggregat
 export class NetUpdater {
   private readonly network: NetworkAdapter;
 
-  public constructor (network: NetworkAdapter) {// TODO rimettere il NetworkAdapter
+  public constructor (network: NetworkAdapter) {
     if (network == null) {
       throw new Error("invalid network parameter");
     }

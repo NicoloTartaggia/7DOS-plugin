@@ -78,7 +78,6 @@ export class JsImportPanel extends PanelCtrl {
 
     this.events.on("panel-teardown", this.stop.bind(this));
     this.events.on("init-edit-mode", this.onInitEditMode.bind(this));
-    console.log("On constructor");
     // Generate an unique id for the <svg> element
     this.generate_draw_area_id();
     // Load data
@@ -92,6 +91,7 @@ export class JsImportPanel extends PanelCtrl {
       // TODO FINISH THIS - TO AUTO RESTART WE MUST RI-CREATE THE OBJECTS
       this.start();
     }*/
+    console.log("[7DOS G&B][JsImportPanel]Panel Constructor() done");
   }
 
   public onInitEditMode () {
@@ -109,10 +109,10 @@ export class JsImportPanel extends PanelCtrl {
   }
 
   public async onUpload (net) {
-    console.log("On upload");
+    console.log("[7DOS G&B][JsImportPanel]onUpload() called");
     try {
       this.loaded_network = new ConcreteNetworkFactory().parseNetwork(JSON.stringify(net));
-      console.log(this.loaded_network.getNodeList().length);
+      console.log("[7DOS G&B][JsImportPanel]onUpload() loaded nodes:" + this.loaded_network.getNodeList().length);
     } catch (e) {
       this.message = "Upload failed!";
       JsImportPanel.showErrorMessage("JSON load failed!",
@@ -133,10 +133,10 @@ export class JsImportPanel extends PanelCtrl {
   }
 
   public async updateNetWriter (write_client: WriteClient) {
-    console.log("updateNetWriter() - Updating net writer");
+    console.log("[7DOS G&B][JsImportPanel]updateNetWriter() - Updating net writer");
     this.netWriter = new SingleNetWriter(write_client);
     this.netManager = new NetManager(this.netReader, this.netUpdater, this.netWriter);
-    console.log("updateNetWriter() - done");
+    console.log("[7DOS G&B][JsImportPanel]updateNetWriter() - done");
   }
 
   public downloadNetwork (filename, id) {
@@ -162,9 +162,9 @@ export class JsImportPanel extends PanelCtrl {
   // ------------------------------------------------------
 
   public draw_network () {
-    console.log("draw_network()");
+    console.log("[7DOS G&B][JsImportPanel]draw_network()");
     if (document.getElementById(this.panel.draw_area_id) == null) {
-      console.log("draw_network(): Element is null - waiting 0.1s");
+      console.log("[7DOS G&B][JsImportPanel]draw_network(): Element is null - waiting 0.1s");
       this.nextTickPromise = this.$timeout(this.draw_network.bind(this), 0.1 * 1000);
     }
     // Clear current draw
@@ -182,20 +182,20 @@ export class JsImportPanel extends PanelCtrl {
     options.graph = graph;
     options.samples = 1000;
 
-    console.log("jsbayesviz.draw()");
+    console.log("[7DOS G&B][JsImportPanel]draw_network() - calling jsbayesviz.draw()");
     jsbayesviz.draw(options);
-    console.log("draw_network() done");
+    console.log("[7DOS G&B][JsImportPanel]draw_network() - done");
   }
 
   public clear_current_draw () {
     const ogg = (document.getElementById(this.panel.draw_area_id) as HTMLObjectElement);
     if (ogg != null) {
       // If the element exist, clear it, removing all its children
-      console.log("Starting clear_current_draw()");
+      console.log("[7DOS G&B][JsImportPanel]clear_current_draw() - starting");
       while (ogg.childElementCount > 0) {
         ogg.removeChild(ogg.lastChild);
       }
-      console.log("clear_current_draw() done");
+      console.log("[7DOS G&B][JsImportPanel]clear_current_draw() - done");
     }
   }
 
@@ -210,8 +210,6 @@ export class JsImportPanel extends PanelCtrl {
     if (this.panel.is_calc_running) {
       this.nextTickPromise = this.$timeout(this.runUpdate.bind(this), this.panel.secondToRefresh * 1000);
     }
-
-    console.log("aggiornato");
   }
 
   public setSecond () {
@@ -226,17 +224,19 @@ export class JsImportPanel extends PanelCtrl {
   public start () {
     this.panel.is_calc_running = true;
     this.runUpdate();
+    JsImportPanel.showSuccessMessage("Successfully started the monitoring!");
   }
 
   public stop () {
     this.panel.is_calc_running = false;
     this.$timeout.cancel(this.nextTickPromise);
+    JsImportPanel.showSuccessMessage("Successfully stopped the monitoring!");
   }
 
   public link (scope, element) {
   }
 
-  private generate_draw_area_id(): void {
+  private generate_draw_area_id (): void {
     if (this.panel.draw_area_id === "") {
       let text = "";
       const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";

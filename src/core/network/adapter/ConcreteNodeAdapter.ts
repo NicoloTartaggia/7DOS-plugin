@@ -41,7 +41,7 @@ export class ConcreteNodeAdapter implements NodeAdapter {
           return element;
         }
       } catch (e) {
-        console.log(e);
+        console.error("[7DOS G&B][ConcreteNodeAdapter]ERROR:" + e.toString());
         throw e;
       }
     }

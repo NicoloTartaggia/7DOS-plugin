@@ -25,10 +25,8 @@ export class InfluxInputFlow implements InputFlow {
   public async getResult (): Promise<string> {
     const result = await this.client.readField(this.database_name, this.query)
       .catch((err) => {
-        // console.error("An error happened on getResult() " + err);
         throw err;
       });
-    // console.log(JSON.stringify(result[0]));
     return result[0].rows[0][this.select_field];
   }
 

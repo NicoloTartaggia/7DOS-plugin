@@ -21,16 +21,13 @@ export class NetReader {
 
   public async read (): Promise<InputResultAggregate> {
     const return_array: Array<InputResult> = new Array<InputResult>();
-    // console.log("this.flowMap.size" + this.flowMap.size);
 
     for (const [key, value] of this.flowMap) {
       const node: NodeAdapter = this.getNodeFromName(key);
       if (node === null) {
         throw new Error("getNodeFromName() failed and returned null");
       } else {
-        // console.log(value);
         const res_value: string  = await value.getResult();
-        // console.log("read(): Value letto:" + res_value);
         return_array.push(new InputResult(node, res_value));
       }
     }
@@ -47,7 +44,6 @@ export class NetReader {
     }
     const client = ReusableReadClientPool.getInstance().acquireReusable(dataSource);
     this.flowMap.set(node, new InfluxInputFlow(dataSource.getDatabase(), query, client));
-    // console.log("controllo presenza nodo" + this.flowMap.has("node"));
   }
 
   private getNodeFromName (name: string): NodeAdapter {

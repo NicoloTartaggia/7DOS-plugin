@@ -45,6 +45,7 @@ export class SetWriteConnection_Ctrl {
   }
 
   public getDatasources () {
+    console.log("[7DOS G&B][SetWriteConnection_Ctrl]getDatasources() - start loading datasources...");
     this.datasources = {};
 
     const protocol = window.location.protocol;
@@ -62,7 +63,8 @@ export class SetWriteConnection_Ctrl {
                 entry.password, entry.type, entry.name, entry.id);
               // this.getDatabases(entry.id);
             } else {
-              console.log("False for:" + entry.name);
+              console.log("[7DOS G&B][SetWriteConnection_Ctrl]Ignoring database with name:" + entry.name
+                + " because is not an InfluxDB");
             }
           }
         }
@@ -74,17 +76,17 @@ export class SetWriteConnection_Ctrl {
   public async createDatabaseToWrite () {
     // if user doesn't provide a specific name
     if (this.panel.write_db_name === null || this.panel.write_db_name.length === 0) {
-      // TODO EMIT ERROR
       this.panel.write_db_name = "7DOS_default_DB";
+      throw new Error("You must specify a database name where the plug-in should write!");
     }
     if (typeof this.datasources[this.selected_datasource] === "undefined") {
       // no datasource set
-      // TODO EMIT ERROR
+      throw new Error("You must select a datasource to write data!");
     }
     try {
       const hostname: string = this.datasources[this.selected_datasource].getHost();
       const port: string = this.datasources[this.selected_datasource].getPort();
-      console.log("Trying to write result on database: " + this.panel.write_db_name +
+      console.log("[7DOS G&B][SetWriteConnection_Ctrl]Trying to write result on database: " + this.panel.write_db_name +
         " on URL: " + hostname + port);
       this.panelCtrl.updateNetWriter(await this.writeCF.makeInfluxWriteClient(hostname, port,
         this.panel.write_db_name));

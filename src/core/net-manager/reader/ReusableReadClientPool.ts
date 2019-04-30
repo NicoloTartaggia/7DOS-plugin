@@ -48,7 +48,7 @@ export default class ReusableReadClientPool {
     if (pos >= 0) {
       this.read_clients.splice(pos);
     } else {
-      console.log("Can't remove element from array - releseReusable()");
+      console.error("[7DOS G&B][ReusableReadClientPool]Can't remove element from array - releseReusable()");
     }
   }
 
