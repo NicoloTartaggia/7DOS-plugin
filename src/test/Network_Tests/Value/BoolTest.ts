@@ -6,14 +6,14 @@ import { BoolValue } from "../../../core/network/value/BoolValue";
 describe("BoolValue - constructor", () => {
     it("Undefined name - Error", () => {
         let str: string;
-        expect(() => new BoolValue(true, str)).to.throw(Error, "invalid name parameter");
+        expect(() => new BoolValue(true, str)).to.throw(Error, "[7DOS G&B][BoolValue]constructor - invalid name parameter");
     });
     it("Empty name - Error", () => {
-        expect(() => new BoolValue(true, "")).to.throw(Error, "invalid name parameter");
+        expect(() => new BoolValue(true, "")).to.throw(Error, "[7DOS G&B][BoolValue]constructor - invalid name parameter");
     });
     it("Undefined value - Error", () => {
         let str: boolean;
-        expect(() => new BoolValue(str, "name1")).to.throw(Error, "invalid value parameter");
+        expect(() => new BoolValue(str, "name1")).to.throw(Error, "[7DOS G&B][BoolValue]constructor - invalid value parameter");
     });
     it("Correct inputs - BoolValue", () => {
         expect(() => new BoolValue(true, "name1")).to.not.throw(Error);
@@ -43,12 +43,12 @@ describe("BoolValue - isValueType", () => {
     });
     it("Empty value - Error", () => {
         const boolV = new BoolValue(true, "name6");
-        expect(() => boolV.isValueType("")).to.throw(Error, "invalid value parameter");
+        expect(() => boolV.isValueType("")).to.throw(Error, "[7DOS G&B][BoolValue]isValueType - invalid value parameter");
     });
     it("Undefined value - Error", () => {
         const boolV = new BoolValue(true, "name7");
         let str: string;
-        expect(() => boolV.isValueType(str)).to.throw(Error, "invalid value parameter");
+        expect(() => boolV.isValueType(str)).to.throw(Error, "[7DOS G&B][BoolValue]isValueType - invalid value parameter");
     });
 });
 

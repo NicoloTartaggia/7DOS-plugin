@@ -23,7 +23,7 @@ const jsonSchemaString: string = JSON.stringify(jsonSchema);
 describe("NetUpdater - constructor", () => {
   it("Undefined network - Error", () => {
     let network: NetworkAdapter;
-    expect(() => new NetUpdater(network)).to.throw(Error, "invalid network parameter");
+    expect(() => new NetUpdater(network)).to.throw(Error, "[7DOS G&B][NetUpdater]constructor - invalid network parameter");
   });
   it("Correct inputs - NetUpdater", () => {
     const network: NetworkAdapter = new ConcreteNetworkFactory().parseNetwork(jsonString, jsonSchemaString);
@@ -103,7 +103,7 @@ describe("NetUpdater - updateNet", () => {
     const network: NetworkAdapter = new ConcreteNetworkFactory().parseNetwork(jsonString, jsonSchemaString);
     let results: InputResultAggregate;
     const networkUpdater: NetUpdater = new NetUpdater(network);
-    expect(()=> networkUpdater.updateNet(results)).to.throw(Error, "invalid fluxResults parameter");
+    expect(()=> networkUpdater.updateNet(results)).to.throw(Error, "[7DOS G&B][NetUpdater]updateNet - invalid fluxResults parameter");
   });
 });
 

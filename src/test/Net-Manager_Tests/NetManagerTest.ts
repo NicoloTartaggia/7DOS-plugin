@@ -13,7 +13,7 @@ import {expect} from "chai";
 const jsonSchema = require(schemaPath);
 const jsonSchemaString: string = JSON.stringify(jsonSchema);
 
-const correctNetworkPath: string = "../Util_JSON/CorrectNetwork.json"
+const correctNetworkPath: string = "../Util_JSON/CorrectNetwork.json";
 const json = require(correctNetworkPath);
 const correctJsonString: string = JSON.stringify(json);
 const network: ConcreteNetworkAdapter = new ConcreteNetworkFactory().parseNetwork(correctJsonString, jsonSchemaString);
@@ -32,15 +32,15 @@ describe("NetManager - constructor", () => {
     });
     it("Undefined reader - Error", () => {
         let unReader: NetReader;
-        expect(() =>new NetManager(unReader, updater, writer)).to.throw(Error, "invalid reader parameter");
+        expect(() =>new NetManager(unReader, updater, writer)).to.throw(Error, "[7DOS G&B][NetManager]constructor - invalid reader parameter");
     });
     it("Undefined updater - Error", () => {
         let unUpdater: NetUpdater;
-        expect(() =>new NetManager(reader, unUpdater, writer)).to.throw(Error, "invalid updater parameter");
+        expect(() =>new NetManager(reader, unUpdater, writer)).to.throw(Error, "[7DOS G&B][NetManager]constructor - invalid updater parameter");
     });
     it("Undefined writer - Error", () => {
         let unWriter: NetWriter;
-        expect(() => new NetManager(reader, updater, unWriter)).to.throw(Error, "invalid writer parameter");
+        expect(() => new NetManager(reader, updater, unWriter)).to.throw(Error, "[7DOS G&B][NetManager]constructor - invalid writer parameter");
     });
 });
 
