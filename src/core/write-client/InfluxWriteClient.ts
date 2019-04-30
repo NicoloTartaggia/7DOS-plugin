@@ -28,13 +28,13 @@ export default class InfluxWriteClient implements WriteClient {
    */
   constructor (dsn: string, defaultDB: string, influx: InfluxDB) {
     if (dsn == null || dsn.length === 0) {
-      throw new Error("invalid dsn parameter");
+      throw new Error("[7DOS G&B][InfluxWriteClient]constructor - invalid dsn parameter");
     }
     if (defaultDB == null || defaultDB.length === 0) {
-      throw new Error("invalid defaultDB parameter");
+      throw new Error("[7DOS G&B][InfluxWriteClient]constructor - invalid defaultDB parameter");
     }
     if (influx == null) {
-      throw new Error("invalid influx parameter");
+      throw new Error("[7DOS G&B][InfluxWriteClient]constructor - invalid influx parameter");
     }
     this.dsn = dsn;
     this.defaultDB = defaultDB;
@@ -70,7 +70,7 @@ export default class InfluxWriteClient implements WriteClient {
         database,
       },
     ).catch((err) => {
-      throw new Error ("Writing a batch of data to" + this.getAddress()
+      throw new Error ("[7DOS G&B][InfluxWriteClient]writeBatchData - Writing a batch of data to" + this.getAddress()
         + " has encountered the following error: " + err);
     });
   }
@@ -89,7 +89,7 @@ export default class InfluxWriteClient implements WriteClient {
     ], {
       database,
     }).catch((err) => {
-      throw new Error ("Writing a point of data to" + this.getAddress()
+      throw new Error ("[7DOS G&B][InfluxWriteClient]writePointData - Writing a point of data to" + this.getAddress()
         + " has encountered the following error: " + err);
     });
   }

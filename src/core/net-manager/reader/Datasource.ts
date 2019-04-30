@@ -16,11 +16,11 @@ export default class DataSource {
                       username: string = null, password: string = null,
                       type: string = null, name: string = null, grafanaDatasourceId: number = null) {
     if (url.length === 0) {
-      throw new Error("invalid url parameter");
+      throw new Error("[7DOS G&B][DataSource]constructor - invalid url parameter");
     } else if (type !== null && type.length === 0) {
-      throw new Error("invalid type parameter");
+      throw new Error("[7DOS G&B][DataSource]constructor - invalid type parameter");
     } else if (name !== null && name.length === 0) {
-      throw new Error("invalid name parameter");
+      throw new Error("[7DOS G&B][DataSource]constructor - invalid name parameter");
     }
 
     const urlParse: URL = new URL(url);

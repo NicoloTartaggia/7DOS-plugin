@@ -77,11 +77,13 @@ export class SetWriteConnection_Ctrl {
     // if user doesn't provide a specific name
     if (this.panel.write_db_name === null || this.panel.write_db_name.length === 0) {
       this.panel.write_db_name = "7DOS_default_DB";
-      throw new Error("You must specify a database name where the plug-in should write!");
+      throw new Error("[7DOS G&B][SetWriteConnection_Ctrl]createDatabaseToWrite - " +
+        "You must specify a database name where the plug-in should write!");
     }
     if (typeof this.datasources[this.selected_datasource] === "undefined") {
       // no datasource set
-      throw new Error("You must select a datasource to write data!");
+      throw new Error("[7DOS G&B][SetWriteConnection_Ctrl]createDatabaseToWrite - " +
+        "You must select a datasource to write data!");
     }
     try {
       const hostname: string = this.datasources[this.selected_datasource].getHost();

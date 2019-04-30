@@ -6,10 +6,10 @@ export class InputResult {
 
   public constructor (nodeName: NodeAdapter, currentValue: string) {
     if (nodeName == null) {
-      throw new Error("invalid nodeName parameter");
+      throw new Error("[7DOS G&B][InputResult]constructor - invalid nodeName parameter");
     }
     if (currentValue == null || currentValue.length === 0) {
-      throw new Error("invalid currentValue parameter");
+      throw new Error("[7DOS G&B][InputResult]constructor - invalid currentValue parameter");
     }
     this.currentValue = currentValue;
     this.node = nodeName;

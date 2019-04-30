@@ -7,10 +7,10 @@ export class ConcreteNodeAdapter implements NodeAdapter {
 
   constructor (node: JNode, values: Array<AbstractValue>) {
     if (node == null) {
-      throw new Error("invalid node parameter");
+      throw new Error("[7DOS G&B][ConcreteNodeAdapter]constructor - invalid node parameter");
     }
     if (values == null || values.length === 0) {
-      throw new Error("invalid values parameter");
+      throw new Error("[7DOS G&B][ConcreteNodeAdapter]constructor - invalid values parameter");
     }
     this.node = node;
     this.values = values;
@@ -32,7 +32,7 @@ export class ConcreteNodeAdapter implements NodeAdapter {
 
   public findValue (currentValue: string): AbstractValue {
     if (currentValue == null || currentValue.length === 0) {
-      throw new Error("invalid currentValue parameter");
+      throw new Error("[7DOS G&B][ConcreteNodeAdapter]findValue - invalid currentValue parameter");
     }
 
     for (const element of this.values) {

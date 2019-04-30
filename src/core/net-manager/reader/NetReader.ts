@@ -13,7 +13,7 @@ export class NetReader {
 
   public constructor (network_ref: NetworkAdapter) {
     if (network_ref == null) {
-      throw new Error("invalid parameter");
+      throw new Error("[7DOS G&B][NetReader]constructor - invalid parameter");
     }
     this.flowMap = new Map<string, InputFlow>();
     this.node_list_ref = network_ref.getNodeList();
@@ -25,7 +25,7 @@ export class NetReader {
     for (const [key, value] of this.flowMap) {
       const node: NodeAdapter = this.getNodeFromName(key);
       if (node === null) {
-        throw new Error("getNodeFromName() failed and returned null");
+        throw new Error("[7DOS G&B][NetReader]read - getNodeFromName() failed and returned null");
       } else {
         const res_value: string  = await value.getResult();
         return_array.push(new InputResult(node, res_value));
@@ -36,11 +36,11 @@ export class NetReader {
 
   public connectNode (node: string, dataSource: DataSource, query: string): void {
     if (node == null || node.length === 0) {
-      throw new Error("Invalid node");
+      throw new Error("[7DOS G&B][NetReader]connectNode - Invalid node");
     } else if (dataSource == null) {
-      throw new Error("Invalid dataSource.");
+      throw new Error("[7DOS G&B][NetReader]connectNode - Invalid dataSource.");
     } else if (query == null || query.length === 0) {
-      throw new Error("Invalid query.");
+      throw new Error("[7DOS G&B][NetReader]connectNode - Invalid query.");
     }
     const client = ReusableReadClientPool.getInstance().acquireReusable(dataSource);
     this.flowMap.set(node, new InfluxInputFlow(dataSource.getDatabase(), query, client));

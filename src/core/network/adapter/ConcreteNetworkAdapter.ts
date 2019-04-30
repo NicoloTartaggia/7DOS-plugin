@@ -7,10 +7,10 @@ export class ConcreteNetworkAdapter implements NetworkAdapter {
 
   public constructor (network: JGraph, nodeList: Array<NodeAdapter>) {
     if (network == null) {
-      throw new Error("invalid network parameter");
+      throw new Error("[7DOS G&B][ConcreteNetworkAdapter]constructor - invalid network parameter");
     }
     if (nodeList == null || nodeList.length === 0) {
-      throw new Error("invalid nodeList parameter");
+      throw new Error("[7DOS G&B][ConcreteNetworkAdapter]constructor - invalid nodeList parameter");
     }
     this.graph = network;
     this.nodeList = nodeList;
@@ -21,10 +21,10 @@ export class ConcreteNetworkAdapter implements NetworkAdapter {
    */
   public observeNode (node: string, value: string): void {
     if (node == null || node.length === 0) {
-      throw new Error("invalid node parameter");
+      throw new Error("[7DOS G&B][ConcreteNetworkAdapter]observeNode - invalid node parameter");
     }
     if (value == null || value.length === 0) {
-      throw new Error("invalid value parameter");
+      throw new Error("[7DOS G&B][ConcreteNetworkAdapter]observeNode - invalid value parameter");
     }
     let isPresent: boolean = false;
     let valueIsCorrect: boolean = false;
@@ -41,10 +41,11 @@ export class ConcreteNetworkAdapter implements NetworkAdapter {
       }
     }
     if (isPresent === false) {
-      throw new Error("Node " + node + " isn't present in the network");
+      throw new Error("[7DOS G&B][ConcreteNetworkAdapter]observeNode - Node " + node + " isn't present in the network");
     }
     if (valueIsCorrect === false) {
-      throw new Error("Node " + node + " hasn't a value called " + value);
+      throw new Error("[7DOS G&B][ConcreteNetworkAdapter]observeNode - Node " +
+        node + " hasn't a value called " + value);
     }
     this.graph.observe(node, value);
   }
@@ -54,7 +55,7 @@ export class ConcreteNetworkAdapter implements NetworkAdapter {
    */
   public unobserveNode (node: string): void {
     if (node == null || node.length === 0) {
-      throw new Error("invalid node parameter");
+      throw new Error("[7DOS G&B][ConcreteNetworkAdapter]unobserveNode - invalid node parameter");
     }
     let isPresent: boolean = false;
     for (const jn of this.graph.nodes) {
@@ -64,7 +65,8 @@ export class ConcreteNetworkAdapter implements NetworkAdapter {
       }
     }
     if (isPresent === false) {
-      throw new Error("Node " + node + " isn't present in the network");
+      throw new Error("[7DOS G&B][ConcreteNetworkAdapter]unobserveNode - Node "
+        + node + " isn't present in the network");
     }
     this.graph.unobserve(node);
   }
@@ -74,7 +76,7 @@ export class ConcreteNetworkAdapter implements NetworkAdapter {
    */
   public sampleNetwork (sampleNum: number): void {
     if (sampleNum == null || sampleNum <= 0) {
-      throw new Error("invalid sampleNum parameter");
+      throw new Error("[7DOS G&B][ConcreteNetworkAdapter]sampleNetwork - invalid sampleNum parameter");
     }
     this.graph.sample(sampleNum);
   }
@@ -85,14 +87,15 @@ export class ConcreteNetworkAdapter implements NetworkAdapter {
    */
   public getNodeProbs (nodeName: string): Array<number> {
     if (nodeName == null || nodeName.length === 0) {
-      throw new Error("invalid nodeName parameter");
+      throw new Error("[7DOS G&B][ConcreteNetworkAdapter]getNodeProbs - invalid nodeName parameter");
     }
     for (const node of this.graph.nodes) {
       if (node.name === nodeName) {
         return node.probs();
       }
     }
-    throw new Error("Node " + nodeName + " isn't present in the network");
+    throw new Error("[7DOS G&B][ConcreteNetworkAdapter]getNodeProbs - Node "
+      + nodeName + " isn't present in the network");
   }
 
   /**

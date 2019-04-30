@@ -6,14 +6,14 @@ export class CalcResult {
 
   public constructor (nodeName: string, items: Array<CalcResultItem>) {
     if (nodeName == null || nodeName.length === 0) {
-      throw new Error("invalid nodeName parameter");
+      throw new Error("[7DOS G&B][CalcResult]constructor - invalid nodeName parameter");
     }
     if (items == null || items.length === 0) {
-      throw new Error("invalid items parameter");
+      throw new Error("[7DOS G&B][CalcResult]constructor - invalid items parameter");
     }
     for (const item of items) {
       if (item === null) {
-        throw new Error("invalid items parameter");
+        throw new Error("[7DOS G&B][CalcResult]constructor - invalid items parameter");
       }
     }
     this.nodeName = nodeName;

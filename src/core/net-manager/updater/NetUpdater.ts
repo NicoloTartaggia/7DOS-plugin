@@ -10,14 +10,14 @@ export class NetUpdater {
 
   public constructor (network: NetworkAdapter) {
     if (network == null) {
-      throw new Error("invalid network parameter");
+      throw new Error("[7DOS G&B][NetUpdater]constructor - invalid network parameter");
     }
     this.network = network;
   }
 
   public updateNet (fluxResults: InputResultAggregate): CalcResultAggregate {
     if (fluxResults == null || fluxResults.collection.length === 0) {
-      throw new Error("invalid fluxResults parameter");
+      throw new Error("[7DOS G&B][NetUpdater]updateNet - invalid fluxResults parameter");
     }
     const results: IterableIterator<InputResult> = fluxResults.buildIterator();
 

@@ -28,14 +28,14 @@ export class ConcreteReadClientFactory implements ReadClientFactory {
   public makeInfluxReadClient (host: string, port: string, credentials?: [string, string])
     : InfluxReadClient {
     if (host === null ||  host.length === 0) {
-      throw new Error("invalid host parameter");
+      throw new Error("[7DOS G&B][ConcreteReadClientFactory]makeInfluxReadClient - invalid host parameter");
     }
     if (port === null || port.length === 0) {
-      throw new Error("invalid port parameter");
+      throw new Error("[7DOS G&B][ConcreteReadClientFactory]makeInfluxReadClient - invalid port parameter");
     }
     if ((credentials != null && (credentials[0] === null
     || credentials[0] === "" || credentials[1] === null))) {
-      throw new Error("invalid credentials parameter");
+      throw new Error("[7DOS G&B][ConcreteReadClientFactory]makeInfluxReadClient - invalid credentials parameter");
     }
     const dsn: URL = new URL(host);
     dsn.port = port;
