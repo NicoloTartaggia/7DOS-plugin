@@ -7,6 +7,7 @@ const http = path.resolve(__dirname, "node_modules/stream-http/index.js");
 module.exports = {
   resolve: {
     alias: { http, https: http },
+    extensions: [".ts", ".js"],
   },
   mode: "development",
   target: "web",
@@ -46,9 +47,6 @@ module.exports = {
       cleanOnceBeforeBuildPatterns: [path.resolve(__dirname, "dist")],
     }),
   ],
-  resolve: {
-    extensions: [".ts", ".js"],
-  },
   module: {
     rules: [
       {
