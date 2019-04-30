@@ -15,7 +15,6 @@ module.exports = {
     "./components/config": "./components/config.ts",
     "./module": "./module.ts",
     "./panels/import-json-panel/module": "./panels/import-json-panel/module.ts",
-    //"./panels/graph-panel": "./panels/graph-panel/module.ts"
   },
   output: {
     filename: "[name].js",
