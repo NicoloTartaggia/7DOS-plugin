@@ -13,32 +13,32 @@ describe("InfluxInputFlow - constructor", () => {
         expect(()=> 
             new InfluxInputFlow(db, "query", 
             new ConcreteReadClientFactory().makeInfluxReadClient("http://localhost", "9957", ["user", "password"]))
-        ).to.throw(Error, "invalid database parameter");
+        ).to.throw(Error, "[7DOS G&B][InfluxInputFlow]constructor - invalid database parameter");
     });
     it("Undefined query - Error", () => {
         let query: string;
         expect(()=> 
             new InfluxInputFlow("db", query, 
             new ConcreteReadClientFactory().makeInfluxReadClient("http://localhost", "9957", ["user", "password"]))
-        ).to.throw(Error, "invalid query parameter");
+        ).to.throw(Error, "[7DOS G&B][InfluxInputFlow]constructor - invalid query parameter");
     });
     it("Undefined client - Error", () => {
         let readClient: ReadClient;
         expect(()=> 
             new InfluxInputFlow("db", "query", readClient)
-        ).to.throw(Error, "invalid client parameter");
+        ).to.throw(Error, "[7DOS G&B][InfluxInputFlow]constructor - invalid client parameter");
     });
     it("Empty database - Error", () => {
         expect(()=> 
             new InfluxInputFlow("", "query", 
             new ConcreteReadClientFactory().makeInfluxReadClient("http://localhost", "9957", ["user", "password"]))
-        ).to.throw(Error, "invalid database parameter");
+        ).to.throw(Error, "[7DOS G&B][InfluxInputFlow]constructor - invalid database parameter");
     });
     it("Empty query - Error", () => {
         expect(()=> 
             new InfluxInputFlow("db", "", 
             new ConcreteReadClientFactory().makeInfluxReadClient("http://localhost", "9957", ["user", "password"]))
-        ).to.throw(Error, "invalid query parameter");
+        ).to.throw(Error, "[7DOS G&B][InfluxInputFlow]constructor - invalid query parameter");
     });
     it("Correct inputs - InfluxInputFlow", () => {
         expect(()=> 
@@ -82,7 +82,7 @@ describe("InfluxInputFlow - getResult", () => {
         const influxInput: InfluxInputFlow = new InfluxInputFlow("prova", "SELECT field FROM measurement", 
             new ConcreteReadClientFactory().makeInfluxReadClient("http://localhost", "8086", ["user", "password"]));
         influxInput.getResult().then(function(){}).catch(function(e){
-            expect(e.toString()).to.contain("Error: Query");
+            expect(e.toString()).to.contain("Error: [7DOS G&B][InfluxReadClient]readField - Query to ");
         });
     });
 });

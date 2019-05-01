@@ -11,7 +11,7 @@ import {expect} from "chai";
 describe("SingleNetWriter - constructor", () => {
     it("Undefined client - Error", () => {
         let client: WriteClient;
-        expect(()=> new SingleNetWriter(client)).to.throw(Error, "invalid client parameter");
+        expect(()=> new SingleNetWriter(client)).to.throw(Error, "[7DOS G&B][SingleNetWriter]constructor - invalid client parameter");
     });
     it("Defined client - New SingleNetWriter", () => {
         new ConcreteWriteClientFactory().makeInfluxWriteClient(
@@ -33,7 +33,7 @@ describe("SingleNetWriter - write", () => {
         let calc: CalcResultAggregate;
         singleWriter.write(calc).then(function (){})
                                 .catch(function (e){
-                                    expect(<Error> e.toString()).to.equal("Error: invalid calcData parameter");
+                                    expect(<Error> e.toString()).to.equal("Error: [7DOS G&B][SingleNetWriter]write - invalid calcData parameter");
                                 });
     });
     it("Correct calcData - Something", () => {

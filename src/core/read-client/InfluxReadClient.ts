@@ -21,10 +21,10 @@ export default class InfluxReadClient implements ReadClient {
    */
   public constructor (dsn: string, influx: InfluxDB) {
     if (dsn == null || dsn.length === 0) {
-      throw new Error("invalid dsn parameter");
+      throw new Error("[7DOS G&B][InfluxReadClient]constructor - invalid dsn parameter");
     }
     if (influx == null) {
-      throw new Error("invalid influx parameter");
+      throw new Error("[7DOS G&B][InfluxReadClient]constructor - invalid influx parameter");
     }
     this.dsn = dsn;
     this.influx = influx;
@@ -45,17 +45,17 @@ export default class InfluxReadClient implements ReadClient {
   public async readField (database: string, query: string):
   Promise<Array<{ name: string, tags: Tags, rows: Array<any> }>> {
     if (database == null || database.length === 0) {
-      throw new Error("invalid database parameter");
+      throw new Error("[7DOS G&B][InfluxReadClient]readField - invalid database parameter");
     }
     if (query == null || query.length === 0) {
-      throw new Error("invalid query parameter");
+      throw new Error("[7DOS G&B][InfluxReadClient]readField - invalid query parameter");
     }
     const queryOptions: IQueryOptions = {};
     queryOptions.database = database;
     const tempRes = await this.influx.query(query, queryOptions)
       .then((rows) => rows.groups())
       .catch((err) => {
-        throw new Error("Query to " + this.getAddress()
+        throw new Error("[7DOS G&B][InfluxReadClient]readField - Query to " + this.getAddress()
           + " has encountered the following error: " + err);
       });
     const queryRes: void | Array<{ name: string, tags: Tags, rows: Array<any> }> = tempRes
@@ -64,14 +64,3 @@ export default class InfluxReadClient implements ReadClient {
     return queryRes;
   }
 }
-
-/*
-EXAMPLE CODE
-const factory: ReadClientFactory = new ConcreteReadClientFactory();
-
-const client: ReadClient = factory.makeInfluxReadClient("localhost", "8086");
-const flux: InfluxInputFlow = new InfluxInputFlow(
-  "telegraf", "SELECT Percent_DPC_Time from win_cpu order by time desc", client);
-console.log("hello");
-flux.getResult().then((result) => console.log(result));
- */

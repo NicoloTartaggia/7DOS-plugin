@@ -1,32 +1,33 @@
 import {NetworkAdapter} from "../../network/adapter/NetworkAdapter";
-import { CalcResult } from "../result/calculation-result/CalcResult";
-import { CalcResultAggregate } from "../result/calculation-result/CalcResultAggregate";
-import { CalcResultItem } from "../result/calculation-result/CalcResultItem";
-import { InputResult } from "../result/input-result/InputResult";
-import { InputResultAggregate } from "../result/input-result/InputResultAggregate";
+import {AbstractValue} from "../../network/value/AbstractValue";
+import {CalcResult} from "../result/calculation-result/CalcResult";
+import {CalcResultAggregate} from "../result/calculation-result/CalcResultAggregate";
+import {CalcResultItem} from "../result/calculation-result/CalcResultItem";
+import {InputResult} from "../result/input-result/InputResult";
+import {InputResultAggregate} from "../result/input-result/InputResultAggregate";
 
 export class NetUpdater {
   private readonly network: NetworkAdapter;
 
-  public constructor (network: NetworkAdapter) {// TODO rimettere il NetworkAdapter
+  public constructor (network: NetworkAdapter) {
     if (network == null) {
-      throw new Error("invalid network parameter");
+      throw new Error("[7DOS G&B][NetUpdater]constructor - invalid network parameter");
     }
     this.network = network;
   }
 
   public updateNet (fluxResults: InputResultAggregate): CalcResultAggregate {
     if (fluxResults == null || fluxResults.collection.length === 0) {
-      throw new Error("invalid fluxResults parameter");
+      throw new Error("[7DOS G&B][NetUpdater]updateNet - invalid fluxResults parameter");
     }
     const results: IterableIterator<InputResult> = fluxResults.buildIterator();
 
     // ciclo che itera tutti i InputResult e fissa gli observe
     for (const res of results) {
+      const found_value: AbstractValue = res.getNode().findValue(res.getCurrentValue());
       this.network.observeNode(
         res.getNode().getName(),
-        res.getNode().findValue(
-          res.getCurrentValue()).getValueName(),
+        found_value.getValueName(),
       );
     }
 

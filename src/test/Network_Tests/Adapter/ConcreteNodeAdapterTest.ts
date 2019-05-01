@@ -148,8 +148,8 @@ describe("ConcreteNodeAdapter - findValue", () => {
         concreteNodeValues.push(new BoolValue(true, "boolvalue-3"));
 
         const concreteNode = new ConcreteNodeAdapter(n1, concreteNodeValues);
-        const value: AbstractValue = concreteNode.findValue("valorechenonce");
-        expect(value).to.equal(null);
+        expect(() => concreteNode.findValue("valorechenonce")).to.throw(Error,
+          "The value valorechenonce is not a suitable value for this node(n1) values! Check your network structure!");
     });
     it("Undefined value - Error", () => {
         const graph: JGraph = jsbayes.newGraph();

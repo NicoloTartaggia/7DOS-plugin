@@ -8,7 +8,7 @@ describe("WriteClientFactory - makeInfluxWriteClient", () => {
         new ConcreteWriteClientFactory().makeInfluxWriteClient(
             host, "something", "something else", ["admin", "password"]
         ).then(function(){}).catch(function(e){
-            expect(<Error> e.toString()).to.equal("Error: invalid host parameter");
+            expect(<Error> e.toString()).to.equal("Error: [7DOS G&B][ConcreteWriteClientFactory]makeInfluxWriteClient - invalid host parameter");
         });
     });
     it("Undefined port - Error ", () => {
@@ -16,7 +16,7 @@ describe("WriteClientFactory - makeInfluxWriteClient", () => {
         new ConcreteWriteClientFactory().makeInfluxWriteClient(
             "something", port, "something else", ["admin", "password"]
         ).then(function(){}).catch(function(e){
-            expect(<Error> e.toString()).to.equal("Error: invalid port parameter");
+            expect(<Error> e.toString()).to.equal("Error: [7DOS G&B][ConcreteWriteClientFactory]makeInfluxWriteClient - invalid port parameter");
         });
     });
     it("Undefined defaultDB - Error ", () => {
@@ -24,28 +24,28 @@ describe("WriteClientFactory - makeInfluxWriteClient", () => {
         new ConcreteWriteClientFactory().makeInfluxWriteClient(
             "something", "something else", defaultDB, ["admin", "password"]
         ).then(function(){}).catch(function(e){
-            expect(<Error> e.toString()).to.equal("Error: invalid defaultDB parameter");
+            expect(<Error> e.toString()).to.equal("Error: [7DOS G&B][ConcreteWriteClientFactory]makeInfluxWriteClient - invalid defaultDB parameter");
         });
     });
     it("Empty host - Error ", () => {
         new ConcreteWriteClientFactory().makeInfluxWriteClient(
             "", "something", "something else", ["admin", "password"]
         ).then(function(){}).catch(function(e){
-            expect(<Error> e.toString()).to.equal("Error: invalid host parameter");
+            expect(<Error> e.toString()).to.equal("Error: [7DOS G&B][ConcreteWriteClientFactory]makeInfluxWriteClient - invalid host parameter");
         });
     });
     it("Empty port - Error ", () => {
         new ConcreteWriteClientFactory().makeInfluxWriteClient(
             "something", "", "something else", ["admin", "password"]
         ).then(function(){}).catch(function(e){
-            expect(<Error> e.toString()).to.equal("Error: invalid port parameter");
+            expect(<Error> e.toString()).to.equal("Error: [7DOS G&B][ConcreteWriteClientFactory]makeInfluxWriteClient - invalid port parameter");
         });
     });
     it("Empty defaultDB - Error ", () => {
         new ConcreteWriteClientFactory().makeInfluxWriteClient(
             "something", "something else", "", ["admin", "password"]
         ).then(function(){}).catch(function(e){
-            expect(<Error> e.toString()).to.equal("Error: invalid defaultDB parameter");
+            expect(<Error> e.toString()).to.equal("Error: [7DOS G&B][ConcreteWriteClientFactory]makeInfluxWriteClient - invalid defaultDB parameter");
         });
     });
     it("Correct inputs - New InfluxWriteClient", () => {

@@ -92,7 +92,8 @@ class ConcreteNetworkFactory implements NetworkFactory {
     } else if (current_value.type === "string") {
       return new StringValue(current_value.value, current_value.name);
     } else {
-      throw new Error("Found a JSON value that's not in the list boolean|range|string," +
+      throw new Error("[7DOS G&B][ConcreteNetworkFactory]parse_current_value - " +
+        "Found a JSON value that's not in the list boolean|range|string," +
         "validate your JSON using the schema!");
     }
   }
@@ -107,7 +108,7 @@ class ConcreteNetworkFactory implements NetworkFactory {
     // --------------------------------
     // Check if JSON file is not null and is valid to parse
     if (file_content == null) {
-      throw new Error("JSON file content is null...");
+      throw new Error("[7DOS G&B][ConcreteNetworkFactory]parseNetwork - JSON file content is null...");
     }
 
     let json_file;
@@ -115,7 +116,7 @@ class ConcreteNetworkFactory implements NetworkFactory {
     try {
       json_file = JSON.parse(file_content);
     } catch (e) {
-      throw new Error("Bad Json Content! Error:" + e.toString());
+      throw new Error("[7DOS G&B][ConcreteNetworkFactory]parseNetwork - Bad Json Content! Error:" + e.toString());
     }
     // --------------------------------
     // JSON schema validation
@@ -124,14 +125,15 @@ class ConcreteNetworkFactory implements NetworkFactory {
       try {
         json_schema = JSON.parse(json_schema_content);
       } catch (e) {
-        throw new Error("Bad Json Content! Error:" + e.toString());
+        throw new Error("[7DOS G&B][ConcreteNetworkFactory]parseNetwork - Bad Json Content! Error:" + e.toString());
       }
 
       const ajv = new Ajv();
       const validate = ajv.compile(json_schema);
       const valid = validate(json_file);
       if (!valid) {
-        throw new Error("JSON doesn't validate the schema!" + validate.errors);
+        throw new Error("[7DOS G&B][ConcreteNetworkFactory]parseNetwork - " +
+          "JSON doesn't validate the schema!" + validate.errors);
       }
     }
     // --------------------------------
@@ -140,7 +142,8 @@ class ConcreteNetworkFactory implements NetworkFactory {
       const name = node.name;
       // Check that the node doesn't exist already
       if (Object.keys(node_dictionary).indexOf(name) >= 0) {
-        throw new Error("The node " + name + " already exist in the network!");
+        throw new Error("[7DOS G&B][ConcreteNetworkFactory]parseNetwork - " +
+          "The node " + name + " already exist in the network!");
       }
       // Create structures for current node
       node_parents_dictionary[name] = new Array<string>();
@@ -164,10 +167,12 @@ class ConcreteNetworkFactory implements NetworkFactory {
       const name = node.name;
       for (const parent of node.parents) {
         if (!ConcreteNetworkFactory.nodeExist(parent, node_dictionary)) {
-          throw new Error("Node " + parent + " not found in the network!");
+          throw new Error("[7DOS G&B][ConcreteNetworkFactory]parseNetwork - " +
+            "Node " + parent + " not found in the network!");
         }
         if (!ConcreteNetworkFactory.checkCanBeParent(name, parent, node_parents_dictionary)) {
-          throw new Error("Circular parenthood");
+          throw new Error("[7DOS G&B][ConcreteNetworkFactory]parseNetwork - " +
+            "Circular parenthood");
         }
         // Set parent for JNode
         ConcreteNetworkFactory.setNodeParent(node_dictionary[name], node_dictionary[parent]);
@@ -179,7 +184,7 @@ class ConcreteNetworkFactory implements NetworkFactory {
     // For each node i read his CPT table
     for (const node of (json_file).nodes) {
       if (node.cpt.length === 0) {
-        throw new Error("Empty cpt");
+        throw new Error("[7DOS G&B][ConcreteNetworkFactory]parseNetwork - Empty cpt");
       }
       const name = node.name;
       // Check that cpt sum is 1
@@ -189,7 +194,7 @@ class ConcreteNetworkFactory implements NetworkFactory {
           sum += prob;
         }
         if (sum > 1) {
-          throw new Error("The cpt sum of a line is > 1!");
+          throw new Error("[7DOS G&B][ConcreteNetworkFactory]parseNetwork - The cpt sum of a line is > 1!");
         }
       }
       let numberOfRows: number = 1;
@@ -200,13 +205,15 @@ class ConcreteNetworkFactory implements NetworkFactory {
       if (numberOfRows === node.cpt.length) {
         for (const row of node.cpt) {
           if (row.length !== node.values.length) {
-            throw new Error("Incorrect cpt's number of columns for node" + name + " (found:"
+            throw new Error("[7DOS G&B][ConcreteNetworkFactory]parseNetwork - " +
+              "Incorrect cpt's number of columns for node" + name + " (found:"
               + row.length.toString() + " expected:" + node.values.length.toString() + ")");
           }
         }
         ConcreteNetworkFactory.setNodeCpt(node_dictionary[name], node.cpt);
       } else {
-        throw new Error("Incorrect cpt's number of columns for node" + name + " (found:" + node.cpt.length.toString()
+        throw new Error("[7DOS G&B][ConcreteNetworkFactory]parseNetwork - " +
+          "Incorrect cpt's number of columns for node" + name + " (found:" + node.cpt.length.toString()
           + " expected:" + numberOfRows.toString() + ")");
       }
 
@@ -225,13 +232,3 @@ class ConcreteNetworkFactory implements NetworkFactory {
 }// end of ConcreteNetworkFactory
 
 export {ConcreteNetworkFactory};
-
-/*
-    let arrayCpt: number[] = [];
-    for (let c of cpt) {
-      for (let cin of c) {
-        arrayCpt.push(cin);
-      }
-    }
-    node.setCpt(arrayCpt);
-    node.setCpt(cpt);*/

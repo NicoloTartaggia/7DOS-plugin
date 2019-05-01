@@ -10,13 +10,13 @@ describe("InfluxReadClient - createReaderClient", () => {
   const influx: InfluxDB = new InfluxDB();  
   it("Undefined dsn - Error", () => {
     let dsn: string;
-    expect(() => new InfluxReadClient(dsn, influx)).to.throw(Error, "invalid dsn parameter");
+    expect(() => new InfluxReadClient(dsn, influx)).to.throw(Error, "[7DOS G&B][InfluxReadClient]constructor - invalid dsn parameter");
   });
   it("Empty dsn - Error", () => {
-    expect(() => new InfluxReadClient("", influx)).to.throw(Error, "invalid dsn parameter");
+    expect(() => new InfluxReadClient("", influx)).to.throw(Error, "[7DOS G&B][InfluxReadClient]constructor - invalid dsn parameter");
   });
   it("Undefined influx - Error", () => {
-    expect(() => new InfluxReadClient("http://localhost:8086/prova", null)).to.throw(Error, "invalid influx parameter");
+    expect(() => new InfluxReadClient("http://localhost:8086/prova", null)).to.throw(Error, "[7DOS G&B][InfluxReadClient]constructor - invalid influx parameter");
   });
   it("Correct inputs - InfluxReadClient", () => {
     expect(() => new InfluxReadClient("http://localhost:8086/prova", influx)).to.not.throw(Error);
@@ -67,25 +67,25 @@ describe("InfluxReadClient - readField", () => {
   it("Undefined database - Error",()=>{
     client.readField(null,"SHOW MEASUREMENTS").then(function(){})
     .catch(function(e){
-      expect(<Error> e.toString()).to.equal("Error: invalid database parameter");
+      expect(<Error> e.toString()).to.equal("Error: [7DOS G&B][InfluxReadClient]readField - invalid database parameter");
     });
   });
   it("Undefined query - Error",()=>{
     client.readField("http://localhost",null).then(function(){})
     .catch(function(e){
-      expect(<Error> e.toString()).to.equal("Error: invalid query parameter");
+      expect(<Error> e.toString()).to.equal("Error: [7DOS G&B][InfluxReadClient]readField - invalid query parameter");
     });
   });
   it("Empty database - Error",()=>{
     client.readField("", "SHOW MEASUREMENTS").then(function(){})
     .catch(function(e){
-      expect(<Error> e.toString()).to.equal("Error: invalid database parameter");
+      expect(<Error> e.toString()).to.equal("Error: [7DOS G&B][InfluxReadClient]readField - invalid database parameter");
     });
   });
   it("Empty query - Error",()=>{
     client.readField("http://localhost","").then(function(){})
     .catch(function(e){
-      expect(<Error> e.toString()).to.equal("Error: invalid query parameter");
+      expect(<Error> e.toString()).to.equal("Error: [7DOS G&B][InfluxReadClient]readField - invalid query parameter");
     });
   });
 });

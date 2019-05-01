@@ -5,10 +5,10 @@ class BoolValue extends AbstractValue {
 
   constructor(value: boolean, name: string) {
     if (name == null || name.length === 0) {
-      throw new Error("invalid name parameter");
+      throw new Error("[7DOS G&B][BoolValue]constructor - invalid name parameter");
     }
     if (value == null) {
-      throw new Error("invalid value parameter");
+      throw new Error("[7DOS G&B][BoolValue]constructor - invalid value parameter");
     }
     super(name);
     this.value = value;
@@ -16,7 +16,7 @@ class BoolValue extends AbstractValue {
 
   public isValueType(value: string): boolean {
     if (value == null || value.length === 0) {
-      throw new Error("invalid value parameter");
+      throw new Error("[7DOS G&B][BoolValue]isValueType - invalid value parameter");
     }
     const boolValue = value.toString().toLowerCase();
     if (boolValue !== "true" && boolValue !== "false") {

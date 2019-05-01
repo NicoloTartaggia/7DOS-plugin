@@ -6,16 +6,16 @@ class RangeValue extends AbstractValue {
 
   constructor(minRange: number, maxRange: number, name: string) {
     if (minRange == null)  {
-      throw new Error("invalid minRange parameter");
+      throw new Error("[7DOS G&B][RangeValue]constructor - invalid minRange parameter");
     }
     if (maxRange == null) {
-      throw new Error("invalid maxRange parameter");
+      throw new Error("[7DOS G&B][RangeValue]constructor - invalid maxRange parameter");
     }
     if (minRange > maxRange) {
-      throw new Error("maxRange is less then minRange");
+      throw new Error("[7DOS G&B][RangeValue]constructor - maxRange is less then minRange");
     }
     if (name == null || name.length === 0) {
-      throw new Error("invalid name parameter");
+      throw new Error("[7DOS G&B][RangeValue]constructor - invalid name parameter");
     }
     super(name);
     this.minRange = minRange;
@@ -24,7 +24,7 @@ class RangeValue extends AbstractValue {
 
   public isValueType(value: string): boolean {
     if (value == null || value.length === 0) {
-      throw new Error("invalid value parameter");
+      throw new Error("[7DOS G&B][RangeValue]isValueType - invalid value parameter");
     }
     const numericValue = Number(value);
     if (Number.isNaN(numericValue)) {

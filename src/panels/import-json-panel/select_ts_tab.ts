@@ -4,6 +4,7 @@ import {NodeAdapter} from "core/network/adapter/NodeAdapter";
 import {coreModule} from "grafana/app/core/core";
 import {DashboardModel} from "grafana/app/features/dashboard/model";
 import DataSource from "../../core/net-manager/reader/Datasource";
+import {JsImportPanel} from "./JsonImportPanel";
 
 /**
  * Class used to save a database found in a datasource, with all its tables
@@ -39,7 +40,6 @@ class Saved_Connecton {
     this.table = query.substring(
       query.toLowerCase().indexOf("from") + 5,
     ).trim();
-    console.log("Select:" + this.field + " Table:" + this.table);
   }
 }
 
@@ -65,7 +65,6 @@ export class SelectDB_Ctrl {
 
   // @ts-ignore
   constructor ($scope, private $sce, datasourceSrv, private backendSrv) {
-    console.log("SelectDB_Ctrl - Start constructor");
     this.panelCtrl = $scope.ctrl;
     $scope.ctrl = this;
     this.panel = this.panelCtrl.panel;
@@ -73,8 +72,6 @@ export class SelectDB_Ctrl {
     this.panel.targets = this.panel.targets || [{}];
     this.dashboard = this.panelCtrl.dashboard;
     // Linking select_ts_tab to panel
-    console.log("SelectDB_Ctrl - Object build");
-    console.log("SelectDB_Ctrl - Get datasources");
     this.getDatasources();
     this.refreshNetwork();
   }
@@ -97,30 +94,38 @@ export class SelectDB_Ctrl {
     const datasource: DataSource = this.datasources[this.selected_datasource[nodeName]];
     if (datasource !== undefined && datasource !== null) {
       // Create a clone of the selected datasource with the specified database name
-      const database: string = this.selected_database[nodeName].name;
-      const return_datasource = datasource.cloneWithDB(database);
-      const table: string = this.selected_table[nodeName].name;
-      const field: string = this.selected_field[nodeName];
-      const query: string = "SELECT " + field + " FROM " + table;
-      return ([query, return_datasource]);
+      try {
+        const database: string = this.selected_database[nodeName].name;
+        const return_datasource = datasource.cloneWithDB(database);
+        const table: string = this.selected_table[nodeName].name;
+        const field: string = this.selected_field[nodeName];
+        const query: string = "SELECT " + field + " FROM " + table;
+        return ([query, return_datasource]);
+      } catch (e) {
+        JsImportPanel.showErrorMessage("Error saving nodes connections",
+          "An error occurred saving the connections, " +
+          "check that every line is complete or check console for more informations!");
+        throw new Error("[7DOS G&B][SelectDB_Ctrl]getQuery() - Error in getQuery()" + e.toString());
+      }
     }
     return ([null, null]);
   }
 
   public connectNodes () {
-    console.log("connectNodes() - output:");
-    console.log(this.panel.save_datasources);
+    console.log("[7DOS G&B][SelectDB_Ctrl]connectNodes() - connecting nodes to datasources...");
     for (let i = 0; i < this.nodes.length; i++) {
       const [query, datasource] = this.getQuery(i);
       if (datasource !== null) {
         this.panelCtrl.netReader.connectNode(this.nodes[i].getName(), datasource, query);
       }
     }
+    console.log("[7DOS G&B][SelectDB_Ctrl]connectNodes() - connection done!");
+    JsImportPanel.showSuccessMessage("Connections saved succesfully!");
     this.save_connections();
   }
 
   public loadData () {
-    console.log("loaddata()");
+    console.log("[7DOS G&B][SelectDB_Ctrl]loaddata() - loading saved connections");
     for (const element of this.panel.save_datasources) {
       // Copy datasource, this is necessary to use DataSource functions
       const c_datasource: DataSource = DataSource.copy(element.datasource as DataSource);
@@ -135,10 +140,17 @@ export class SelectDB_Ctrl {
       // Set the table field as currently selected
       this.selected_field[element.nodename] = element.field;
     }
+    if (this.panel.save_datasources.length > 0) {
+      JsImportPanel.showSuccessMessage("Saved data loaded succesfully!");
+    } else {
+      JsImportPanel.showSuccessMessage("List of available datasources loaded succesfully!");
+    }
     (document.getElementById("load-btn") as HTMLButtonElement).disabled = true;
+    console.log("[7DOS G&B][SelectDB_Ctrl]loaddata() - loading completed!");
   }
 
   public getDatasources () {
+    console.log("[7DOS G&B][SelectDB_Ctrl]getDatasources() - start loading datasources...");
     this.datasources = {};
 
     const protocol = window.location.protocol;
@@ -154,11 +166,11 @@ export class SelectDB_Ctrl {
             if (entry.type === "influxdb") {
               const datas = new DataSource(entry.url, entry.database, entry.user,
                 entry.password, entry.type, entry.name, entry.id);
-              console.log("datas.name: " + datas.getName());
               this.datasources[entry.id] = datas;
               this.getDatabases(entry.id);
             } else {
-              console.log("False for:" + entry.name);
+              console.log("[7DOS G&B][SelectDB_Ctrl]Ignoring database with name:" + entry.name
+                + " because is not an InfluxDB");
             }
           }
         }
@@ -173,7 +185,6 @@ export class SelectDB_Ctrl {
       (data) => {
         if (data.response.statusCode === 200) {
           const databases = JSON.parse(data.body);
-          console.log("getDatabases request done - executing for");
           for (const entry of databases.results[0].series[0].values) {
             if (!entry[0].startsWith("_")) { // Internal database?
               const databaseOBJ = new Script_Found_Database();
@@ -244,48 +255,19 @@ export class SelectDB_Ctrl {
 
   // This function, currently does nothing, is just for printing debug stuff when the select change
   public select_datasource (id: string) {
-    console.log("select_datasource()");
   }
 
   // This function, has to update the selected db obj according to the selected name
   public select_database (id: string) {
-    console.log("select_database()");
     this.update_selected_database(id);
   }
 
   // This function, currently does nothing, is just for printing debug stuff when the select change
   public select_table (id: string) {
-    console.log("select_table()");
   }
 
   // This function, currently does nothing, is just for printing debug stuff when the select change
   public select_field (id: string) {
-    console.log("select_field()");
-  }
-
-  public queryComposer (nodesIndex: number) {
-    const nI = 0;   // used for tests, to be replaced with parameter nodesIndex
-    const nodeName = this.nodes[nI].getName(); // ^ used only here
-
-    const datasource = this.datasources[this.selected_datasource[nodeName]];
-    const url = datasource.getUrl();
-    const database = datasource.getDatabase();
-    const table = this.selected_table[nodeName].name;
-    const field = this.selected_field[nodeName];
-    const query = url + "/query?db=" + database + "&q=SELECT " + field + " FROM " + table;
-    console.log(query);
-    this.queryIssuer(query);
-  }
-
-  public queryIssuer (query: string) {
-    RxHR.get(query).subscribe(
-      (data) => {
-        if (data.response.statusCode === 200) {
-          console.log(data.body); // Show the HTML for the Google homepage.
-        }
-      },
-      (err) => console.error(err), // Show error in console
-    );
   }
 
   // ------------------------------------------------------
@@ -293,6 +275,7 @@ export class SelectDB_Ctrl {
   // ------------------------------------------------------
 
   private save_connections () {
+    console.log("[7DOS G&B][SelectDB_Ctrl]save_connections() - saving connections...");
     for (let i = 0; i < this.nodes.length; i++) {
       const [query, datasource] = this.getQuery(i);
       if (datasource !== null) {
@@ -319,6 +302,7 @@ export class SelectDB_Ctrl {
         }
       }
     }
+    console.log("[7DOS G&B][SelectDB_Ctrl]save_connections() - save complete!");
   }
 
   private getTableObjFromName (database: Script_Found_Database, tableName: string): Script_Found_Table {

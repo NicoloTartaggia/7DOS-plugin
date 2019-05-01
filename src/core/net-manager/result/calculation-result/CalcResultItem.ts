@@ -4,10 +4,10 @@ export class CalcResultItem {
 
   public constructor (valueName: string, probValue: number) {
     if (valueName === null || valueName.length === 0) {
-      throw new Error("invalid valueName parameter");
+      throw new Error("[7DOS G&B][CalcResultItem]constructor - invalid valueName parameter");
     }
     if (probValue === null || probValue < 0 || probValue > 1) {
-      throw new Error("invalid probValue parameter");
+      throw new Error("[7DOS G&B][CalcResultItem]constructor - invalid probValue parameter");
     }
     this.valueName = valueName;
     this.probValue = probValue;

@@ -4,11 +4,11 @@ import { CalcResult, CalcResultAggregate, CalcResultItem } from "../../../../cor
 describe("CalcResultAggregate - constructor", () => {
     it("Undefined collection - Error", () => {
         let collection: Array<CalcResult>;
-        expect(()=> new CalcResultAggregate(collection)).to.throw(Error, "invalid collection parameter");
+        expect(()=> new CalcResultAggregate(collection)).to.throw(Error, "[7DOS G&B][CalcResultAggregate]constructor - invalid collection parameter");
     });
     it("Empty collection - Error", () => {
         let collection: Array<CalcResult> = new Array<CalcResult>();
-        expect(()=> new CalcResultAggregate(collection)).to.throw(Error, "invalid collection parameter");
+        expect(()=> new CalcResultAggregate(collection)).to.throw(Error, "[7DOS G&B][CalcResultAggregate]constructor - invalid collection parameter");
     });
     it("Correct inputs - CalcResultAggregate", () => {
         let collection: Array<CalcResult> = new Array<CalcResult>();

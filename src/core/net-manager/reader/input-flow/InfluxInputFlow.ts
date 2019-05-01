@@ -9,13 +9,13 @@ export class InfluxInputFlow implements InputFlow {
 
   constructor (database: string, query: string, client: ReadClient) {
     if (database == null || database.length === 0) {
-      throw new Error("invalid database parameter");
+      throw new Error("[7DOS G&B][InfluxInputFlow]constructor - invalid database parameter");
     }
     if (query == null || query.length === 0) {
-      throw new Error("invalid query parameter");
+      throw new Error("[7DOS G&B][InfluxInputFlow]constructor - invalid query parameter");
     }
     if (client == null) {
-      throw new Error("invalid client parameter");
+      throw new Error("[7DOS G&B][InfluxInputFlow]constructor - invalid client parameter");
     }
     this.query = this.checkQuery(query);
     this.database_name = database;
@@ -25,20 +25,18 @@ export class InfluxInputFlow implements InputFlow {
   public async getResult (): Promise<string> {
     const result = await this.client.readField(this.database_name, this.query)
       .catch((err) => {
-        // console.error("An error happened on getResult() " + err);
         throw err;
       });
-    // console.log(JSON.stringify(result[0]));
     return result[0].rows[0][this.select_field];
   }
 
   private checkQuery (query: string): string {
     if (query == null || query.length === 0) {
-      throw new Error("invalid query parameter");
+      throw new Error("[7DOS G&B][InfluxInputFlow]checkQuery - invalid query parameter");
     }
     // Check if query has select *
     if (query.includes("*")) {
-      throw new Error("The query cannot have a *, select a single field");
+      throw new Error("[7DOS G&B][InfluxInputFlow]checkQuery - The query cannot have a *, select a single field");
     }
     // Order desc
     if (!query.toLowerCase().includes("order by time desc")) {
@@ -55,7 +53,7 @@ export class InfluxInputFlow implements InputFlow {
       query.toLowerCase().indexOf("from"),
     ).trim();
     if (select.includes(",")) {
-      throw new Error("The query cannot select more than one field!");
+      throw new Error("[7DOS G&B][InfluxInputFlow]checkQuery - The query cannot select more than one field!");
     }
     this.select_field = select;
 

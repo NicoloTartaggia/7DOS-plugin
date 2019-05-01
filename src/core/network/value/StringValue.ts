@@ -5,10 +5,10 @@ class StringValue extends AbstractValue {
 
   constructor(value: string, name: string) {
     if (value == null ||  value.length === 0) {
-      throw new Error("invalid value parameter");
+      throw new Error("[7DOS G&B][StringValue]constructor - invalid value parameter");
     }
     if (name == null || name.length === 0) {
-      throw new Error("invalid name parameter");
+      throw new Error("[7DOS G&B][StringValue]constructor - invalid name parameter");
     }
     super(name);
     this.value = value;
@@ -16,7 +16,7 @@ class StringValue extends AbstractValue {
 
   public isValueType(value: string): boolean {
     if (value == null || value.length === 0) {
-      throw new Error("invalid value parameter");
+      throw new Error("[7DOS G&B][StringValue]isValueType - invalid value parameter");
     }
     if (this.value === value) {
       return true;

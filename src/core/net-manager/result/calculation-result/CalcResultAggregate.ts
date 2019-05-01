@@ -5,7 +5,7 @@ export class CalcResultAggregate {
 
   constructor (collection: Array<CalcResult>) {
     if (collection == null || collection.length === 0) {
-      throw new Error("invalid collection parameter");
+      throw new Error("[7DOS G&B][CalcResultAggregate]constructor - invalid collection parameter");
     }
     this.collection = collection;
   }

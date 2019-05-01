@@ -36,13 +36,13 @@ export class ConcreteWriteClientFactory implements WriteClientFactory {
   public async makeInfluxWriteClient(host: string, port: string, defaultDB: string, credentials?: [string, string])
     : Promise<InfluxWriteClient> {
     if (host == null || host.length === 0) {
-      throw new Error("invalid host parameter");
+      throw new Error("[7DOS G&B][ConcreteWriteClientFactory]makeInfluxWriteClient - invalid host parameter");
     }
     if (port == null || port.length === 0) {
-      throw new Error("invalid port parameter");
+      throw new Error("[7DOS G&B][ConcreteWriteClientFactory]makeInfluxWriteClient - invalid port parameter");
     }
     if (defaultDB == null || defaultDB.length === 0) {
-      throw new Error("invalid defaultDB parameter");
+      throw new Error("[7DOS G&B][ConcreteWriteClientFactory]makeInfluxWriteClient - invalid defaultDB parameter");
     }
 
     const dsn: URL = new URL(host);
@@ -58,7 +58,8 @@ export class ConcreteWriteClientFactory implements WriteClientFactory {
         if (!names.includes(defaultDB)) {
           return influx.createDatabase(defaultDB)
             .catch((err) => {
-              throw new Error("Creating default database at: " + dsn + " has encountered the following error: " + err);
+              throw new Error("[7DOS G&B][ConcreteWriteClientFactory]makeInfluxWriteClient - " +
+                "Creating default database at: " + dsn + " has encountered the following error: " + err);
             });
         }
       })

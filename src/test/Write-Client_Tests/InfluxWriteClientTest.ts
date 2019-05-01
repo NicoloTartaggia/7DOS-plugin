@@ -9,15 +9,15 @@ const influx: InfluxDB = new InfluxDB("http://localhost:8086/prova");
 describe("InfluxWriteClient - constructor", () => { 
     it("Undefined dsn - Error", () => {
         let dsn: string;
-        expect(() => new InfluxWriteClient(dsn, "prova", influx)).to.throw(Error, "invalid dsn parameter");
+        expect(() => new InfluxWriteClient(dsn, "prova", influx)).to.throw(Error, "[7DOS G&B][InfluxWriteClient]constructor - invalid dsn parameter");
     });
     it("Undefined defaultDB - Error", () => {
         let defaultDB: string;
-        expect(() => new InfluxWriteClient("http://localhost:8086/", defaultDB, influx)).to.throw(Error, "invalid defaultDB parameter");
+        expect(() => new InfluxWriteClient("http://localhost:8086/", defaultDB, influx)).to.throw(Error, "[7DOS G&B][InfluxWriteClient]constructor - invalid defaultDB parameter");
     });
     it("Undefined influx - Error", () => {
         let unInflux: InfluxDB;
-        expect(() => new InfluxWriteClient("http://localhost:8086/", "prova", unInflux)).to.throw(Error, "invalid influx parameter");
+        expect(() => new InfluxWriteClient("http://localhost:8086/", "prova", unInflux)).to.throw(Error, "[7DOS G&B][InfluxWriteClient]constructor - invalid influx parameter");
     });
     it("Correct inputs - InfluxWriteClient", () => {  
         expect(new InfluxWriteClient("http://localhost:8086/", "prova", influx).getAddress()).to.equal("http://localhost:8086/");
