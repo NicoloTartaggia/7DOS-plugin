@@ -6,6 +6,7 @@ import {SelectDB_Directive} from "./select_ts_tab";
 import {SetWriteConnection_Directive} from "./set_write_connection_tab";
 
 import _ from "lodash";
+import {TimeBasedNetUpdater} from "../../core/time-based-net-updater/TimeBasedNetUpdater";
 import {NetManager} from "../../core/net-manager/NetManager";
 import {NetReader} from "../../core/net-manager/reader/NetReader";
 import {NetUpdater} from "../../core/net-manager/updater/NetUpdater";
@@ -61,6 +62,7 @@ export class JsImportPanel extends PanelCtrl {
   public netReader: NetReader;
   public netUpdater: NetUpdater;
   public netWriter: NetWriter;
+  public timeBasedNetUpdater:TimeBasedNetUpdater;
   public nextTickPromise: any;
   public panelDefaults = {
     draw_area_id: "",
@@ -123,10 +125,12 @@ export class JsImportPanel extends PanelCtrl {
     this.panel.jsonContent = JSON.stringify(net, null, "\t");
     this.events.emit("data-received", null);
     this.netUpdater = new NetUpdater(this.loaded_network);
+    console.log("asdas");
     this.netReader = new NetReader(this.loaded_network);
     this.netWriter = new SingleNetWriter(await new ConcreteWriteClientFactory()
       .makeInfluxWriteClient("http://localhost", "8086", "myDB"));
     this.netManager = new NetManager(this.netReader, this.netUpdater, this.netWriter);
+    this.timeBasedNetUpdater=new TimeBasedNetUpdater(this.netManager);
     // Show success message
     this.draw_network();
     JsImportPanel.showSuccessMessage("Bayesian network loaded successfully!");
@@ -203,23 +207,6 @@ export class JsImportPanel extends PanelCtrl {
   // Continuous update functions
   // ------------------------------------------------------
 
-  public runUpdate () {
-    this.$timeout.cancel(this.nextTickPromise);
-
-    this.netManager.updateNet().catch((err) => {
-      JsImportPanel.showErrorMessage("Error during network update",
-        "An error occurred during network update, check you have saved " +
-        "all the connections with read and write datasources. For more details, check the console.");
-      console.error("[7DOS G&B][JsImportPanel]runUpdate() - updateNet() ERROR:" + err.toString());
-    });
-
-    if (this.panel.is_calc_running) {
-      this.nextTickPromise = this.$timeout(this.runUpdate.bind(this), this.panel.secondToRefresh * 1000);
-    } else {
-      JsImportPanel.showSuccessMessage("Manual network update done!");
-    }
-  }
-
   public setSecond () {
     if (Number.isNaN(this.panel.secondToRefresh)) {
       this.panel.secondToRefresh = 5;
@@ -230,14 +217,12 @@ export class JsImportPanel extends PanelCtrl {
   }
 
   public start () {
-    this.panel.is_calc_running = true;
-    this.runUpdate();
+    this.timeBasedNetUpdater.start();
     JsImportPanel.showSuccessMessage("Successfully started the monitoring!");
   }
 
   public stop () {
-    this.panel.is_calc_running = false;
-    this.$timeout.cancel(this.nextTickPromise);
+    this.timeBasedNetUpdater.stop();
     JsImportPanel.showSuccessMessage("Successfully stopped the monitoring!");
   }
 
