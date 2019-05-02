@@ -5,9 +5,8 @@
  */
 import {NetworkAdapter, NodeAdapter} from "../../network/adapter/adapter";
 import {InputResult, InputResultAggregate} from "../result/input-result/input-result";
-import DataSource from "./Datasource";
-import {InfluxInputFlow,InputFlow} from "./input-flow/input-flow";
-import ReusableReadClientPool from "./ReusableReadClientPool";
+import {InfluxInputFlow, InputFlow} from "./input-flow/input-flow";
+import {DataSource, ReusableReadClientPool} from "./reader";
 
 /**
  * @class NetReader

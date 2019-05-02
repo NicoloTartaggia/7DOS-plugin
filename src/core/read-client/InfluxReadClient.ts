@@ -1,8 +1,13 @@
+/**
+ * @File InfluxReadClient.ts
+ * @Type TypeScript file
+ * @Desc Contains the InfluxReadClient class.
+ */
 import {InfluxDB, IQueryOptions} from "influx";
 import {Tags} from "influx/lib/src/results";
-import ReadClient from "./ReadClient";
+import {ReadClient} from "./read-client";
 
-export default class InfluxReadClient implements ReadClient {
+export class InfluxReadClient implements ReadClient {
 
   /**
    * @field The complete dsn of the server to which the client makes requests, including the port.

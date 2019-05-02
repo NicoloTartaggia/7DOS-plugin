@@ -7,7 +7,7 @@
  * @class DataSource
  * @desc Representation of a datasource, usually created by making a Grafana HTTP API request and parsing the response.
  */
-export default class DataSource {
+export class DataSource {
   /**
    * @desc Static copy method.]
    * @param other A DataSource object.
