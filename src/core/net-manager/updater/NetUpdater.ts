@@ -1,11 +1,23 @@
-import {NetworkAdapter} from "../../network/adapter/NetworkAdapter";
+/**
+ * @File NetUpdater.ts
+ * @Type TypeScript file
+ * @Desc Contains the NetUpdater class.
+ */
+import {NetworkAdapter} from "../../network/adapter/adapter";
 import { CalcResult } from "../result/calculation-result/CalcResult";
 import { CalcResultAggregate } from "../result/calculation-result/CalcResultAggregate";
 import { CalcResultItem } from "../result/calculation-result/CalcResultItem";
 import { InputResult } from "../result/input-result/InputResult";
 import { InputResultAggregate } from "../result/input-result/InputResultAggregate";
 
+/**
+ * @class NetReader
+ * @desc Has a reference to the network and provices a method to calculate the current probabilities for its nodes.
+ */
 export class NetUpdater {
+  /**
+   * @field Reference to the network.
+   */
   private readonly network: NetworkAdapter;
 
   public constructor (network: NetworkAdapter) {// TODO rimettere il NetworkAdapter
@@ -15,6 +27,11 @@ export class NetUpdater {
     this.network = network;
   }
 
+  /**
+   * @desc Based on the results of the reading, runs the sampling and updates the probabilities for every node.
+   * @param fluxResults Results of the reading.
+   * @returns A CalcResultAggregate object with the results of the calculation.
+   */
   public updateNet (fluxResults: InputResultAggregate): CalcResultAggregate {
     if (fluxResults == null || fluxResults.collection.length === 0) {
       throw new Error("invalid fluxResults parameter");

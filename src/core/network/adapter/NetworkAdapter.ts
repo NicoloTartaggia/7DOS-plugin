@@ -1,5 +1,4 @@
-import {NodeAdapter} from "core/network/adapter/NodeAdapter";
-
+import {NodeAdapter} from "./adapter";
 export interface NetworkAdapter {
   observeNode (node: string, value: string): void;
 

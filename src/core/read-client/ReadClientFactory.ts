@@ -6,11 +6,24 @@
 import {InfluxDB} from "influx";
 import {InfluxReadClient, ReadClient} from "./read-client";
 
-export default interface ReadClientFactory {
+/**
+ * @desc Abstract factory pattern
+ */
+export interface ReadClientFactory {
   makeInfluxReadClient (host: string, port: string, credentials?: [string, string]): ReadClient;
 }
 
+/**
+ * @class Implementation of the ReadClientFactory interface
+ * @desc Contains the methods used to create ReadClient objects. Has one method per implementation.
+ */
 export class ConcreteReadClientFactory implements ReadClientFactory {
+  /**
+   * @desc Creates a new ReadClient based on Influx.
+   * @param host Address of the Influx host.
+   * @param port Port on which the host is listening for requests.
+   * @param credentials Eventual access credentials.
+   */
   public makeInfluxReadClient (host: string, port: string, credentials?: [string, string])
     : InfluxReadClient {
     if (host === null ||  host.length === 0) {

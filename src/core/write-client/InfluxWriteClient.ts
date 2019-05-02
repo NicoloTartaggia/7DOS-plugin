@@ -1,3 +1,8 @@
+/**
+ * @File InfluxWriteClient.ts
+ * @Type TypeScript file
+ * @Desc Contains the InfluxWriteClient class.
+ */
 import {InfluxDB, IPoint} from "influx";
 import {CalcResult} from "../net-manager/result/calculation-result/CalcResult";
 import {CalcResultAggregate} from "../net-manager/result/calculation-result/CalcResultAggregate";

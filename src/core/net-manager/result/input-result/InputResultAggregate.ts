@@ -1,6 +1,17 @@
-import {InputResult} from "./InputResult";
-
+/**
+ * @File InputResultAggregate.ts
+ * @Type TypeScript file
+ * @Desc Contains the InputResultAggregate class.
+ */
+import {InputResult} from "./input-result";
+/**
+ * @class InputResultAggregate
+ * @desc Part of iterator pattern for the reading results.
+ */
 export class InputResultAggregate {
+  /**
+   * @field Collection of InputResult items
+   */
   public collection: Array<InputResult>;
 
   public constructor (collection: Array<InputResult>) {
@@ -9,7 +20,10 @@ export class InputResultAggregate {
     }
     this.collection = collection;
   }
-
+  /**
+   * @desc Creates an iterator.
+   * @returns An IterableIterator for the collection.
+   */
   public buildIterator (): IterableIterator<InputResult> {
     return this.collection[Symbol.iterator]();
   }

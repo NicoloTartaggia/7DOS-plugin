@@ -1,5 +1,4 @@
-import {NetworkAdapter} from "./NetworkAdapter";
-import {NodeAdapter} from "./NodeAdapter";
+import {NetworkAdapter, NodeAdapter} from "./adapter";
 
 export class ConcreteNetworkAdapter implements NetworkAdapter {
   private graph: JGraph;
