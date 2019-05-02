@@ -1,45 +1,47 @@
 <div class="editor-row">
-    <div class="section gf-form-group">
+    <div class="gf-form-group">
         <div class="gf-form">
-            <button type="button" id="load-btn" ng-click="ctrl.loadData()" class="btn btn-inverse" ng-model="load" >Load data</button>
+            <button type="button" id="load-btn" ng-click="ctrl.loadData()" class="btn btn-success" ng-model="load" >Load data</button>
             <p style="padding-bottom: 4em"></p>
         </div>
-        <div class="gf-form" ng-repeat="value in ctrl.nodes">
+        <div class="gf-form" ng-repeat="value in ctrl.nodes" style="align-items: flex-start">
             <label class="gf-form-label width-20">Node: {{value.getName()}} </label>
-            <div class="gf-form-select-wrapper width-20">
-                <select ng-change="ctrl.select_datasource('{{value.getName()}}')" ng-model="ctrl.selected_datasource[value.getName()]"
-                class="gf-form-input ng-pristine ng-valid ng-not-empty ng-touched">
-                    <option value="">-- Choose a datasource --</option>
-                    <option ng-repeat="(datasource_id, object) in ctrl.datasources" value="{{object.getGrafanaDatasourceId()}}">{{object.getName()}} - {{object.getUrl()}}</option>
-                </select>
-            </div>
-            <div class="gf-form-select-wrapper width-20">
-                <select ng-change="ctrl.select_database('{{value.getName()}}')"
-                        ng-options="database_name for database_name in ctrl.databases_names[ctrl.selected_datasource[value.getName()]] track by database_name"
-                        ng-model="ctrl.selected_database_name[value.getName()]"
-                        class="gf-form-input ng-pristine ng-valid ng-not-empty ng-touched">
-                    <option value="">-- Choose a database --</option>
-                </select>
-            </div>
-            <div class="gf-form-select-wrapper width-20">
-                <select ng-change="ctrl.select_table('{{value.getName()}}')"
-                        ng-options="table.name for table in ctrl.selected_database[value.getName()].tables track by table.name"
-                        ng-model="ctrl.selected_table[value.getName()]"
-                        class="gf-form-input ng-pristine ng-valid ng-not-empty ng-touched">
-                    <option value="">-- Choose a measurement --</option>
-                </select>
-            </div>
-            <div class="gf-form-select-wrapper width-20">
-                <select ng-change="ctrl.select_field('{{value.getName()}}')"
-                        ng-options="field for field in ctrl.selected_database[value.getName()].tables[ctrl.selected_table[value.getName()].name].fields track by field"
-                        ng-model="ctrl.selected_field[value.getName()]"
-                        class="gf-form-input ng-pristine ng-valid ng-not-empty ng-touched">
-                    <option value="">-- Choose a field --</option>
-                </select>
+            <div style="flex-wrap: wrap; display: flex;">
+                <div class="gf-form-select-wrapper width-15">
+                    <select ng-change="ctrl.select_datasource('{{value.getName()}}')" ng-model="ctrl.selected_datasource[value.getName()]"
+                    class="gf-form-input ng-pristine ng-valid ng-not-empty ng-touched">
+                        <option value="">-- Choose a datasource --</option>
+                        <option ng-repeat="(datasource_id, object) in ctrl.datasources" value="{{object.getGrafanaDatasourceId()}}">{{object.getName()}} - {{object.getUrl()}}</option>
+                    </select>
+                </div>
+                <div class="gf-form-select-wrapper width-15">
+                    <select ng-change="ctrl.select_database('{{value.getName()}}')"
+                            ng-options="database_name for database_name in ctrl.databases_names[ctrl.selected_datasource[value.getName()]] track by database_name"
+                            ng-model="ctrl.selected_database_name[value.getName()]"
+                            class="gf-form-input ng-pristine ng-valid ng-not-empty ng-touched">
+                        <option value="">-- Choose a database --</option>
+                    </select>
+                </div>
+                <div class="gf-form-select-wrapper width-15">
+                    <select ng-change="ctrl.select_table('{{value.getName()}}')"
+                            ng-options="table.name for table in ctrl.selected_database[value.getName()].tables track by table.name"
+                            ng-model="ctrl.selected_table[value.getName()]"
+                            class="gf-form-input ng-pristine ng-valid ng-not-empty ng-touched">
+                        <option value="">-- Choose a measurement --</option>
+                    </select>
+                </div>
+                <div class="gf-form-select-wrapper width-15">
+                    <select ng-change="ctrl.select_field('{{value.getName()}}')"
+                            ng-options="field for field in ctrl.selected_database[value.getName()].tables[ctrl.selected_table[value.getName()].name].fields track by field"
+                            ng-model="ctrl.selected_field[value.getName()]"
+                            class="gf-form-input ng-pristine ng-valid ng-not-empty ng-touched">
+                        <option value="">-- Choose a field --</option>
+                    </select>
+                </div>
             </div>
         </div>
         <div class="gf-form">
-            <button type="button" id="query-btn" ng-click="ctrl.connectNodes()" class="btn btn-inverse" ng-model="load" >Save connections</button>
+            <button type="button" id="query-btn" ng-click="ctrl.connectNodes()" class="btn btn-success" ng-model="load" >Save connections</button>
         </div>
     </div>
 </div>
