@@ -140,6 +140,7 @@ export class JsImportPanel extends PanelCtrl {
     console.log("[7DOS G&B][JsImportPanel]updateNetWriter() - Updating net writer");
     this.netWriter = new SingleNetWriter(write_client);
     this.netManager = new NetManager(this.netReader, this.netUpdater, this.netWriter);
+    this.timeBasedNetUpdater=new TimeBasedNetUpdater(this.netManager);
     console.log("[7DOS G&B][JsImportPanel]updateNetWriter() - done");
   }
 
@@ -214,6 +215,7 @@ export class JsImportPanel extends PanelCtrl {
     if (this.panel.secondToRefresh <= 0) {
       this.panel.secondToRefresh = 1;
     }
+    this.timeBasedNetUpdater.setUpdateFrequency(this.panel.secondToRefresh);
   }
 
   public start () {
@@ -225,7 +227,10 @@ export class JsImportPanel extends PanelCtrl {
     this.timeBasedNetUpdater.stop();
     JsImportPanel.showSuccessMessage("Successfully stopped the monitoring!");
   }
-
+  public runUpdate () {
+    this.timeBasedNetUpdater.singleUpdate();
+  }
+  
   public link (scope, element) {
   }
 

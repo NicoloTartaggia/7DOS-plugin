@@ -9,9 +9,11 @@ export class TimeBasedNetUpdater{
         this.updateFrequency=5;
         this.isCalcRunning=false;
     }
-    public start():void{    
-        this.isCalcRunning=true;
-        this.runUpdate();
+    public start():void{ 
+        if(!this.isCalcRunning){
+            this.isCalcRunning=true;
+            this.runUpdate(this);
+        }
     }
     public stop():void{
         this.isCalcRunning=false;
@@ -20,10 +22,14 @@ export class TimeBasedNetUpdater{
     public setUpdateFrequency(frequency:number){
         this.updateFrequency=frequency;
     }
-    private runUpdate():void {
+
+    public singleUpdate(){
         this.netManager.updateNet();
-        if(this.isCalcRunning){
-            setTimeout(function(){this.runUpdate()},this.updateFrequency*1000);
+    }
+    private runUpdate(that:TimeBasedNetUpdater):void {
+        if(that.isCalcRunning){
+            that.netManager.updateNet();
+            setTimeout(that.runUpdate,that.updateFrequency*1000,that);
         }
     }
 }
