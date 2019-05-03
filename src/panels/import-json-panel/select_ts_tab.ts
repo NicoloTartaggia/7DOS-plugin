@@ -124,6 +124,15 @@ export class SelectDB_Ctrl {
     this.save_connections();
   }
 
+  public disconnectNodes (node: string): void {
+    console.log("[7DOS G&B][SelectDB_Ctrl]disconnectNodes() - disconnecting node" + node);
+    if (this.panelCtrl.datasource !== null) {
+      this.panelCtrl.netReader.disconnectNode(node);
+    }
+    console.log("[7DOS G&B][SelectDB_Ctrl]disconnectNodes() - disconnection done!");
+    JsImportPanel.showSuccessMessage(node + " disconnected succesfully!");
+  }
+
   public loadData () {
     console.log("[7DOS G&B][SelectDB_Ctrl]loaddata() - loading saved connections");
     for (const element of this.panel.save_datasources) {

@@ -1,11 +1,16 @@
-import {NetworkAdapter} from "../../network/adapter/NetworkAdapter";
-import {NodeAdapter} from "../../network/adapter/NodeAdapter";
-import {InputResult} from "../result/input-result/InputResult";
-import {InputResultAggregate} from "../result/input-result/InputResultAggregate";
 import DataSource from "./Datasource";
+import ReusableReadClientPool from "./ReusableReadClientPool";
+
 import {InfluxInputFlow} from "./input-flow/InfluxInputFlow";
 import {InputFlow} from "./input-flow/InputFlow";
-import ReusableReadClientPool from "./ReusableReadClientPool";
+
+import {InputResult} from "../result/input-result/InputResult";
+import {InputResultAggregate} from "../result/input-result/InputResultAggregate";
+
+import {JsImportPanel} from "../../../panels/import-json-panel/JsonImportPanel";
+
+import {NetworkAdapter} from "../../network/adapter/NetworkAdapter";
+import {NodeAdapter} from "../../network/adapter/NodeAdapter";
 
 export class NetReader {
   private flowMap: Map<string, InputFlow>;
@@ -44,6 +49,17 @@ export class NetReader {
     }
     const client = ReusableReadClientPool.getInstance().acquireReusable(dataSource);
     this.flowMap.set(node, new InfluxInputFlow(dataSource.getDatabase(), query, client));
+  }
+
+  public disconnectNode (node: string): void {
+    if (node == null || node.length === 0) {
+      throw new Error("[7DOS G&B][NetReader]disconnectNode - Invalid node");
+    } else if (this.flowMap.has(node) === false) {
+      JsImportPanel.showErrorMessage("", "[7DOS G&B][NetReader]disconnectNode - This node is not linked to any flow");
+      throw new Error("[7DOS G&B][NetReader]disconnectNode - This node is not linked to any flow");
+    } else {
+      this.flowMap.delete(node);
+    }
   }
 
   private getNodeFromName (name: string): NodeAdapter {
