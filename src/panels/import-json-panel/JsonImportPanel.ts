@@ -6,12 +6,13 @@ import {SelectDB_Directive} from "./select_ts_tab";
 import {SetWriteConnection_Directive} from "./set_write_connection_tab";
 
 import _ from "lodash";
-import {TimeBasedNetUpdater} from "../../core/time-based-net-updater/TimeBasedNetUpdater";
 import {NetManager} from "../../core/net-manager/NetManager";
 import {NetReader} from "../../core/net-manager/reader/NetReader";
 import {NetUpdater} from "../../core/net-manager/updater/NetUpdater";
 import {NetWriter, SingleNetWriter} from "../../core/net-manager/writer/NetWriter";
 import {NetworkAdapter} from "../../core/network/adapter/NetworkAdapter";
+import {TimeBasedNetUpdater} from "../../core/time-based-net-updater/TimeBasedNetUpdater";
+
 import {ConcreteNetworkFactory} from "../../core/network/factory/ConcreteNetworkFactory";
 
 import jsbayesviz = require("better-jsbayes-viz");
@@ -62,7 +63,7 @@ export class JsImportPanel extends PanelCtrl {
   public netReader: NetReader;
   public netUpdater: NetUpdater;
   public netWriter: NetWriter;
-  public timeBasedNetUpdater:TimeBasedNetUpdater;
+  public timeBasedNetUpdater: TimeBasedNetUpdater;
   public nextTickPromise: any;
   public panelDefaults = {
     draw_area_id: "",
@@ -130,7 +131,7 @@ export class JsImportPanel extends PanelCtrl {
     this.netWriter = new SingleNetWriter(await new ConcreteWriteClientFactory()
       .makeInfluxWriteClient("http://localhost", "8086", "myDB"));
     this.netManager = new NetManager(this.netReader, this.netUpdater, this.netWriter);
-    this.timeBasedNetUpdater=new TimeBasedNetUpdater(this.netManager);
+    this.timeBasedNetUpdater = new TimeBasedNetUpdater(this.netManager);
     // Show success message
     this.draw_network();
     JsImportPanel.showSuccessMessage("Bayesian network loaded successfully!");
@@ -140,7 +141,7 @@ export class JsImportPanel extends PanelCtrl {
     console.log("[7DOS G&B][JsImportPanel]updateNetWriter() - Updating net writer");
     this.netWriter = new SingleNetWriter(write_client);
     this.netManager = new NetManager(this.netReader, this.netUpdater, this.netWriter);
-    this.timeBasedNetUpdater=new TimeBasedNetUpdater(this.netManager);
+    this.timeBasedNetUpdater = new TimeBasedNetUpdater(this.netManager);
     console.log("[7DOS G&B][JsImportPanel]updateNetWriter() - done");
   }
 
@@ -230,7 +231,6 @@ export class JsImportPanel extends PanelCtrl {
   public runUpdate () {
     this.timeBasedNetUpdater.singleUpdate();
   }
-  
   public link (scope, element) {
   }
 
