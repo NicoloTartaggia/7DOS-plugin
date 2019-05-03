@@ -1,23 +1,21 @@
-<body>
-    <div class="editor-row">
-        <div class="section gf-form-group">
-            <h5 class="section-heading">Import, edit or download network</h5>
-            <div class="gf-form-inline">
-                <div class="gf-form">
-                    <label class="gf-form-label width-20">Upload network</label>
-                    <dash-upload on-upload="ctrl.onUpload(dash)"></dash-upload>
-                </div>
-            </div>
-            <div class="gf-form-inline">
-                <div class="gf-form">
-                    <label class="gf-form-label width-20">Edit network</label>
-                    <textarea id="network-txt" class="gf-form-input width-20" ng-model="ctrl.panel.jsonContent"
-                              ng-change="ctrl.render()" ng-model-onblur></textarea>
-                </div>
-            </div>
+<div class="editor-row">
+    <div class="section gf-form-group">
+        <h5 class="section-heading">Import, edit or download network</h5>
+        <div class="gf-form-inline">
             <div class="gf-form">
-                <button ng-click="ctrl.downloadNetwork('rete.json', 'network-txt')" id="dwn-btn" class="btn btn-secondary gf-form-btn">Download network</button>
+                <label class="gf-form-label width-20">Upload network</label>
+                <dash-upload on-upload="ctrl.onUpload(dash)"></dash-upload>
             </div>
         </div>
+        <div class="gf-form-inline">
+            <div class="gf-form">
+                <label class="gf-form-label width-20">Edit network</label>
+                <textarea id="network-txt" class="gf-form-input width-20" ng-model="ctrl.panel.jsonContent"
+                            ng-change="ctrl.render()" ng-model-onblur></textarea>
+            </div>
+        </div>
+        <div class="gf-form">
+            <button ng-click="ctrl.downloadNetwork('rete.json', 'network-txt')" id="dwn-btn" class="btn btn-secondary gf-form-btn">Download network</button>
+        </div>
     </div>
-</body>
+</div>
