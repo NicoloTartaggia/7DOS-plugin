@@ -58,7 +58,7 @@ describe("NetReader NetUpdater Integration Test", () => {
             expect(update_res.createIterator().next().value.getNodeName()).to.equal("n1");
             expect(error).to.equal(false);      
         }).catch(function(e){
-            console.log("SingleNetWriter constructor ERROR: " + e);
+            console.log("ERROR: " + e);
         });
     });
 });

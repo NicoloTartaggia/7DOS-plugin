@@ -68,7 +68,7 @@ describe("NetReader NetWriter NetUpdater (NetManager:updateNet)", () => {
                 }); 
             expect(error).to.equal(false);      
         }).catch(function(e){
-            console.log("SingleNetWriter constructor ERROR: " + e);
+            console.log("ERROR: " + e);
         });
     });
 });
