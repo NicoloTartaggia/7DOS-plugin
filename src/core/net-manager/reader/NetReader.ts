@@ -7,8 +7,6 @@ import {InputFlow} from "./input-flow/InputFlow";
 import {InputResult} from "../result/input-result/InputResult";
 import {InputResultAggregate} from "../result/input-result/InputResultAggregate";
 
-import {JsImportPanel} from "../../../panels/import-json-panel/JsonImportPanel";
-
 import {NetworkAdapter} from "../../network/adapter/NetworkAdapter";
 import {NodeAdapter} from "../../network/adapter/NodeAdapter";
 
@@ -55,7 +53,7 @@ export class NetReader {
     if (node == null || node.length === 0) {
       throw new Error("[7DOS G&B][NetReader]disconnectNode - Invalid node");
     } else if (this.flowMap.has(node) === false) {
-      JsImportPanel.showErrorMessage("", "[7DOS G&B][NetReader]disconnectNode - This node is not linked to any flow");
+      console.error("[7DOS G&B][NetReader]disconnectNode - This node is not linked to any flow");
       throw new Error("[7DOS G&B][NetReader]disconnectNode - This node is not linked to any flow");
     } else {
       this.flowMap.delete(node);
