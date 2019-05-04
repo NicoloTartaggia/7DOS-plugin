@@ -111,6 +111,14 @@ export class SelectDB_Ctrl {
     return ([null, null]);
   }
 
+  public clearDropdowns (node: string): void {
+    delete this.selected_datasource[node];
+    delete this.selected_database[node];
+    delete this.selected_database_name[node];
+    delete this.selected_table[node];
+    delete this.selected_field[node];
+  }
+
   public connectNodes () {
     console.log("[7DOS G&B][SelectDB_Ctrl]connectNodes() - connecting nodes to datasources...");
     for (let i = 0; i < this.nodes.length; i++) {
@@ -128,10 +136,15 @@ export class SelectDB_Ctrl {
   public disconnectNodes (node: string): void {
     console.log("[7DOS G&B][SelectDB_Ctrl]disconnectNodes() - disconnecting node" + node);
     if (this.panelCtrl.datasource !== null) {
-      this.panelCtrl.netReader.disconnectNode(node);
+      try {
+        this.panelCtrl.netReader.disconnectNode(node);
+        this.clearDropdowns(node);
+        console.log("[7DOS G&B][SelectDB_Ctrl]disconnectNodes() - disconnection done!");
+        JsImportPanel.showSuccessMessage(node + " disconnected succesfully!");
+      } catch (e) {
+        JsImportPanel.showErrorMessage("Error during disconnection", e.toString());
+      }
     }
-    console.log("[7DOS G&B][SelectDB_Ctrl]disconnectNodes() - disconnection done!");
-    JsImportPanel.showSuccessMessage(node + " disconnected succesfully!");
   }
 
   public loadData () {

@@ -53,8 +53,8 @@ export class NetReader {
     if (node == null || node.length === 0) {
       throw new Error("[7DOS G&B][NetReader]disconnectNode - Invalid node");
     } else if (this.flowMap.has(node) === false) {
-      console.error("[7DOS G&B][NetReader]disconnectNode - This node is not linked to any flow");
-      throw new Error("[7DOS G&B][NetReader]disconnectNode - This node is not linked to any flow");
+      console.error("[7DOS G&B][NetReader]disconnectNode - This node might be not linked to any flow");
+      throw new Error("[7DOS G&B][NetReader]disconnectNode - This node might be not linked to any flow");
     } else {
       this.flowMap.delete(node);
     }
