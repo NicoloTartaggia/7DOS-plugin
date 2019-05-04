@@ -115,6 +115,23 @@ export class JsImportPanel extends PanelCtrl {
 
   }
 
+  // Called only on import button click, if the import doesn't throw errors, it reset the saved data
+  public async upload_button_click (net) {
+    await this.onUpload(net);
+    console.log("[7DOS G&B][JsImportPanel]Sucesfully loaded a new network in the panel, clearing saved data...");
+    if (this.panel.save_datasources.length > 0 || this.panel.write_datasource_id !== "") {
+      JsImportPanel.showErrorMessage("Warning",
+        "Previously saved data has been removed because a new network was imported...");
+    }
+    this.panel.is_calc_running = false;
+    this.panel.save_datasources = [];
+    this.panel.secondToRefresh = 5;
+    this.panel.write_datasource_id = "";
+    this.panel.write_db_name = "";
+    console.log("[7DOS G&B][JsImportPanel]Sucesfully reset saved data to default values!");
+  }
+
+  // Called on import button click but also to re-load a saved network
   public async onUpload (net) {
     console.log("[7DOS G&B][JsImportPanel]onUpload() called");
     try {
@@ -130,7 +147,6 @@ export class JsImportPanel extends PanelCtrl {
     this.panel.jsonContent = JSON.stringify(net, null, "\t");
     this.events.emit("data-received", null);
     this.netUpdater = new NetUpdater(this.loaded_network);
-    console.log("asdas");
     this.netReader = new NetReader(this.loaded_network);
     this.netWriter = new SingleNetWriter(await new ConcreteWriteClientFactory()
       .makeInfluxWriteClient("http://localhost", "8086", "myDB"));
