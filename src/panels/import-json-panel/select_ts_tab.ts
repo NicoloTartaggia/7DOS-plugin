@@ -265,15 +265,25 @@ export class SelectDB_Ctrl {
 
   // This function, currently does nothing, is just for printing debug stuff when the select change
   public select_datasource (id: string) {
+    // If i change the datasource clear the fields after
+    delete this.selected_database[id];
+    delete this.selected_database_name[id];
+    delete this.selected_table[id];
+    delete this.selected_field[id];
   }
 
   // This function, has to update the selected db obj according to the selected name
   public select_database (id: string) {
     this.update_selected_database(id);
+    // If i change the database clear the fields after
+    delete this.selected_table[id];
+    delete this.selected_field[id];
   }
 
   // This function, currently does nothing, is just for printing debug stuff when the select change
   public select_table (id: string) {
+    // If i change the table clear the fields after
+    delete this.selected_field[id];
   }
 
   // This function, currently does nothing, is just for printing debug stuff when the select change
