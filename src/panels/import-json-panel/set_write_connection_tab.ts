@@ -110,6 +110,7 @@ export class SetWriteConnection_Ctrl {
         "An error occurred writing to the selected datasource!");
       return;
     }
+    this.panelCtrl.saved_write_connections = true;
     JsImportPanel.showSuccessMessage("Connection with destination datasource created successfully!");
   }
 

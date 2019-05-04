@@ -54,6 +54,10 @@ export class JsImportPanel extends PanelCtrl {
   // Panel output string
   public message: string;
 
+  // Saved data
+  public saved_read_connections: boolean = false;
+  public saved_write_connections: boolean = false;
+
   // Form
   public node_name: string;
   public observe_value: string;
@@ -220,6 +224,18 @@ export class JsImportPanel extends PanelCtrl {
   }
 
   public start () {
+    if (!this.saved_read_connections) {
+      console.log("[7DOS G&B][JsImportPanel]No read connections found... Can't start the monitoring");
+      JsImportPanel.showErrorMessage("No read connections found",
+        "Before starting the monitoring first connect your nodes to a datasource!");
+      return;
+    }
+    if (!this.saved_write_connections) {
+      console.log("[7DOS G&B][JsImportPanel]No write connections found... Can't start the monitoring");
+      JsImportPanel.showErrorMessage("No write connections found",
+        "Before starting the monitoring first set the write datasource!");
+      return;
+    }
     this.timeBasedNetUpdater.start();
     JsImportPanel.showSuccessMessage("Successfully started the monitoring!");
   }
@@ -228,9 +244,11 @@ export class JsImportPanel extends PanelCtrl {
     this.timeBasedNetUpdater.stop();
     JsImportPanel.showSuccessMessage("Successfully stopped the monitoring!");
   }
+
   public runUpdate () {
     this.timeBasedNetUpdater.singleUpdate();
   }
+
   public link (scope, element) {
   }
 

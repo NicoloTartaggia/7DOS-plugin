@@ -122,6 +122,7 @@ export class SelectDB_Ctrl {
     console.log("[7DOS G&B][SelectDB_Ctrl]connectNodes() - connection done!");
     JsImportPanel.showSuccessMessage("Connections saved succesfully!");
     this.save_connections();
+    this.panelCtrl.saved_read_connections = true;
   }
 
   public disconnectNodes (node: string): void {
