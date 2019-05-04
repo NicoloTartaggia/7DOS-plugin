@@ -152,6 +152,9 @@ export class JsImportPanel extends PanelCtrl {
       .makeInfluxWriteClient("http://localhost", "8086", "myDB"));
     this.netManager = new NetManager(this.netReader, this.netUpdater, this.netWriter);
     this.timeBasedNetUpdater = new TimeBasedNetUpdater(this.netManager);
+    // Reset saved connection booleans
+    this.saved_read_connections = false;
+    this.saved_write_connections = false;
     // Show success message
     this.draw_network();
     JsImportPanel.showSuccessMessage("Bayesian network loaded successfully!");
