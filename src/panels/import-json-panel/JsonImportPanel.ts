@@ -79,6 +79,30 @@ export class JsImportPanel extends PanelCtrl {
     write_db_name: "7DOS_default_DB",
   };
 
+  private readonly json_schema_string = '{"$schema":"http://json-schema.org/schema#","type":"object",' +
+    '"properties":{"nodes":{"title":"List of Bayesian Network nodes","description":"This is the array ' +
+    'that contains all the nodes of the Bayesian Network with all their details.","default":[],"type":' +
+    '"array","items":{"type":"object","properties":{"name":{"title":"Name of the node in the Network",' +
+    '"type":"string","minLength":1},"values":{"title":"List of values of the node","description":' +
+    '"This is the array that contains all the possible values that the node can consider.","type":' +
+    '"array","minItems":2,"uniqueItems":true,"items":{"type":"object","properties":{"name":{"title":' +
+    '"Name of the value","type":"string","minLength":1},"type":{"title":"Type of the value","type":' +
+    '"string","enum":["string","range","boolean"]},"value":{"oneOf":[{"title":"Actual value","type":' +
+    '"string","minLength":1},{"title":"Actual value","type":"boolean"}]},"rangeMin":{"title":' +
+    '"Minimum value of the range","type":"number","minimum":0},"rangeMax":{"oneOf":[{"title":' +
+    '"Maximum value of the range","type":"number","minimum":0},{"title":"Infinite max value",' +
+    '"type":"string","enum":["+inf","-inf"]}]}},"required":["name","type"],"oneOf":[{"required":' +
+    '["value"]},{"required":["rangeMin","rangeMax"]}],"dependencies":{"rangeMin":["rangeMax"],' +
+    '"rangeMax":["rangeMin"]},"additionalProperties":false}},"parents":{"title":' +
+    '"List of parents of the node","description":"This is the array that contains all ' +
+    'the parents of the current node.","type":"array","default":[],"uniqueItems":true,"items":' +
+    '{"title":"Name of the parent node","type":"string","minLength":1}},"cpt":{"title":' +
+    '"CPT table of the current node (2D array)","description":"This is the 2D array that ' +
+    'contains the Conditional Probability Tables of the current node.","type":"array","default":' +
+    '[],"items":{"type":"array","minItems":2,"items":{"type":"number","minimum":0,"maximum"' +
+    ':1}}}},"additionalProperties":false,"required":["name","values","parents","cpt"]}}},' +
+    '"additionalProperties":false,"required":["nodes"]}';
+
   constructor ($scope, $injector) {
     super($scope, $injector);
     _.defaults(this.panel, this.panelDefaults);
@@ -135,12 +159,12 @@ export class JsImportPanel extends PanelCtrl {
   public async onUpload (net) {
     console.log("[7DOS G&B][JsImportPanel]onUpload() called");
     try {
-      this.loaded_network = new JsonNetParser().createNet(JSON.stringify(net));
+      this.loaded_network = new JsonNetParser().createNet(JSON.stringify(net), this.json_schema_string);
       console.log("[7DOS G&B][JsImportPanel]onUpload() loaded nodes:" + this.loaded_network.getNodeList().length);
     } catch (e) {
       this.message = "Upload failed!";
       JsImportPanel.showErrorMessage("JSON load failed!",
-        "Unable to load JSON! Error:" + e.toString());
+        "Unable to load JSON network! Check the console for more information...");
       throw new Error("[7DOS G&B][JsImportPanel]onUpload() - Error parsing the JSON:" + e.toString());
     }
     this.message = "";
