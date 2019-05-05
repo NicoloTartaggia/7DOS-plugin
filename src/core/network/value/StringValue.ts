@@ -1,3 +1,8 @@
+/**
+ * @File StringValue.ts
+ * @Type TypeScript file
+ * @Desc Contains the StringValue abstract class.
+ */
 import { AbstractValue } from "./AbstractValue";
 
 class StringValue extends AbstractValue {

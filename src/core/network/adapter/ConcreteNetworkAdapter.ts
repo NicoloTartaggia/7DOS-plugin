@@ -1,5 +1,14 @@
+/**
+ * @File ConcreteNetworkAdapter.ts
+ * @Type TypeScript file
+ * @Desc Contains the ConcreteNetworkAdapter class.
+ */
 import {NetworkAdapter, NodeAdapter} from "./adapter";
 
+/**
+ * @class ConcreteNetworkAdapter
+ * @desc Adapter pattern implementation for the JGraph interface provided by JsBayes.
+ */
 export class ConcreteNetworkAdapter implements NetworkAdapter {
   private graph: JGraph;
   private readonly nodeList: Array<NodeAdapter>;

@@ -1,6 +1,11 @@
-import { NetReader } from "./reader/NetReader";
-import {CalcResultAggregate} from "./result/calculation-result/CalcResultAggregate";
-import {InputResultAggregate} from "./result/input-result/InputResultAggregate";
+/**
+ * @File NetManager.ts
+ * @Type TypeScript file
+ * @Desc Contains the NetManager class.
+ */
+import { NetReader } from "./reader/reader";
+import {CalcResultAggregate} from "./result/calculation-result/calculation-result";
+import {InputResultAggregate} from "./result/input-result/input-result";
 import {  NetUpdater } from "./updater/NetUpdater";
 import { NetWriter } from "./writer/NetWriter";
 /**
@@ -20,8 +25,6 @@ export class NetManager {
    * @field Reference to a NetWriter object.
    */
   private writer: NetWriter;
-
-  // TODO aggiungere writer
   public constructor(reader: NetReader, updater: NetUpdater, writer: NetWriter) {
     if (reader == null) {
       throw new Error("invalid reader parameter");
