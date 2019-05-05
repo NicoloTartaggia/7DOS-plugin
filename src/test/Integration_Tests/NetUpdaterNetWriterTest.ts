@@ -44,11 +44,43 @@ const nodeAdapter: NodeAdapter = new ConcreteNodeAdapter(n1, arrayValue);
 const arrayResult: Array<InputResult> = new Array<InputResult>();
 arrayResult.push(new InputResult(nodeAdapter, "0"));
 
+before("Db init", async () => {
+    const Influx = require('influx');
+    const influx = new Influx.InfluxDB({
+    host: 'localhost',
+    database: 'testDB',
+    schema: [
+    {
+        measurement: 'win_cpu',
+        fields: {
+            Percent_DPC_Time: Influx.FieldType.FLOAT,
+        },
+        tags: [
+            'host'
+        ]
+    }
+    ]
+    });
+    await influx.getDatabaseNames()
+    .then(names => {
+      if (!names.includes('express_response_db')) {
+        return influx.createDatabase('express_response_db');
+      }
+    })
+    await influx.writePoints([
+        {
+        measurement: 'win_cpu',
+        tags: { host: "thishost" },
+        fields: { Percent_DPC_Time: 0.060454 },
+        }
+    ]);
+});
+
 describe("NetUpdater NetWriter Integration Test", () => {
     it("Defined parameters - No error", async () => {
         const updater: NetUpdater = new NetUpdater(network);
         new ConcreteWriteClientFactory().makeInfluxWriteClient(
-            "http://localhost", "8086", "prova", ["root", "root"]
+            "http://localhost", "8086", "testDB", ["root", "root"]
         ).then(async function(writeClient){
             const writer: SingleNetWriter = new SingleNetWriter(writeClient);
             let error: boolean = false;

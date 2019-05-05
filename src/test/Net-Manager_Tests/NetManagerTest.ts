@@ -10,6 +10,30 @@ const schemaPath: string = "../../core/network/factory/network_structure.schema.
 
 import {expect} from "chai";
 
+before("Db init", async () => {
+    const Influx = require('influx');
+    const influx = new Influx.InfluxDB({
+    host: 'localhost',
+    database: 'testDB',
+    schema: [
+    {
+        measurement: 'win_cpu',
+        fields: {
+            Percent_DPC_Time: Influx.FieldType.FLOAT,
+        },
+        tags: [
+            'host'
+        ]
+    }
+    ]
+    });
+    await influx.getDatabaseNames()
+    .then(names => {
+      if (!names.includes('express_response_db')) {
+        return influx.createDatabase('express_response_db');
+      }
+    })
+});
 const jsonSchema = require(schemaPath);
 const jsonSchemaString: string = JSON.stringify(jsonSchema);
 
@@ -22,7 +46,7 @@ describe("NetManager - constructor", () => {
     const reader: NetReader = new NetReader(network);
     const updater: NetUpdater = new NetUpdater(network);
     let writer: NetWriter;
-    new ConcreteWriteClientFactory().makeInfluxWriteClient("http://localhost/", "8086", "prova").then(async function(result){
+    new ConcreteWriteClientFactory().makeInfluxWriteClient("http://localhost/", "8086", "testDB").then(async function(result){
         writer = await new SingleNetWriter(result);
         it("Correct inputs - NetManager", () => {
             expect(() => new NetManager(reader, updater, writer)).to.not.throw(Error);
