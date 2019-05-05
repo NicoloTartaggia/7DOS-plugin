@@ -13,7 +13,7 @@ import {NetWriter, SingleNetWriter} from "../../core/net-manager/writer/NetWrite
 import {NetworkAdapter} from "../../core/network/adapter/NetworkAdapter";
 import {TimeBasedNetUpdater} from "../../core/time-based-net-updater/TimeBasedNetUpdater";
 
-import {ConcreteNetworkFactory} from "../../core/network/factory/ConcreteNetworkFactory";
+import {JsonNetParser} from "../../core/network/factory/JsonNetParser";
 
 import jsbayesviz = require("better-jsbayes-viz");
 
@@ -135,7 +135,7 @@ export class JsImportPanel extends PanelCtrl {
   public async onUpload (net) {
     console.log("[7DOS G&B][JsImportPanel]onUpload() called");
     try {
-      this.loaded_network = new ConcreteNetworkFactory().parseNetwork(JSON.stringify(net));
+      this.loaded_network = new JsonNetParser().createNet(JSON.stringify(net));
       console.log("[7DOS G&B][JsImportPanel]onUpload() loaded nodes:" + this.loaded_network.getNodeList().length);
     } catch (e) {
       this.message = "Upload failed!";

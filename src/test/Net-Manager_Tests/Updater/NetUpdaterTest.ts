@@ -2,7 +2,7 @@ import { NetUpdater } from "../../../core/net-manager/updater/NetUpdater";
 
 import {expect} from "chai";
 import { NetworkAdapter } from "../../../core/network/adapter/NetworkAdapter";
-import { ConcreteNetworkFactory } from "../../../core/network/factory/ConcreteNetworkFactory";
+import { JsonNetParser } from "../../../core/network/factory/JsonNetParser";
 import { InputResult } from "../../../core/net-manager/result/input-result/InputResult";
 import { InputResultAggregate } from "../../../core/net-manager/result/input-result/InputResultAggregate";
 import { AbstractValue } from "../../../core/network/value/AbstractValue";
@@ -26,7 +26,7 @@ describe("NetUpdater - constructor", () => {
     expect(() => new NetUpdater(network)).to.throw(Error, "[7DOS G&B][NetUpdater]constructor - invalid network parameter");
   });
   it("Correct inputs - NetUpdater", () => {
-    const network: NetworkAdapter = new ConcreteNetworkFactory().parseNetwork(jsonString, jsonSchemaString);
+    const network: NetworkAdapter = new JsonNetParser().createNet(jsonString, jsonSchemaString);
     network.observeNode("n1", "value1");
     const arrayValue: Array<AbstractValue> = new Array<AbstractValue>();
     arrayValue.push(new StringValue("0", "value1"));
@@ -57,7 +57,7 @@ describe("NetUpdater - constructor", () => {
 describe("NetUpdater - updateNet", () => {
 
   it("Correct InputResultAggregate - Correct probValues", () => {
-    const network: NetworkAdapter = new ConcreteNetworkFactory().parseNetwork(jsonString, jsonSchemaString);
+    const network: NetworkAdapter = new JsonNetParser().createNet(jsonString, jsonSchemaString);
     network.observeNode("n1", "value1");
     const arrayValue: Array<AbstractValue> = new Array<AbstractValue>();
     arrayValue.push(new StringValue("0", "value1"));
@@ -100,7 +100,7 @@ describe("NetUpdater - updateNet", () => {
     expect(probs[5]).to.be.at.most(0.62);
   });
   it("Undefined InputResultAggregate - Error", () => {
-    const network: NetworkAdapter = new ConcreteNetworkFactory().parseNetwork(jsonString, jsonSchemaString);
+    const network: NetworkAdapter = new JsonNetParser().createNet(jsonString, jsonSchemaString);
     let results: InputResultAggregate;
     const networkUpdater: NetUpdater = new NetUpdater(network);
     expect(()=> networkUpdater.updateNet(results)).to.throw(Error, "[7DOS G&B][NetUpdater]updateNet - invalid fluxResults parameter");

@@ -1,2 +1,2 @@
-export * from "./ConcreteNetworkFactory";
-export * from "./NetworkFactory";
+export * from "./JsonNetParser";
+export * from "./NetParser";
