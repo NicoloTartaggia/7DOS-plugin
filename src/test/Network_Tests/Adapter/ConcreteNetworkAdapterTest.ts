@@ -13,7 +13,7 @@ const schemaPath: string = "../../../core/network/factory/network_structure.sche
 const jsonSchema = require(schemaPath);
 const jsonSchemaString: string = JSON.stringify(jsonSchema);
 
-const correctNetworkPath: string = "../../Util_JSON/CorrectNetwork.json"
+const correctNetworkPath: string = "../../Util_JSON/CorrectNetwork.json";
 const json = require(correctNetworkPath);
 const correctJsonString: string = JSON.stringify(json);
 
