@@ -86,7 +86,7 @@ export class ConcreteNetBuilder implements NetBuilder {
   public setNodeParent (node_name: string, parent_name: string): void {
     if (!ConcreteNetBuilder.nodeExist(parent_name, this.node_dictionary)) {
       throw new Error("[7DOS G&B][ConcreteNetBuilder]setNodeParent - " +
-        "Node " + parent + " not found in the network!");
+        "Node " + parent_name + " not found in the network!");
     }
     if (!ConcreteNetBuilder.checkCanBeParent(node_name, parent_name, this.node_parents_dictionary)) {
       throw new Error("[7DOS G&B][ConcreteNetBuilder]setNodeParent - Circular parenthood");
