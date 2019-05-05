@@ -127,7 +127,7 @@ export class JsImportPanel extends PanelCtrl {
     this.panel.save_datasources = [];
     this.panel.secondToRefresh = 5;
     this.panel.write_datasource_id = "";
-    this.panel.write_db_name = "";
+    this.panel.write_db_name = "7DOS_default_DB";
     console.log("[7DOS G&B][JsImportPanel]Sucesfully reset saved data to default values!");
   }
 
