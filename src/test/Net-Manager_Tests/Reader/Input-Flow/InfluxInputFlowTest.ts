@@ -1,6 +1,6 @@
 import { InfluxInputFlow } from "../../../../core/net-manager/reader/input-flow/InfluxInputFlow";
 import { ConcreteReadClientFactory } from "../../../../core/read-client/ReadClientFactory";
-import ReadClient from "../../../../core/read-client/ReadClient";
+import { ReadClient } from "../../../../core/read-client/ReadClient";
 import { ConcreteWriteClientFactory } from "../../../../core/write-client/write-client";
 import { SingleNetWriter } from "../../../../core/net-manager/writer/NetWriter";
 import { CalcResult, CalcResultItem, CalcResultAggregate } from "../../../../core/net-manager/result/result";

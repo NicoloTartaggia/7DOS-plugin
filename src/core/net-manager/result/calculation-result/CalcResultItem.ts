@@ -34,9 +34,9 @@ export class CalcResultItem {
   public getValueName (): string {
     return this.valueName;
   }
-/**
- *  @returns The probability associated to the state.
- */
+  /**
+   *  @returns The probability associated to the state.
+   */
   public getProbValue (): number {
     return this.probValue;
   }

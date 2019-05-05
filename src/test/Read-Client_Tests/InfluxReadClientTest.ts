@@ -1,4 +1,4 @@
-import InfluxReadClient from "../../core/read-client/InfluxReadClient";
+import {InfluxReadClient} from "../../core/read-client/InfluxReadClient";
 import { ConcreteReadClientFactory } from "../../core/read-client/ReadClientFactory";
 
 import {expect} from "chai";

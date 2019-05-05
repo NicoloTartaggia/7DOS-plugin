@@ -1,7 +1,7 @@
 // import { NetReader } from "../../../core/net-manager/reader/NetReader";
 
 import {expect} from "chai";
-import DataSource from "../../../core/net-manager/reader/Datasource";
+import {DataSource} from "../../../core/net-manager/reader/Datasource";
 
 describe("Datasource - constructor", () => {
     it("Empty url - Error", () => {

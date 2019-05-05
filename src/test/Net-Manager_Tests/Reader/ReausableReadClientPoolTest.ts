@@ -1,8 +1,8 @@
 // import { NetReader } from "../../../core/net-manager/reader/NetReader";
 
-import ReusableReadClientPool from "../../../core/net-manager/reader/ReusableReadClientPool";
-import DataSource from "../../../core/net-manager/reader/Datasource";
-import ReadClient from "../../../core/read-client/ReadClient";
+import {ReusableReadClientPool} from "../../../core/net-manager/reader/ReusableReadClientPool";
+import {DataSource} from "../../../core/net-manager/reader/Datasource";
+import {ReadClient} from "../../../core/read-client/ReadClient";
 
 import {expect} from "chai";
 

@@ -3,7 +3,7 @@ import {RxHR} from "@akanass/rx-http-request/browser/index.js";
 import {NodeAdapter} from "core/network/adapter/NodeAdapter";
 import {coreModule} from "grafana/app/core/core";
 import {DashboardModel} from "grafana/app/features/dashboard/model";
-import DataSource from "../../core/net-manager/reader/Datasource";
+import {DataSource} from "../../core/net-manager/reader/Datasource";
 import {JsImportPanel} from "./JsonImportPanel";
 
 /**

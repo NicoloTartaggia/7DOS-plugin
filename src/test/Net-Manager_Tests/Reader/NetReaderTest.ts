@@ -1,7 +1,7 @@
 import { NetReader } from "../../../core/net-manager/reader/reader";
 import { ConcreteNetworkAdapter, NetworkAdapter } from "../../../core/network/adapter/adapter";
 import { JsonNetParser } from "../../../core/network/factory/factory";
-import DataSource from "../../../core/net-manager/reader/Datasource";
+import {DataSource} from "../../../core/net-manager/reader/Datasource";
 
 import {expect} from "chai";
 

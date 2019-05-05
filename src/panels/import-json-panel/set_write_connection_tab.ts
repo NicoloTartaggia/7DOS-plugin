@@ -2,7 +2,7 @@ import {RxHR} from "@akanass/rx-http-request/browser/index.js";
 
 import {coreModule} from "grafana/app/core/core";
 import {DashboardModel} from "grafana/app/features/dashboard/model";
-import DataSource from "../../core/net-manager/reader/Datasource";
+import {DataSource} from "../../core/net-manager/reader/Datasource";
 import {ConcreteWriteClientFactory, WriteClientFactory} from "../../core/write-client/WriteClientFactory";
 import {JsImportPanel} from "./JsonImportPanel";
 

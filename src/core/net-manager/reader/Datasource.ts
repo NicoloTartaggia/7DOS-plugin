@@ -88,74 +88,74 @@ export class DataSource {
     this.grafanaDatasourceId = grafanaDatasourceId;
 
   }
-/**
- * @returns The object's host field.
- */
+  /**
+   * @returns The object's host field.
+   */
   public getHost (): string {
     return this.host;
   }
-/**
- * @returns The object's port field.
- */
+  /**
+   * @returns The object's port field.
+   */
   public getPort (): string {
     return this.port;
   }
-/**
- * @returns The object's database field.
- */
+  /**
+   * @returns The object's database field.
+   */
   public getDatabase (): string {
     return this.database;
   }
-/**
- * @returns The object's username field.
- */
+  /**
+   * @returns The object's username field.
+   */
   public getUsername (): string {
     return this.username;
   }
-/**
- * @returns The object's password field.
- */
+  /**
+   * @returns The object's password field.
+   */
   public getPassword (): string {
     return this.password;
   }
-/**
- * @returns The datasource's URL.
- */
+  /**
+   * @returns The datasource's URL.
+   */
   public getUrl (): string {
     return this.host + ":" + this.port;
   }
-/**
- * @returns The object's type field.
- */
+  /**
+   * @returns The object's type field.
+   */
   public getType (): string {
     return this.type;
   }
-/**
- * @returns The object's name field.
- */
+  /**
+   * @returns The object's name field.
+   */
   public getName (): string {
     return this.name;
   }
-/**
- * @returns The object's grafanaDatasourceId field.
- */
+  /**
+   * @returns The object's grafanaDatasourceId field.
+   */
   public getGrafanaDatasourceId (): number {
     return this.grafanaDatasourceId;
   }
-/**
- * @desc Creates a new DataSource object identical to this object.
- * @returns A new DataSource object.
- */
+  /**
+   * @desc Creates a new DataSource object identical to this object.
+   * @returns A new DataSource object.
+   */
   public clone (): DataSource {
     return new DataSource((this.host + ":" + this.port), this.database, this.username, this.password,
       this.type, this.name, this.grafanaDatasourceId);
 
   }
-/**
- * @desc Creates a new DataSource object identical to this object with a custom default database.
- * @param database_name Custom database.
- * @returns A new DataSource object.
- */
+  /**
+   * @desc Creates a new DataSource object identical to this object with a custom default database.
+   * @param database_name Custom database.
+   * @returns A new DataSource object.
+   */
   public cloneWithDB (database_name: string): DataSource {
     return new DataSource((this.host + ":" + this.port), database_name, this.username, this.password,
       this.type, this.name, this.grafanaDatasourceId);
