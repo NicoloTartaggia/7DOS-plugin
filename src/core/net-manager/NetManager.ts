@@ -1,16 +1,31 @@
-import {NetReader} from "./reader/NetReader";
-import {CalcResultAggregate} from "./result/calculation-result/CalcResultAggregate";
-import {InputResultAggregate} from "./result/input-result/InputResultAggregate";
+/**
+ * @File NetManager.ts
+ * @Type TypeScript file
+ * @Desc Contains the NetManager class.
+ */
+import {NetReader} from "./reader/reader";
+import {CalcResultAggregate} from "./result/calculation-result/calculation-result";
+import {InputResultAggregate} from "./result/input-result/input-result";
 import {NetUpdater} from "./updater/NetUpdater";
 import {NetWriter} from "./writer/NetWriter";
-
+/**
+ * @class NetManager
+ * @desc Mediator for the NetReader, NetUpdater and NetWriter classes.
+ */
 export class NetManager {
+  /**
+   * @field Reference to a NetReader object.
+   */
   private reader: NetReader;
+  /**
+   * @field Reference to a NetUpdater object.
+   */
   private updater: NetUpdater;
+  /**
+   * @field Reference to a NetWriter object.
+   */
   private writer: NetWriter;
-
-  // TODO aggiungere writer
-  public constructor (reader: NetReader, updater: NetUpdater, writer: NetWriter) {
+  public constructor(reader: NetReader, updater: NetUpdater, writer: NetWriter) {
     if (reader == null) {
       throw new Error("[7DOS G&B][NetManager]constructor - invalid reader parameter");
     }
@@ -25,7 +40,11 @@ export class NetManager {
     this.writer = writer;
   }
 
-  public async updateNet (): Promise<void> {
+  /**
+   * @desc In a controlled environment, in order, reads the status of the system, updates the net accordingly and
+   * writes the results.
+   */
+  public async updateNet(): Promise<void> {
     // TODO aggiungere chiamata ulteriore a writer
     const read_res: InputResultAggregate = await this.reader.read()
       .catch((err) => {

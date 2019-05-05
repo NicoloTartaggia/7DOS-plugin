@@ -1,12 +1,21 @@
-import {NetworkAdapter} from "../../network/adapter/NetworkAdapter";
-import {AbstractValue} from "../../network/value/AbstractValue";
-import {CalcResult} from "../result/calculation-result/CalcResult";
-import {CalcResultAggregate} from "../result/calculation-result/CalcResultAggregate";
-import {CalcResultItem} from "../result/calculation-result/CalcResultItem";
-import {InputResult} from "../result/input-result/InputResult";
-import {InputResultAggregate} from "../result/input-result/InputResultAggregate";
+/**
+ * @File NetUpdater.ts
+ * @Type TypeScript file
+ * @Desc Contains the NetUpdater class.
+ */
+import {NetworkAdapter} from "../../network/adapter/adapter";
+import {AbstractValue} from "../../network/value/value";
+import {CalcResult, CalcResultAggregate, CalcResultItem} from "../result/calculation-result/calculation-result";
+import {InputResult, InputResultAggregate} from "../result/input-result/input-result";
 
+/**
+ * @class NetReader
+ * @desc Has a reference to the network and provices a method to calculate the current probabilities for its nodes.
+ */
 export class NetUpdater {
+  /**
+   * @field Reference to the network.
+   */
   private readonly network: NetworkAdapter;
 
   public constructor (network: NetworkAdapter) {
@@ -16,6 +25,11 @@ export class NetUpdater {
     this.network = network;
   }
 
+  /**
+   * @desc Based on the results of the reading, runs the sampling and updates the probabilities for every node.
+   * @param fluxResults Results of the reading.
+   * @returns A CalcResultAggregate object with the results of the calculation.
+   */
   public updateNet (fluxResults: InputResultAggregate): CalcResultAggregate {
     if (fluxResults == null || fluxResults.collection.length === 0) {
       throw new Error("[7DOS G&B][NetUpdater]updateNet - invalid fluxResults parameter");

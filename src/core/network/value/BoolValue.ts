@@ -1,3 +1,8 @@
+/**
+ * @File RangeValue.ts
+ * @Type TypeScript file
+ * @Desc Contains the RangeValue abstract class.
+ */
 import { AbstractValue } from "./AbstractValue";
 
 class BoolValue extends AbstractValue {

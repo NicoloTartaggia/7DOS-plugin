@@ -1,23 +1,47 @@
-import ReadClient from "../../read-client/ReadClient";
-import {ConcreteReadClientFactory} from "../../read-client/ReadClientFactory";
-import DataSource from "./Datasource";
+/**
+ * @File ReusableReadClientPool.ts
+ * @Type TypeScript file
+ * @Desc Contains the ReusableReadClientPool class.
+ */
+import {ConcreteReadClientFactory, ReadClient} from "../../read-client/read-client";
+import {DataSource} from "./reader";
 
-export default class ReusableReadClientPool {
+/**
+ * @class ReusableReadClientPool
+ * @desc Provides a singleton object that manages all of the ReadClient instances, preventing multiple instantiation
+ * of identical clients.
+ */
+export class ReusableReadClientPool {
+  /**
+   * @desc Static method to obtain the instance of the object.
+   * @returns An instance of ReusableReadClientPool.
+   */
   public static getInstance () {
     if (this.client_pool_instance === null) {
       this.client_pool_instance = new this();
     }
     return this.client_pool_instance;
   }
-
+  /**
+   * @field Singleton instance.
+   */
   private static client_pool_instance: ReusableReadClientPool = null;
-
+  /**
+   * @field Array of ReadClient objects to be managed.
+   */
   private read_clients: Array<ReadClient>;
-
+  /**
+   * @desc Private constructor for the object.
+   * @returns A new instance of ReusableReadClientPool.
+   */
   private constructor () {
     this.read_clients = new Array<ReadClient>();
   }
-
+  /**
+   * @desc Checks if the desired client exists, otherwise creates a new one and adds it to the pool.
+   * @param dataSource The datasource the client is connected to.
+   * @returns A ReadClient object.
+   */
   public acquireReusable (dataSource: DataSource): ReadClient {
     if (dataSource == null) {
       throw new Error("[7DOS G&B][ReusableReadClientPool]acquireReusable - invalid datasource parameter");
@@ -39,8 +63,11 @@ export default class ReusableReadClientPool {
     this.read_clients.push(client);
     return client;
   }
-
-  public releseReusable (to_remove: ReadClient) {
+  /**
+   * @desc Checks if the desired client exists, and if so removes it from the pool.
+   * @param to_remove The client to be removed.
+   */
+  public releseReusable (to_remove: ReadClient): void {
     if (to_remove == null) {
       throw new Error("[7DOS G&B][ReusableReadClientPool]acquireReusable - invalid to_remove parameter");
     }

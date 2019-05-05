@@ -1,30 +1,29 @@
-/*
-  File: ReadClientFactory.ts
-  Version: 1.0.0
-  Type: Typescript module
-  Author: Michele Roverato
-  Email: andre.trevisin@gmail.com
-  Date: 30/03/2019
-  Desc: Module containing the definition of the factory class
-        used to instantiate ReadClient subclasses
-  Changelog:
-    Andrea Trevisin, 02/04/19, deleted ReadClientCreator
-    Andrea Trevisin, 01/04/19, added ReadClientCreator (experimental)
-    Michele Roverato, 31/04/19, implemented ConcreteReadClientFactory
-    Michele Roverato, 30/04/19, created file and implemented interface ReadClient
-*/
+/**
+ * @File ConcreteReadClientFactory.ts
+ * @Type TypeScript file
+ * @Desc Contains the ConcreteReadClientFactory class.
+ */
+import {InfluxDB} from "influx";
+import {InfluxReadClient, ReadClient} from "./read-client";
 
-import {
-  InfluxDB,
-} from "influx";
-import InfluxReadClient from "./InfluxReadClient";
-import ReadClient from "./ReadClient";
-
-export default interface ReadClientFactory {
+/**
+ * @desc Abstract factory pattern
+ */
+export interface ReadClientFactory {
   makeInfluxReadClient (host: string, port: string, credentials?: [string, string]): ReadClient;
 }
 
+/**
+ * @class Implementation of the ReadClientFactory interface
+ * @desc Contains the methods used to create ReadClient objects. Has one method per implementation.
+ */
 export class ConcreteReadClientFactory implements ReadClientFactory {
+  /**
+   * @desc Creates a new ReadClient based on Influx.
+   * @param host Address of the Influx host.
+   * @param port Port on which the host is listening for requests.
+   * @param credentials Eventual access credentials.
+   */
   public makeInfluxReadClient (host: string, port: string, credentials?: [string, string])
     : InfluxReadClient {
     if (host === null ||  host.length === 0) {

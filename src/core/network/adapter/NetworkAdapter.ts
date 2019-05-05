@@ -1,5 +1,9 @@
-import {NodeAdapter} from "core/network/adapter/NodeAdapter";
-
+/**
+ * @File NetworkAdapter.ts
+ * @Type TypeScript file
+ * @Desc Contains the NetworkAdapter iterface declaration.
+ */
+import {NodeAdapter} from "./adapter";
 export interface NetworkAdapter {
   observeNode (node: string, value: string): void;
 

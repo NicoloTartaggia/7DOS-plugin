@@ -1,6 +1,15 @@
+/**
+ * @File ConcreteNodeAdapter.ts
+ * @Type TypeScript file
+ * @Desc Contains the ConcreteNodeAdapter class.
+ */
 import {AbstractValue} from "../value/value";
-import {NodeAdapter} from "./NodeAdapter";
+import {NodeAdapter} from "./adapter";
 
+/**
+ * @class ConcreteNodeAdapter
+ * @desc Adapter pattern implementation for the JNode interface provided by JsBayes.
+ */
 export class ConcreteNodeAdapter implements NodeAdapter {
   private readonly values: Array<AbstractValue>;
   private node: JNode;
@@ -15,7 +24,9 @@ export class ConcreteNodeAdapter implements NodeAdapter {
     this.node = node;
     this.values = values;
   }
-
+  /**
+   * @Override - Function that fixes a specific values (state) for a node in the network
+   */
   public getName (): string {
     return this.node.name;
   }
