@@ -49,26 +49,31 @@ describe("NetReader NetWriter NetUpdater (NetManager:updateNet)", () => {
     it("Defined parameters - No error", async () => {
         const reader: NetReader = new NetReader(network);
         const updater: NetUpdater = new NetUpdater(network);
+        let errorFlag: boolean = false;
+        let error: any;
         new ConcreteWriteClientFactory().makeInfluxWriteClient(
             "http://localhost", "8086", "prova", ["root", "root"]
         ).then(async function(writeClient){
             const writer: SingleNetWriter = new SingleNetWriter(writeClient);
-            let error: boolean = false;
-            // NetManager:updateNet's code
-            const read_res: InputResultAggregate = await reader.read()
+            reader.read().then(function(result){
+                const read_res: InputResultAggregate = result;
+                const update_res: CalcResultAggregate = updater.updateNet(read_res);
+                writer.write(update_res).catch((err) => {
+                    errorFlag = true;
+                    error = err;
+                })
+            })
             .catch((err) => {
-                error=true;
-                throw new Error("Error while reading from input datasource. For more details, see error: " + err);
-            });
-            const update_res: CalcResultAggregate = updater.updateNet(read_res);
-            await writer.write(update_res)
-                .catch((err) => {
-                    error=true;
-                    throw new Error("Error while writing to output datasource. For more details, see error: " + err);
-                }); 
-            expect(error).to.equal(false);      
-        }).catch(function(e){
-            console.log("ERROR: " + e);
+                errorFlag = true;
+                error = err;
+            });  
+        }).catch((err) =>{
+            errorFlag = true;
+            error = err;
         });
+        if(errorFlag) {
+            console.log(error);
+        }
+        return expect(errorFlag).to.equal(false);  
     });
 });

@@ -5,7 +5,6 @@ import { NetReader } from "../../core/net-manager/reader/reader";
 import { NetUpdater } from "../../core/net-manager/updater/NetUpdater";
 
 import { expect } from "chai";
-import { ConcreteWriteClientFactory } from "../../core/write-client/write-client";
 import { InputResultAggregate } from "../../core/net-manager/result/result";
 import { AbstractValue, StringValue } from "../../core/network/value/value";
 import jsbayes = require("jsbayes");
@@ -42,24 +41,22 @@ g.sample(10000);
 
 describe("NetReader NetUpdater Integration Test", () => {
     it("Defined parameters - No error", () => {
+        let errorFlag: boolean = false;
+        let error: any;
         const reader: NetReader = new NetReader(network);
         const updater: NetUpdater = new NetUpdater(network);
-        new ConcreteWriteClientFactory().makeInfluxWriteClient(
-            "http://localhost", "8086", "prova", ["root", "root"]
-        ).then(async function(writeClient){
-            let error: boolean = false;
-            // NetManager:updateNet's code
-            const read_res: InputResultAggregate = await reader.read()
-            .catch((err) => {
-                error=true;
-                throw new Error("Error while reading from input datasource. For more details, see error: " + err);
-            });
+        reader.read().then(function(result){
+            const read_res: InputResultAggregate = result;
             const update_res: CalcResultAggregate = updater.updateNet(read_res);
             expect(update_res.createIterator().next().value.getNodeName()).to.equal("n1");
-            expect(error).to.equal(false);      
-        }).catch(function(e){
-            console.log("ERROR: " + e);
-        });
+        })
+        .catch((err) => {
+            errorFlag = true;
+            error = err;
+        })
+        if(errorFlag) {
+            console.log("NR-NU Errore: " + error);
+        }
+        return expect(errorFlag).to.equal(false);    
     });
 });
-
