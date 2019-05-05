@@ -27,8 +27,8 @@ before("Db init", async () => {
     });
     await influx.getDatabaseNames()
     .then(names => {
-      if (!names.includes('express_response_db')) {
-        return influx.createDatabase('express_response_db');
+      if (!names.includes('testDB')) {
+        return influx.createDatabase('testDB');
       }
     })
 });

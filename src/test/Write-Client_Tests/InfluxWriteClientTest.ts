@@ -2,40 +2,33 @@ import InfluxWriteClient from "../../core/write-client/InfluxWriteClient";
 import { CalcResultAggregate, CalcResultItem, CalcResult } from "../../core/net-manager/result/result";
 
 import {expect} from "chai";
-import { InfluxDB } from "influx";
 
 const Influx = require('influx');
 
-before("Db init", async () => {
-    const influx = new Influx.InfluxDB({
+const influx = new Influx.InfluxDB({
     host: 'localhost',
     database: 'testDB',
     schema: [
-    {
-        measurement: 'win_cpu',
-        fields: {
-            Percent_DPC_Time: Influx.FieldType.FLOAT,
-        },
-        tags: [
-            'host'
-        ]
-    }
+        {
+            measurement: 'win_cpu',
+            fields: {
+                Percent_DPC_Time: Influx.FieldType.FLOAT,
+            },
+            tags: [
+                'host'
+            ]
+        }
     ]
-    });
+});
+
+before("Db init", async () => {
     await influx.getDatabaseNames()
     .then(names => {
-      if (!names.includes('express_response_db')) {
-        return influx.createDatabase('express_response_db');
+      if (!names.includes('testDB')) {
+        return influx.createDatabase('testDB');
       }
     })
-    await influx.writePoints([
-        {
-        measurement: 'win_cpu',
-        tags: { host: "thishost" },
-        fields: { Percent_DPC_Time: 0.060454 },
-        }
-    ]);
-  });
+});
 
 describe("InfluxWriteClient - constructor", () => { 
     it("Undefined dsn - Error", () => {
@@ -47,7 +40,7 @@ describe("InfluxWriteClient - constructor", () => {
         expect(() => new InfluxWriteClient("http://localhost:8086/", defaultDB, Influx)).to.throw(Error, "[7DOS G&B][InfluxWriteClient]constructor - invalid defaultDB parameter");
     });
     it("Undefined influx - Error", () => {
-        let unInflux: InfluxDB;
+        let unInflux: any;
         expect(() => new InfluxWriteClient("http://localhost:8086/", "testDB", unInflux)).to.throw(Error, "[7DOS G&B][InfluxWriteClient]constructor - invalid influx parameter");
     });
     it("Correct inputs - InfluxWriteClient", () => {  
