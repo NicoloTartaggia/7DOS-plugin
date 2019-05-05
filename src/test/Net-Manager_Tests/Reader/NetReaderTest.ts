@@ -1,6 +1,6 @@
 import { NetReader } from "../../../core/net-manager/reader/reader";
 import { ConcreteNetworkAdapter, NetworkAdapter } from "../../../core/network/adapter/adapter";
-import { ConcreteNetworkFactory } from "../../../core/network/factory/factory";
+import { JsonNetParser } from "../../../core/network/factory/factory";
 import DataSource from "../../../core/net-manager/reader/Datasource";
 
 import {expect} from "chai";
@@ -13,7 +13,7 @@ const correctNetworkPath: string = "../../Util_JSON/CorrectNetwork.json";
 const json = require(correctNetworkPath);
 const correctJsonString: string = JSON.stringify(json);
 
-const network: NetworkAdapter = new ConcreteNetworkFactory().parseNetwork(correctJsonString, jsonSchemaString);
+const network: NetworkAdapter = new JsonNetParser().createNet(correctJsonString, jsonSchemaString);
 
 describe("NetReader - constructor", () => {
     it("Undefined network_ref - Error", () => {

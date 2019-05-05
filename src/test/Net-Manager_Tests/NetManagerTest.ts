@@ -2,7 +2,7 @@ import { NetManager } from "../../core/net-manager/NetManager";
 import { NetReader } from "../../core/net-manager/reader/reader";
 import { NetUpdater } from "../../core/net-manager/updater/NetUpdater";
 import { SingleNetWriter, NetWriter } from "../../core/net-manager/writer/NetWriter";
-import { ConcreteNetworkFactory } from "../../core/network/factory/factory";
+import { JsonNetParser } from "../../core/network/factory/factory";
 import { ConcreteWriteClientFactory } from "../../core/write-client/write-client";
 import { ConcreteNetworkAdapter } from "../../core/network/adapter/adapter";
 
@@ -16,7 +16,7 @@ const jsonSchemaString: string = JSON.stringify(jsonSchema);
 const correctNetworkPath: string = "../Util_JSON/CorrectNetwork.json";
 const json = require(correctNetworkPath);
 const correctJsonString: string = JSON.stringify(json);
-const network: ConcreteNetworkAdapter = new ConcreteNetworkFactory().parseNetwork(correctJsonString, jsonSchemaString);
+const network: ConcreteNetworkAdapter = new JsonNetParser().createNet(correctJsonString, jsonSchemaString);
 
 describe("NetManager - constructor", () => {
     const reader: NetReader = new NetReader(network);

@@ -1,4 +1,4 @@
-import {ConcreteNetworkFactory} from "../../../core/network/factory/ConcreteNetworkFactory";
+import {JsonNetParser} from "../../../core/network/factory/JsonNetParser";
 
 import {ConcreteNetworkAdapter} from "../../../core/network/adapter/ConcreteNetworkAdapter";
 
@@ -21,55 +21,55 @@ const EmptyCptJsonString: string = JSON.stringify(require("../../Util_JSON/Empty
 const IncorrectCptRowsJsonString: string = JSON.stringify(require("../../Util_JSON/IncorrectCptRows.json"));
 const IncorrectCptColumnsJsonString: string = JSON.stringify(require("../../Util_JSON/IncorrectCptColumns.json"));
 
-describe("ConcreteNetworkFactory - parseNetwork", () => {
+describe("JsonNetParser - createNet", () => {
 
   it("Correct network - ConcreteNetworkAdapter", () => {
-    const s: ConcreteNetworkAdapter = new ConcreteNetworkFactory().parseNetwork(correctJsonString, jsonSchemaString);
+    const s: ConcreteNetworkAdapter = new JsonNetParser().createNet(correctJsonString, jsonSchemaString);
     expect(s.getNodeList().length).to.equal(2);
   });
   it("Null - Error", () => {
     let str: string;
-    expect(() => new ConcreteNetworkFactory().parseNetwork(str, jsonSchemaString)).to.throw(Error, "JSON file content is null...");
+    expect(() => new JsonNetParser().createNet(str, jsonSchemaString)).to.throw(Error, "JSON file content is null...");
   });
   it("Empty JSON - Error", () => {
     let str: string = "";
-    expect(() => new ConcreteNetworkFactory().parseNetwork(str, jsonSchemaString)).to.throw(Error, "Bad Json Content!");
+    expect(() => new JsonNetParser().createNet(str, jsonSchemaString)).to.throw(Error, "Bad Json Content!");
   });
   it("Invalid JSON - Error", () => {
-    expect(() => new ConcreteNetworkFactory().parseNetwork(invalidJsonString, jsonSchemaString)).to.throw(Error, "");
+    expect(() => new JsonNetParser().createNet(invalidJsonString, jsonSchemaString)).to.throw(Error, "");
   });
   it("Broken JSON - Error", () => {
     const jsonString = '{"nodes": {[)}}';
-    expect(() => new ConcreteNetworkFactory().parseNetwork(jsonString, jsonSchemaString)).to.throw(Error, "Bad Json Content!");
+    expect(() => new JsonNetParser().createNet(jsonString, jsonSchemaString)).to.throw(Error, "Bad Json Content!");
   });
   it("MinRange > MaxRange - Error", () => {
-    expect(() => new ConcreteNetworkFactory().parseNetwork(invertedMinMaxJsonString, jsonSchemaString)).to.throw(Error, "maxRange is less then minRange");
+    expect(() => new JsonNetParser().createNet(invertedMinMaxJsonString, jsonSchemaString)).to.throw(Error, "maxRange is less then minRange");
   });
   it("Incorrect node value type - Error", () => {
-    expect(() => new ConcreteNetworkFactory().parseNetwork(incorrectTypeJsonString, jsonSchemaString)).to.throw(Error, "invalid value parameter");
+    expect(() => new JsonNetParser().createNet(incorrectTypeJsonString, jsonSchemaString)).to.throw(Error, "invalid value parameter");
   });
   it("Non existing node parent - Error", () => {
-    expect(() => new ConcreteNetworkFactory().parseNetwork(incorrectParentJsonString, jsonSchemaString)).to.throw(Error, "Node FakeParent not found in the network!");
+    expect(() => new JsonNetParser().createNet(incorrectParentJsonString, jsonSchemaString)).to.throw(Error, "Node FakeParent not found in the network!");
   });
   it("Direct circular parenthood - Error", () => {
-    expect(() => new ConcreteNetworkFactory().parseNetwork(DCircularParenthoodJsonString, jsonSchemaString)).to.throw(Error, "Circular parenthood");
+    expect(() => new JsonNetParser().createNet(DCircularParenthoodJsonString, jsonSchemaString)).to.throw(Error, "Circular parenthood");
   });
   it("Indirect circular parenthood - Error", () => {
-    expect(() => new ConcreteNetworkFactory().parseNetwork(ICircularParenthoodJsonString, jsonSchemaString)).to.throw(Error, "Circular parenthood");
+    expect(() => new JsonNetParser().createNet(ICircularParenthoodJsonString, jsonSchemaString)).to.throw(Error, "Circular parenthood");
   });
   it("Two nodes with same name - Error", () => {
-    expect(() => new ConcreteNetworkFactory().parseNetwork(IncorrectNameJsonString, jsonSchemaString)).to.throw(Error, "The node Example2 already exist in the network!");
+    expect(() => new JsonNetParser().createNet(IncorrectNameJsonString, jsonSchemaString)).to.throw(Error, "The node Example2 already exist in the network!");
   });
   it("Incorrect cpt probabilities - Error", () => {
-    expect(() => new ConcreteNetworkFactory().parseNetwork(IncorrectCptJsonString, jsonSchemaString)).to.throw(Error);
+    expect(() => new JsonNetParser().createNet(IncorrectCptJsonString, jsonSchemaString)).to.throw(Error);
   });
   it("Empty Cpt - Error", () => {
-    expect(() => new ConcreteNetworkFactory().parseNetwork(EmptyCptJsonString, jsonSchemaString)).to.throw(Error, "Empty cpt");
+    expect(() => new JsonNetParser().createNet(EmptyCptJsonString, jsonSchemaString)).to.throw(Error, "Empty cpt");
   });
   it("Incorrect Cpt Rows - Error", () => {
-    expect(() => new ConcreteNetworkFactory().parseNetwork(IncorrectCptRowsJsonString, jsonSchemaString)).to.throw(Error, "Incorrect cpt's number of columns for nodeExample (found:2 expected:1)");
+    expect(() => new JsonNetParser().createNet(IncorrectCptRowsJsonString, jsonSchemaString)).to.throw(Error, "Incorrect cpt's number of columns for nodeExample (found:2 expected:1)");
   });
   it("Incorrect Cpt Columns - Error", () => {
-    expect(() => new ConcreteNetworkFactory().parseNetwork(IncorrectCptColumnsJsonString, jsonSchemaString)).to.throw(Error, "Incorrect cpt's number of columns for nodeExample (found:3 expected:2)");
+    expect(() => new JsonNetParser().createNet(IncorrectCptColumnsJsonString, jsonSchemaString)).to.throw(Error, "Incorrect cpt's number of columns for nodeExample (found:3 expected:2)");
   });
 });

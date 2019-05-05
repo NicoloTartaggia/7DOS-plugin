@@ -1,5 +1,5 @@
 import { NetworkAdapter } from "../../core/network/adapter/adapter";
-import { ConcreteNetworkFactory } from "../../core/network/factory/factory";
+import { JsonNetParser } from "../../core/network/factory/factory";
 import { CalcResultAggregate } from "../../core/net-manager/result/calculation-result/calculation-result";
 import { NetReader } from "../../core/net-manager/reader/reader";
 import { NetUpdater } from "../../core/net-manager/updater/NetUpdater";
@@ -18,7 +18,7 @@ const correctNetworkPath: string = "../Util_JSON/TestNetwork.json"
 const json = require(correctNetworkPath);
 const correctJsonString: string = JSON.stringify(json);
 
-const network: NetworkAdapter = new ConcreteNetworkFactory().parseNetwork(correctJsonString, jsonSchemaString);
+const network: NetworkAdapter = new JsonNetParser().createNet(correctJsonString, jsonSchemaString);
 
 network.observeNode("n1", "value1");
 const arrayValue: Array<AbstractValue> = new Array<AbstractValue>();
