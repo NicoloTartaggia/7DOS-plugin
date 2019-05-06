@@ -8,6 +8,31 @@ import { ConcreteWriteClientFactory } from "../../../core/write-client/write-cli
 import { InfluxDB } from "influx";
 import {expect} from "chai";
 
+before("Db init", async () => {
+    const Influx = require('influx');
+    const influx = new Influx.InfluxDB({
+    host: 'localhost',
+    database: 'testDB',
+    schema: [
+    {
+        measurement: 'win_cpu',
+        fields: {
+            Percent_DPC_Time: Influx.FieldType.FLOAT,
+        },
+        tags: [
+            'host'
+        ]
+    }
+    ]
+    });
+    await influx.getDatabaseNames()
+    .then(names => {
+      if (!names.includes('testDB')) {
+        return influx.createDatabase('testDB');
+      }
+    })
+});
+
 describe("SingleNetWriter - constructor", () => {
     it("Undefined client - Error", () => {
         let client: WriteClient;
@@ -15,7 +40,7 @@ describe("SingleNetWriter - constructor", () => {
     });
     it("Defined client - New SingleNetWriter", () => {
         new ConcreteWriteClientFactory().makeInfluxWriteClient(
-            "http://localhost", "8086", "prova", ["root", "root"]
+            "http://localhost", "8086", "testDB", ["root", "root"]
         ).then(function(writeClient){
             const singleWriter: SingleNetWriter = new SingleNetWriter(writeClient);
             expect(singleWriter).to.not.equal(null);
@@ -27,8 +52,8 @@ describe("SingleNetWriter - constructor", () => {
 
 describe("SingleNetWriter - write", () => {
     it("Undefined calcData - Error", () => {
-        const idb: InfluxDB = new InfluxDB("http://localhost:8086/prova");
-        const client: WriteClient = new InfluxWriteClient("http://localhost", "prova", idb);
+        const idb: InfluxDB = new InfluxDB("http://localhost:8086/testDB");
+        const client: WriteClient = new InfluxWriteClient("http://localhost", "testDB", idb);
         const singleWriter: SingleNetWriter = new SingleNetWriter(client);
         let calc: CalcResultAggregate;
         singleWriter.write(calc).then(function (){})
@@ -38,16 +63,16 @@ describe("SingleNetWriter - write", () => {
     });
     it("Correct calcData - Something", () => {
         new ConcreteWriteClientFactory().makeInfluxWriteClient(
-            "http://localhost/", "8086", "prova", ["root", "root"]
+            "http://localhost/", "8086", "testDB", ["root", "root"]
         ).then(function(writeClient){
             const singleWriter: SingleNetWriter = new SingleNetWriter(writeClient);
             let calcArray: Array<CalcResult> = new Array<CalcResult>();
             let itemArray: Array<CalcResultItem> = new Array<CalcResultItem>();
-            itemArray.push(new CalcResultItem("field1", 1));
-            calcArray.push(new CalcResult("burglary", itemArray));
+            itemArray.push(new CalcResultItem("Percent_DPC_Time", 1));
+            calcArray.push(new CalcResult("win_cpu", itemArray));
             let calc: CalcResultAggregate = new CalcResultAggregate(calcArray);
             singleWriter.write(calc).then(function (){
-                expect(calc.createIterator().next().value.getNodeName()).to.equal("burglary");
+                expect(calc.createIterator().next().value.getNodeName()).to.equal("win_cpu");
             })
             .catch(function (e){
                 console.log("SingleNetWriter write ERROR: " + e);

@@ -50,10 +50,10 @@ describe("WriteClientFactory - makeInfluxWriteClient", () => {
     });
     it("Correct inputs - New InfluxWriteClient", () => {
         new ConcreteWriteClientFactory().makeInfluxWriteClient(
-            "http://localhost", "8086", "prova"
+            "http://localhost", "8086", "testDB"
         ).then(function(writeClient){
             expect(writeClient.getAddress()).to.equal("http://localhost:8086/");
-            expect(writeClient.getDefaultDB()).to.equal("prova");
+            expect(writeClient.getDefaultDB()).to.equal("testDB");
         }).catch(function(e){
             console.log("WriteClientFactory makeInfluxWriteClient All defined ERROR: " + e);
         });

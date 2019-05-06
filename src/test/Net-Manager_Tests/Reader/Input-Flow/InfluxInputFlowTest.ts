@@ -1,11 +1,40 @@
 import { InfluxInputFlow } from "../../../../core/net-manager/reader/input-flow/InfluxInputFlow";
 import { ConcreteReadClientFactory } from "../../../../core/read-client/ReadClientFactory";
-import { ReadClient } from "../../../../core/read-client/ReadClient";
-import { ConcreteWriteClientFactory } from "../../../../core/write-client/write-client";
-import { SingleNetWriter } from "../../../../core/net-manager/writer/NetWriter";
-import { CalcResult, CalcResultItem, CalcResultAggregate } from "../../../../core/net-manager/result/result";
+import { ReadClient } from "../../../../core/read-client/read-client";
 
 import {expect} from "chai";
+
+before("Db init", async () => {
+    const Influx = require('influx');
+    const influx = new Influx.InfluxDB({
+    host: 'localhost',
+    database: 'testDB',
+    schema: [
+    {
+        measurement: 'win_cpu',
+        fields: {
+            Percent_DPC_Time: Influx.FieldType.FLOAT,
+        },
+        tags: [
+            'host'
+        ]
+    }
+    ]
+    });
+    await influx.getDatabaseNames()
+    .then(names => {
+      if (!names.includes('testDB')) {
+        return influx.createDatabase('testDB');
+      }
+    })
+    await influx.writePoints([
+        {
+        measurement: 'win_cpu',
+        tags: { host: "thishost" },
+        fields: { Percent_DPC_Time: 0.060454 },
+        }
+    ]);
+});
 
 describe("InfluxInputFlow - constructor", () => {
     it("Undefined database - Error", () => {
@@ -49,40 +78,32 @@ describe("InfluxInputFlow - constructor", () => {
 });
 
 describe("InfluxInputFlow - getResult", () => {
-    it("Correct query - Result", () => {
+    it("Correct query - Result", async () => {
         // writing data
-        new ConcreteWriteClientFactory().makeInfluxWriteClient(
-            "http://localhost/", "8086", "prova", ["root", "root"]
-        ).then(async function(writeClient){
-            const singleWriter: SingleNetWriter = new SingleNetWriter(writeClient);
-            let calcArray: Array<CalcResult> = new Array<CalcResult>();
-            let itemArray: Array<CalcResultItem> = new Array<CalcResultItem>();
-            itemArray.push(new CalcResultItem("field1", 1));
-            calcArray.push(new CalcResult("burglary", itemArray));
-            let calc: CalcResultAggregate = new CalcResultAggregate(calcArray);
-            await singleWriter.write(calc).then(function (){
-                expect(calc.createIterator().next().value.getNodeName()).to.equal("burglary");
-            })
-            .catch(function (e){
-                console.log("InfluxInputFlow getResult Correct query ERROR: " + e);
-            });
-        }).catch(function(e){
-            console.log("InfluxInputFlow getResult Correct query ERROR 2: " + e);
-        }); 
-
-        const influxInput: InfluxInputFlow = new InfluxInputFlow("prova", "SELECT field1 FROM burglary", 
-            new ConcreteReadClientFactory().makeInfluxReadClient("http://localhost", "8086", ["root", "root"]));
-        influxInput.getResult().then(function(result){
-            expect(result.toString()).to.not.equal(null);
-        }).catch(function(e){
-            console.log("InfluxInputFlow getResult Correct query ERROR: " + e)
+        let res: any;
+        let errorFlag: boolean = false;
+        let error: boolean;
+        const influxInput: InfluxInputFlow = new InfluxInputFlow("testDB", "SELECT Percent_DPC_Time FROM win_cpu", 
+        new ConcreteReadClientFactory().makeInfluxReadClient("http://localhost", "8086", ["root", "root"]));
+        await influxInput.getResult().then(function(result){
+            res = result;
+        }).catch((e) => {
+            errorFlag = true;
+            error = e;
         });
+        if(errorFlag) {
+            console.log(error);
+        }
+        expect(res.toString()).to.not.equal(null);
     });
-    it("Incorrect query - Error", () => {
-        const influxInput: InfluxInputFlow = new InfluxInputFlow("prova", "SELECT field FROM measurement", 
+    it("Incorrect query - Error", async () => {
+        let error: any;
+        const influxInput: InfluxInputFlow = new InfluxInputFlow("testDB", "SELECT field FROM measurement", 
             new ConcreteReadClientFactory().makeInfluxReadClient("http://localhost", "8086", ["user", "password"]));
-        influxInput.getResult().then(function(){}).catch(function(e){
-            expect(e.toString()).to.contain("Error: [7DOS G&B][InfluxReadClient]readField - Query to ");
+        await influxInput.getResult()
+        .catch(function(e){
+            error = e;
         });
+        expect(error.toString()).to.contain("Error: [7DOS G&B][InfluxReadClient]readField - Query to");
     });
 });

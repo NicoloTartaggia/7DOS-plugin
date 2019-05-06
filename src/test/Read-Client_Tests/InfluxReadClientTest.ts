@@ -6,6 +6,38 @@ import {InfluxDB} from "influx";
 
 let client:InfluxReadClient=new ConcreteReadClientFactory().makeInfluxReadClient("http://localhost","8086");
 
+before("Db init", async () => {
+  const Influx = require('influx');
+  const influx = new Influx.InfluxDB({
+  host: 'localhost',
+  database: 'testDB',
+  schema: [
+  {
+      measurement: 'win_cpu',
+      fields: {
+          Percent_DPC_Time: Influx.FieldType.FLOAT,
+      },
+      tags: [
+          'host'
+      ]
+  }
+  ]
+  });
+  await influx.getDatabaseNames()
+  .then(names => {
+    if (!names.includes('testDB')) {
+      return influx.createDatabase('testDB');
+    }
+  })
+  await influx.writePoints([
+      {
+      measurement: 'win_cpu',
+      tags: { host: "thishost" },
+      fields: { Percent_DPC_Time: 0.060454 },
+      }
+  ]);
+});
+
 describe("InfluxReadClient - createReaderClient", () => {
   const influx: InfluxDB = new InfluxDB();  
   it("Undefined dsn - Error", () => {
@@ -16,10 +48,10 @@ describe("InfluxReadClient - createReaderClient", () => {
     expect(() => new InfluxReadClient("", influx)).to.throw(Error, "[7DOS G&B][InfluxReadClient]constructor - invalid dsn parameter");
   });
   it("Undefined influx - Error", () => {
-    expect(() => new InfluxReadClient("http://localhost:8086/prova", null)).to.throw(Error, "[7DOS G&B][InfluxReadClient]constructor - invalid influx parameter");
+    expect(() => new InfluxReadClient("http://localhost:8086/testDB", null)).to.throw(Error, "[7DOS G&B][InfluxReadClient]constructor - invalid influx parameter");
   });
   it("Correct inputs - InfluxReadClient", () => {
-    expect(() => new InfluxReadClient("http://localhost:8086/prova", influx)).to.not.throw(Error);
+    expect(() => new InfluxReadClient("http://localhost:8086/testDB", influx)).to.not.throw(Error);
   });
 });
 
@@ -37,33 +69,21 @@ describe("InfluxReadClient - readField", () => {
     let influxclient:InfluxDB=new InfluxDB({
       host: 'localhost',
       port: 8086,
-      database:"readTest"
+      database:"testDB"
     });
-    influxclient.createDatabase("readTest").then(function(){
+    influxclient.createDatabase("testDB").then(function(){
       influxclient.writePoints([{
         measurement:"cpu",
         tags:{},
         fields:{value:0.64}
       }]).then(function(){
-        let result=client.readField("readTest", "select value from cpu");
+        let result=client.readField("testDB", "select value from cpu");
         result.then(function(value){
           expect(value[0].rows[0].value).to.equal(0.64);
         });
       })
     });
   });
-  /*
-  after(function(){
-    return new Promise((resolve) => {
-      let client:InfluxDB=new InfluxDB({
-        host: 'localhost',
-        port: 8086,
-      });
-      client.dropDatabase("readTest");
-      resolve();
-    });
-  });
-  */
   it("Undefined database - Error",()=>{
     client.readField(null,"SHOW MEASUREMENTS").then(function(){})
     .catch(function(e){

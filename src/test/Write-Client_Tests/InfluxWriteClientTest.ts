@@ -2,47 +2,71 @@ import InfluxWriteClient from "../../core/write-client/InfluxWriteClient";
 import { CalcResultAggregate, CalcResultItem, CalcResult } from "../../core/net-manager/result/result";
 
 import {expect} from "chai";
-import { InfluxDB } from "influx";
 
-const influx: InfluxDB = new InfluxDB("http://localhost:8086/prova");
+const Influx = require('influx');
+
+const influx = new Influx.InfluxDB({
+    host: 'localhost',
+    database: 'testDB',
+    schema: [
+        {
+            measurement: 'win_cpu',
+            fields: {
+                Percent_DPC_Time: Influx.FieldType.FLOAT,
+            },
+            tags: [
+                'host'
+            ]
+        }
+    ]
+});
+
+before("Db init", async () => {
+    await influx.getDatabaseNames()
+    .then(names => {
+      if (!names.includes('testDB')) {
+        return influx.createDatabase('testDB');
+      }
+    })
+});
 
 describe("InfluxWriteClient - constructor", () => { 
     it("Undefined dsn - Error", () => {
         let dsn: string;
-        expect(() => new InfluxWriteClient(dsn, "prova", influx)).to.throw(Error, "[7DOS G&B][InfluxWriteClient]constructor - invalid dsn parameter");
+        expect(() => new InfluxWriteClient(dsn, "testDB", Influx)).to.throw(Error, "[7DOS G&B][InfluxWriteClient]constructor - invalid dsn parameter");
     });
     it("Undefined defaultDB - Error", () => {
         let defaultDB: string;
-        expect(() => new InfluxWriteClient("http://localhost:8086/", defaultDB, influx)).to.throw(Error, "[7DOS G&B][InfluxWriteClient]constructor - invalid defaultDB parameter");
+        expect(() => new InfluxWriteClient("http://localhost:8086/", defaultDB, Influx)).to.throw(Error, "[7DOS G&B][InfluxWriteClient]constructor - invalid defaultDB parameter");
     });
     it("Undefined influx - Error", () => {
-        let unInflux: InfluxDB;
-        expect(() => new InfluxWriteClient("http://localhost:8086/", "prova", unInflux)).to.throw(Error, "[7DOS G&B][InfluxWriteClient]constructor - invalid influx parameter");
+        let unInflux: any;
+        expect(() => new InfluxWriteClient("http://localhost:8086/", "testDB", unInflux)).to.throw(Error, "[7DOS G&B][InfluxWriteClient]constructor - invalid influx parameter");
     });
     it("Correct inputs - InfluxWriteClient", () => {  
-        expect(new InfluxWriteClient("http://localhost:8086/", "prova", influx).getAddress()).to.equal("http://localhost:8086/");
+        expect(new InfluxWriteClient("http://localhost:8086/", "testDB", Influx).getAddress()).to.equal("http://localhost:8086/");
     });
 });
 
 describe("InfluxWriteClient - getAddress", () => {
     it("Address - Address", () => {
-        expect(new InfluxWriteClient("http://localhost:8086/", "prova", influx).getAddress()).to.equal("http://localhost:8086/");
+        expect(new InfluxWriteClient("http://localhost:8086/", "testDB", Influx).getAddress()).to.equal("http://localhost:8086/");
     });
 });
 
 describe("InfluxWriteClient - getDefaultDB", () => {
     it("DefaultDB - DefaultDB", () => {
-        expect(new InfluxWriteClient("http://localhost:8086/", "prova", influx).getDefaultDB()).to.equal("prova");
+        expect(new InfluxWriteClient("http://localhost:8086/", "testDB", Influx).getDefaultDB()).to.equal("testDB");
     });
 });
 
 describe("InfluxWriteClient - writeBatchData", () => {
     it("Correct inputs - Not an error", () => {
-        const influxWriter: InfluxWriteClient = new InfluxWriteClient("http://localhost:8086/", "prova", influx);
+        const influxWriter: InfluxWriteClient = new InfluxWriteClient("http://localhost:8086/", "testDB", Influx);
         let calcArray: Array<CalcResult> = new Array<CalcResult>();
         let calcItemArray: Array<CalcResultItem> = new Array<CalcResultItem>();
-        calcItemArray.push(new CalcResultItem("field1", 0.5));
-        calcArray.push(new CalcResult("burglary", calcItemArray)); 
+        calcItemArray.push(new CalcResultItem("Percent_DPC_Time", 0.5));
+        calcArray.push(new CalcResult("win_cpu", calcItemArray)); 
         let toBeWritten: CalcResultAggregate = new CalcResultAggregate(calcArray);
         influxWriter.writeBatchData(toBeWritten).then(function(){
             expect(true).to.equal(true);
@@ -54,10 +78,10 @@ describe("InfluxWriteClient - writeBatchData", () => {
 
 describe("InfluxWriteClient - writePointData", () => {
     it("Correct inputs - Not an error", () => {
-        const influxWriter: InfluxWriteClient = new InfluxWriteClient("http://localhost:8086/", "prova", influx);
+        const influxWriter: InfluxWriteClient = new InfluxWriteClient("http://localhost:8086/", "testDB", Influx);
         let calcItemArray: Array<CalcResultItem> = new Array<CalcResultItem>();
-        calcItemArray.push(new CalcResultItem("field1", 0.5));
-        influxWriter.writePointData(new CalcResult("burglary", calcItemArray)).then(function(){
+        calcItemArray.push(new CalcResultItem("Percent_DPC_Time", 0.5));
+        influxWriter.writePointData(new CalcResult("win_cpu", calcItemArray)).then(function(){
             expect(true).to.equal(true);
         }).catch(function(e){
             console.log("InfluxWriteClient writePointData ERROR: " + e);

@@ -15,6 +15,38 @@ const correctJsonString: string = JSON.stringify(json);
 
 const network: NetworkAdapter = new JsonNetParser().createNet(correctJsonString, jsonSchemaString);
 
+before("Db init", async () => {
+    const Influx = require('influx');
+    const influx = new Influx.InfluxDB({
+    host: 'localhost',
+    database: 'testDB',
+    schema: [
+    {
+        measurement: 'win_cpu',
+        fields: {
+            Percent_DPC_Time: Influx.FieldType.FLOAT,
+        },
+        tags: [
+            'host'
+        ]
+    }
+    ]
+    });
+    await influx.getDatabaseNames()
+    .then(names => {
+      if (!names.includes('testDB')) {
+        return influx.createDatabase('testDB');
+      }
+    })
+    await influx.writePoints([
+        {
+        measurement: 'win_cpu',
+        tags: { host: "thishost" },
+        fields: { Percent_DPC_Time: 0.060454 },
+        }
+    ]);
+});
+
 describe("NetReader - constructor", () => {
     it("Undefined network_ref - Error", () => {
         let networkAdapter: ConcreteNetworkAdapter;
@@ -26,14 +58,14 @@ describe("NetReader - constructor", () => {
 });
 
 describe("NetReader - read", () => {
-    it("Correct network, connection to node - Collection", () => {
+    it("Correct network, connection to node - Collection", async () => {
         const networkReader: NetReader = new NetReader(network);
-        networkReader.connectNode("Example", new DataSource("http://localhost:8086/"), "SELECT Percent_DPC_Time FROM win_cpu");
-        networkReader.read().then(function(result){
-            expect(result.buildIterator().next().value.getNode().getName()).to.equal("Example");
-        }).catch(function(e){
+        networkReader.connectNode("Example", new DataSource("http://localhost:8086/", "testDB"), "SELECT Percent_DPC_Time FROM win_cpu");
+        let result: any = await networkReader.read()
+        .catch(function(e){
             console.log("NetReader read ERROR: " + e);
         });
+        expect(result.buildIterator().next().value.getNode().getName()).to.equal("Example");
     });
 });
 
@@ -41,7 +73,7 @@ describe("NetReader - connectNode", () => {
     const networkReader: NetReader = new NetReader(network);
     it("Undefined node - Error", () => {
         let node: string;
-        expect(() => networkReader.connectNode(node, new DataSource("http://localhost"), "query")).to.throw(Error, "[7DOS G&B][NetReader]connectNode - Invalid node");
+        expect(() => networkReader.connectNode(node, new DataSource("http://localhost", "testDB"), "query")).to.throw(Error, "[7DOS G&B][NetReader]connectNode - Invalid node");
     });
     it("Undefined datasource - Error", () => {
         let dataS: DataSource;
@@ -49,12 +81,12 @@ describe("NetReader - connectNode", () => {
     });
     it("Undefined query - Error", () => {
         let query: string;
-        expect(() => networkReader.connectNode("node", new DataSource("http://localhost"), query)).to.throw(Error, "[7DOS G&B][NetReader]connectNode - Invalid query.");
+        expect(() => networkReader.connectNode("node", new DataSource("http://localhost", "testDB"), query)).to.throw(Error, "[7DOS G&B][NetReader]connectNode - Invalid query.");
     });
     it("Empty node - Error", () => {
-        expect(() => networkReader.connectNode("", new DataSource("http://localhost"), "query")).to.throw(Error, "[7DOS G&B][NetReader]connectNode - Invalid node");
+        expect(() => networkReader.connectNode("", new DataSource("http://localhost", "testDB"), "query")).to.throw(Error, "[7DOS G&B][NetReader]connectNode - Invalid node");
     });
     it("Empty query - Error", () => {
-        expect(() => networkReader.connectNode("node", new DataSource("http://localhost"), "")).to.throw(Error, "[7DOS G&B][NetReader]connectNode - Invalid query");
+        expect(() => networkReader.connectNode("node", new DataSource("http://localhost", "testDB"), "")).to.throw(Error, "[7DOS G&B][NetReader]connectNode - Invalid query");
     });
 });
