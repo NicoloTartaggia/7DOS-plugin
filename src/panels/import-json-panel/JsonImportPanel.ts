@@ -10,7 +10,6 @@ import {NetReader} from "../../core/net-manager/reader/NetReader";
 import {NetUpdater} from "../../core/net-manager/updater/NetUpdater";
 import {NetWriter, SingleNetWriter} from "../../core/net-manager/writer/NetWriter";
 import {NetworkAdapter} from "../../core/network/adapter/NetworkAdapter";
-import {TimeBasedNetUpdater} from "../../core/time-based-net-updater/TimeBasedNetUpdater";
 
 import {JsonNetParser} from "../../core/network/factory/JsonNetParser";
 
@@ -66,17 +65,18 @@ export class JsImportPanel extends PanelCtrl {
   public netReader: NetReader;
   public netUpdater: NetUpdater;
   public netWriter: NetWriter;
-  public timeBasedNetUpdater: TimeBasedNetUpdater;
   public nextTickPromise: any;
   public panelDefaults = {
     draw_area_id: "",
-    is_calc_running: false,
     jsonContent: "",
     save_datasources: [],
     secondToRefresh: 5,
     write_datasource_id: "",
     write_db_name: "7DOS_default_DB",
   };
+
+  // Is the monitoring running
+  private is_calc_running: boolean = false;
 
   private readonly json_schema_string = '{"$schema":"http://json-schema.org/schema#","type":"object",' +
     '"properties":{"nodes":{"title":"List of Bayesian Network nodes","description":"This is the array ' +
@@ -117,10 +117,6 @@ export class JsImportPanel extends PanelCtrl {
     } else {
       this.message = "Open 'edit' window to configure panel with a Bayesian network";
     }
-    /*if (this.panel.is_calc_running) {
-      // TODO FINISH THIS - TO AUTO RESTART WE MUST RI-CREATE THE OBJECTS
-      this.start();
-    }*/
     console.log("[7DOS G&B][JsImportPanel]Panel Constructor() done");
   }
 
@@ -146,7 +142,7 @@ export class JsImportPanel extends PanelCtrl {
       JsImportPanel.showErrorMessage("Warning",
         "Previously saved data has been removed because a new network was imported...");
     }
-    this.panel.is_calc_running = false;
+    this.is_calc_running = false;
     this.panel.save_datasources = [];
     this.panel.secondToRefresh = 5;
     this.panel.write_datasource_id = "";
@@ -183,7 +179,6 @@ export class JsImportPanel extends PanelCtrl {
     console.log("[7DOS G&B][JsImportPanel]updateNetWriter() - Updating net writer");
     this.netWriter = new SingleNetWriter(write_client);
     this.netManager = new NetManager(this.netReader, this.netUpdater, this.netWriter);
-    this.timeBasedNetUpdater = new TimeBasedNetUpdater(this.netManager);
     console.log("[7DOS G&B][JsImportPanel]updateNetWriter() - done");
   }
 
@@ -251,40 +246,68 @@ export class JsImportPanel extends PanelCtrl {
   // Continuous update functions
   // ------------------------------------------------------
 
+  // Called on view ng-change
   public setSecond () {
     if (Number.isNaN(this.panel.secondToRefresh)) {
       this.panel.secondToRefresh = 5;
     }
     if (this.panel.secondToRefresh <= 0) {
-      this.panel.secondToRefresh = 1;
+      this.panel.secondToRefresh = 5;
     }
-    this.timeBasedNetUpdater.setUpdateFrequency(this.panel.secondToRefresh);
   }
 
   public start () {
-    if (!this.saved_read_connections) {
-      console.log("[7DOS G&B][JsImportPanel]No read connections found... Can't start the monitoring");
-      JsImportPanel.showErrorMessage("No read connections found",
-        "Before starting the monitoring first connect your nodes to a datasource!");
-      return;
+    if (!this.is_calc_running) {
+      if (!this.saved_read_connections) {
+        console.log("[7DOS G&B][JsImportPanel]No read connections found... Can't start the monitoring");
+        JsImportPanel.showErrorMessage("No read connections found",
+          "Before starting the monitoring first connect your nodes to a datasource!");
+        return;
+      }
+      if (!this.saved_write_connections) {
+        console.log("[7DOS G&B][JsImportPanel]No write connections found... Can't start the monitoring");
+        JsImportPanel.showErrorMessage("No write connections found",
+          "Before starting the monitoring first set the write datasource!");
+        return;
+      }
+      this.is_calc_running = true;
+      this.runUpdate();
+      JsImportPanel.showSuccessMessage("Successfully started the monitoring!");
+      console.log("[7DOS G&B][JsImportPanel]start() - Successfully started the monitoring");
+    } else {
+      // Output message commented - it is not necessary to view
+      // JsImportPanel.showErrorMessage("Warning", "The monitoring is already running!");
+      console.error("[7DOS G&B][JsImportPanel]start() - The monitoring is already running!");
     }
-    if (!this.saved_write_connections) {
-      console.log("[7DOS G&B][JsImportPanel]No write connections found... Can't start the monitoring");
-      JsImportPanel.showErrorMessage("No write connections found",
-        "Before starting the monitoring first set the write datasource!");
-      return;
-    }
-    this.timeBasedNetUpdater.start();
-    JsImportPanel.showSuccessMessage("Successfully started the monitoring!");
   }
 
   public stop () {
-    this.timeBasedNetUpdater.stop();
-    JsImportPanel.showSuccessMessage("Successfully stopped the monitoring!");
+    if (this.is_calc_running) {
+      this.is_calc_running = false;
+      this.$timeout.cancel(this.nextTickPromise);
+      JsImportPanel.showSuccessMessage("Successfully stopped the monitoring!");
+      console.log("[7DOS G&B][JsImportPanel]stop() - Successfully stopped the monitoring");
+    } else {
+      // Output message commented - it is not necessary to view and may appear when the user close the dashboard
+      // JsImportPanel.showErrorMessage("Warning", "The monitoring is not running!");
+      console.error("[7DOS G&B][JsImportPanel]stop() - The monitoring is not running!");
+    }
   }
 
   public runUpdate () {
-    this.timeBasedNetUpdater.singleUpdate();
+    this.$timeout.cancel(this.nextTickPromise);
+
+    this.netManager.updateNet().catch((err) => {
+      JsImportPanel.showErrorMessage("Error during network update",
+        "An error occurred during network update. For more details, check the console.");
+      console.error("[7DOS G&B][JsImportPanel]runUpdate() - updateNet() ERROR:" + err.toString());
+    });
+
+    if (this.is_calc_running) {
+      this.nextTickPromise = this.$timeout(this.runUpdate.bind(this), this.panel.secondToRefresh * 1000);
+    } else {
+      JsImportPanel.showSuccessMessage("Manual network update done!");
+    }
   }
 
   public link (scope, element) {
