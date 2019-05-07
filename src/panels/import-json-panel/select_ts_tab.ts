@@ -140,6 +140,14 @@ export class SelectDB_Ctrl {
         this.panelCtrl.netReader.disconnectNode(node);
         this.clearDropdowns(node);
         console.log("[7DOS G&B][SelectDB_Ctrl]disconnectNodes() - disconnection done!");
+        // Remove the node from the saved data
+        for (let i = 0; i < this.panel.save_datasources.length; i++) {
+          if (node === this.panel.save_datasources[i].nodename) {
+            // Remove the element and stop the for
+            this.panel.save_datasources.slice(i, 1);
+            break;
+          }
+        }
         JsImportPanel.showSuccessMessage(node + " disconnected succesfully!");
       } catch (e) {
         JsImportPanel.showErrorMessage("Error during disconnection",
