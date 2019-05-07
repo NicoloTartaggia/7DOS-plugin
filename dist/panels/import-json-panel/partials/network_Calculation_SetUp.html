@@ -2,14 +2,20 @@
     <div class="section gf-form-group">
         <h5 class="section-heading">Monitoring refresh rate</h5>
         <div class="gf-form">
-            <label class="gf-form-label width-5">Seconds</label>
-            <input type="number" class="gf-form-input width-5" ng-model="ctrl.panel.secondToRefresh"
-                   ng-change="ctrl.setSecond()"></input>
-            <button ng-click="ctrl.start()" id="upd-btn" class="btn btn-success">Start</button>
-            <button ng-click="ctrl.stop()" id="upd-btn" class="btn btn-danger">Stop</button>
+            <label class="gf-form-label query-keyword">Status:</label>
+            <input type="text" class="gf-form-input max-width-20 ng-pristine ng-untouched ng-valid ng-empty" disabled ng-model="ctrl.monitoring_message" ng-model-onblur="">
         </div>
         <div class="gf-form">
-        <button ng-click="ctrl.runUpdate()" id="upd-btn" class="btn btn-secondary" style="margin-top: 1em">Manual refresh</button>
+            <label class="gf-form-label width-5">Seconds</label>
+            <input type="number" class="gf-form-input width-5" ng-model="ctrl.panel.secondToRefresh"
+                   ng-change="ctrl.setSecond()"/>
+            <button ng-click="ctrl.start()" id="start_button" class="btn btn-success">Start</button>
+            <button ng-click="ctrl.stop()" id="stop_button" class="btn btn-danger">Stop</button>
+        </div>
+        <div class="gf-form">
+            <button ng-click="ctrl.runUpdate()" id="manual_button" class="btn btn-secondary" style="margin-top: 1em">
+                Manual refresh
+            </button>
         </div>
 
     </div>

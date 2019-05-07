@@ -51,6 +51,7 @@ export class JsImportPanel extends PanelCtrl {
 
   // Panel output string
   public message: string;
+  public monitoring_message: string;
 
   // Saved data
   public saved_read_connections: boolean = false;
@@ -117,6 +118,7 @@ export class JsImportPanel extends PanelCtrl {
     } else {
       this.message = "Open 'edit' window to configure panel with a Bayesian network";
     }
+    this.monitoring_message = "Monitoring not active";
     console.log("[7DOS G&B][JsImportPanel]Panel Constructor() done");
   }
 
@@ -271,6 +273,7 @@ export class JsImportPanel extends PanelCtrl {
         return;
       }
       this.is_calc_running = true;
+      this.monitoring_message = "Monitoring running!";
       this.runUpdate();
       JsImportPanel.showSuccessMessage("Successfully started the monitoring!");
       console.log("[7DOS G&B][JsImportPanel]start() - Successfully started the monitoring");
@@ -284,6 +287,7 @@ export class JsImportPanel extends PanelCtrl {
   public stop () {
     if (this.is_calc_running) {
       this.is_calc_running = false;
+      this.monitoring_message = "Monitoring not active";
       this.$timeout.cancel(this.nextTickPromise);
       JsImportPanel.showSuccessMessage("Successfully stopped the monitoring!");
       console.log("[7DOS G&B][JsImportPanel]stop() - Successfully stopped the monitoring");
