@@ -3,6 +3,7 @@
  * @Type TypeScript file
  * @Desc Contains the ConcreteNetworkAdapter class.
  */
+import clone from "clone";
 import {NetworkAdapter, NodeAdapter} from "./adapter";
 
 /**
@@ -111,12 +112,13 @@ export class ConcreteNetworkAdapter implements NetworkAdapter {
    * @returns Return a Array<NodeAdapter> that represent the NodeList
    */
   public getNodeList (): Array<NodeAdapter> {
-  // tslint:disable-next-line: prefer-object-spread
+    // tslint:disable-next-line: prefer-object-spread
     return Object.assign([], this.nodeList); // returns deep copy
   }
 
-  public getJgraphCopy(): JGraph {
-    // tslint:disable-next-line: prefer-object-spread
-    return Object.assign([], this.graph);
+  public getJgraphCopy (): JGraph {
+    // From library "clone"
+    // We need to return a clone of the graph to not ruin the main graph with possible user actions
+    return clone(this.graph);
   }
 }
