@@ -1,7 +1,6 @@
 import appEvents from "grafana/app/core/app_events";
 import {PanelCtrl} from "grafana/app/plugins/sdk";
 import {WriteClient} from "../../core/write-client/WriteClient";
-import {ConcreteWriteClientFactory} from "../../core/write-client/WriteClientFactory";
 import {SelectDB_Directive} from "./select_ts_tab";
 import {SetWriteConnection_Directive} from "./set_write_connection_tab";
 
