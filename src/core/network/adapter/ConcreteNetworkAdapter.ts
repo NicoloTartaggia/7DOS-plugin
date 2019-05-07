@@ -116,6 +116,6 @@ export class ConcreteNetworkAdapter implements NetworkAdapter {
   }
 
   public getJgraphCopy(): JGraph {
-    return {...this.graph};
+    return Object.assign([], this.graph);
   }
 }
