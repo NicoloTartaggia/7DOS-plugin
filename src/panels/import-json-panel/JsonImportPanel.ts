@@ -172,10 +172,6 @@ export class JsImportPanel extends PanelCtrl {
     this.events.emit("data-received", null);
     this.netUpdater = new NetUpdater(this.loaded_network);
     this.netReader = new NetReader(this.loaded_network);
-    this.netWriter = new SingleNetWriter(await new ConcreteWriteClientFactory()
-      .makeInfluxWriteClient("http://localhost", "8086", "myDB"));
-    this.netManager = new NetManager(this.netReader, this.netUpdater, this.netWriter);
-    this.timeBasedNetUpdater = new TimeBasedNetUpdater(this.netManager);
     // Reset saved connection booleans
     this.saved_read_connections = false;
     this.saved_write_connections = false;
