@@ -142,7 +142,8 @@ export class SelectDB_Ctrl {
         console.log("[7DOS G&B][SelectDB_Ctrl]disconnectNodes() - disconnection done!");
         JsImportPanel.showSuccessMessage(node + " disconnected succesfully!");
       } catch (e) {
-        JsImportPanel.showErrorMessage("Error during disconnection", e.toString());
+        JsImportPanel.showErrorMessage("Error during disconnection",
+          "This node might be not linked to any flow");
       }
     }
   }
