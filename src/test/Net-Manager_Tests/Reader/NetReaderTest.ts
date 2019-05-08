@@ -5,7 +5,7 @@ import {DataSource} from "../../../core/net-manager/reader/Datasource";
 
 import {expect} from "chai";
 
-const schemaPath: string = "../../../core/network/factory/network_structure.schema.json";
+const schemaPath: string = "../../../../example_network/network_structure.schema.json";
 const jsonSchema = require(schemaPath);
 const jsonSchemaString: string = JSON.stringify(jsonSchema);
 

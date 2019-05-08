@@ -13,7 +13,7 @@ import { ConcreteNodeAdapter } from "../../../core/network/adapter/ConcreteNodeA
 import jsbayes = require("jsbayes");
 import { CalcResult } from "core/net-manager/result/calculation-result/CalcResult";
 
-const schemaPath: string = "../../../core/network/factory/network_structure.schema.json";
+const schemaPath: string = "../../../../example_network/network_structure.schema.json";
 const testNetworkPath: string = "../../Util_JSON/TestNetwork.json";
 const json = require(testNetworkPath);
 const jsonString: string = JSON.stringify(json);

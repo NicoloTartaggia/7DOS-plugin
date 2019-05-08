@@ -6,7 +6,7 @@ import { JsonNetParser } from "../../core/network/factory/factory";
 import { ConcreteWriteClientFactory } from "../../core/write-client/write-client";
 import { ConcreteNetworkAdapter } from "../../core/network/adapter/adapter";
 
-const schemaPath: string = "../../core/network/factory/network_structure.schema.json";
+const schemaPath: string = "../../../example_network/network_structure.schema.json";
 
 import {expect} from "chai";
 
