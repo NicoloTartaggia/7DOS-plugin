@@ -161,4 +161,13 @@ export class DataSource {
       this.type, this.name, this.grafanaDatasourceId);
   }
 
+  /**
+   * @desc Compare two datasources and return true if both of them has the same host (ip+port).
+   * @param other The other datasource to compare.
+   * @returns True if the datasources has the same host, false otherwise.
+   */
+  public hasSameHost(other: DataSource): boolean {
+    return this.host === other.host && this.port === other.port;
+  }
+
 }

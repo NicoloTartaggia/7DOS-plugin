@@ -162,7 +162,20 @@ export class SelectDB_Ctrl {
       // Copy datasource, this is necessary to use DataSource functions
       const c_datasource: DataSource = DataSource.copy(element.datasource as DataSource);
       // Get the datasource id and set it as the currently selected datasource for the node
-      this.selected_datasource[element.nodename] = c_datasource.getGrafanaDatasourceId().toString();
+      const saved_id = c_datasource.getGrafanaDatasourceId().toString();
+      if (Object.keys(this.datasources).indexOf(saved_id) >= 0) {
+        // If the saved id exist in the current list, save it directly
+        this.selected_datasource[element.nodename] = saved_id;
+      } else {
+        // If the saved id don't exist in the current list, let's compare all datasources to find the same host
+        console.log("[7DOS G&B][SelectDB_Ctrl]loaddata() - Can't find datasource id, using Datasource.hasSameHost()");
+        for (const datasource_id in Object.keys(this.datasources)) {
+          if (this.datasources[datasource_id].hasSameHost(c_datasource)) {
+            this.selected_datasource[element.nodename] = datasource_id;
+            break;
+          }
+        }
+      }
       // Get the db name, set it as currently selected database and update the objects
       this.selected_database_name[element.nodename] = c_datasource.getDatabase();
       this.update_selected_database(element.nodename);
