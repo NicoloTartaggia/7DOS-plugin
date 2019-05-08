@@ -1,8 +1,14 @@
 <div class="editor-row">
     <div class="gf-form-group">
         <div class="gf-form">
+            <label class="gf-form-label width-20">Load datasources and saved data</label>
             <button type="button" id="load-btn" ng-click="ctrl.loadData()" class="btn btn-success" ng-model="load" >Load data</button>
-            <p style="padding-bottom: 4em"></p>
+        </div>
+        <div class="gf-form-inline" style="padding-bottom: 1em">
+            <div class="gf-form">
+                <label class="gf-form-label width-20">Upload connections file</label>
+                <dash-upload on-upload="ctrl.loadSavedConnections(dash)"></dash-upload>
+            </div>
         </div>
         <div class="gf-form" ng-repeat="value in ctrl.nodes" style="align-items: flex-start">
             <label class="gf-form-label width-20">Node: {{value.getName()}} </label>
@@ -39,12 +45,18 @@
                     </select>
                 </div>
                 <div class="width-15">
-                    <button type="button" id="query-btn" ng-click="ctrl.disconnectNodes(value.getName())" class="btn btn-danger" ng-model="load">Disconnect node</button>
+                    <button type="button" ng-click="ctrl.disconnectNodes(value.getName())" class="btn btn-danger" ng-model="load">Disconnect node</button>
                 </div>
             </div>
         </div>
-        <div class="gf-form">
-            <button type="button" id="query-btn" ng-click="ctrl.connectNodes()" class="btn btn-success" ng-model="load" >Save connections</button>
-        </div>
+        <div class="gf-form-group">
+            <div class="gf-form" style="padding-top: 1em">
+                <label class="gf-form-label width-20">Save nodes connections</label>
+                <button type="button" ng-click="ctrl.connectNodes()" class="btn btn-success" ng-model="load" >Save connections</button>
+            </div>
+            <div class="gf-form">
+                <label class="gf-form-label width-20">Export saved nodes connections as .json</label>
+                <button type="button" ng-click="ctrl.exportSavedConnections()" class="btn btn-success" ng-model="load" >Export connections</button>
+            </div>
     </div>
 </div>

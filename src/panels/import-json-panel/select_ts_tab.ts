@@ -119,6 +119,58 @@ export class SelectDB_Ctrl {
     delete this.selected_field[node];
   }
 
+  public exportSavedConnections (): void {
+    // Re-save current connections
+    this.connectNodes();
+    // Export the json
+    const json_content = JSON.stringify(this.panel.save_datasources);
+
+    const element = document.createElement("a");
+    element.setAttribute("href", "data:text/json;charset=utf-8," + encodeURIComponent(json_content));
+    element.setAttribute("download", "saved_connections.json");
+
+    element.style.display = "none";
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+  }
+
+  public loadSavedConnections (file_content): void {
+    console.log("[7DOS G&B][SelectDB_Ctrl]loadSavedConnections() - loading connections from file...");
+    console.log(file_content);
+    const loaded_elements: [] = JSON.parse(JSON.stringify(file_content));
+    if (loaded_elements.length > 0) {
+      try {
+        // Validate the loaded array by trying to read all its proprieties
+        for (const element of loaded_elements) {
+          const loaded_element: Saved_Connecton = element as Saved_Connecton;
+          const cast_element: DataSource = loaded_element.datasource as DataSource;
+          if (cast_element === null || cast_element === undefined) {
+            throw new Error("Loaded datasource cannot be copied! Probably is not well-made (ERR-1)");
+          }
+          const copied_datasource: DataSource = DataSource.copy(loaded_element.datasource as DataSource);
+          if (copied_datasource === null || copied_datasource === undefined) {
+            throw new Error("Loaded datasource cannot be copied! Probably is not well-made (ERR-2)");
+          }
+          // TODO VALIDATE LENGTH
+          console.log(copied_datasource.getHost());
+          console.log(copied_datasource.getPort());
+          console.log(copied_datasource.getDatabase());
+          loaded_element.nodename.toString();
+          loaded_element.field.toString();
+          loaded_element.table.toString();
+        }
+        // Elements should be valid, let's overwrite the saved array and load the data
+        // this.panel.save_datasources = loaded_elements;
+      } catch (e) {
+        console.error("[7DOS G&B][SelectDB_Ctrl]loadSavedConnections() - " +
+          "Can't load connections from file, error:" + e.toString());
+      }
+    }
+  }
+
   public connectNodes () {
     console.log("[7DOS G&B][SelectDB_Ctrl]connectNodes() - connecting nodes to datasources...");
     for (let i = 0; i < this.nodes.length; i++) {
