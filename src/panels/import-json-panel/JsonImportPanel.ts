@@ -69,6 +69,7 @@ export class JsImportPanel extends PanelCtrl {
   public nextTickPromise: any;
   public panelDefaults = {
     draw_area_id: "",
+    graph_connected_to_network: false,
     jsonContent: "",
     save_datasources: [],
     secondToRefresh: 5,
@@ -216,16 +217,27 @@ export class JsImportPanel extends PanelCtrl {
     this.clear_current_draw();
 
     const g = this.loaded_network.getJgraphCopy();
+    if (!this.is_calc_running || !this.panel.graph_connected_to_network) {
+      // console.log("Resampling");
+      // g.reinit();
+    }
+    console.log("---");
+    console.log(this.panel.graph_connected_to_network);
+    console.log("---");
     g.reinit();
     g.sample(10000);
 
     const graph: VGraph = jsbayesviz.fromGraph(g, this.panel.draw_area_id);
-    const options: DrawOptions = {graph: undefined, height: undefined, id: "", samples: 0, width: undefined};
+    const options: DrawOptions = {
+      canBeObserved: true, graph: undefined,
+      height: undefined, id: "", samples: 0, width: undefined,
+    };
     options.id = "#" + this.panel.draw_area_id;
     options.width = 2000;
     options.height = 1000;
     options.graph = graph;
     options.samples = 1000;
+    options.canBeObserved = !this.panel.graph_connected_to_network;
 
     console.log("[7DOS G&B][JsImportPanel]draw_network() - calling jsbayesviz.draw()");
     jsbayesviz.draw(options);
@@ -305,6 +317,8 @@ export class JsImportPanel extends PanelCtrl {
       JsImportPanel.showErrorMessage("Error during network update",
         "An error occurred during network update. For more details, check the console.");
       console.error("[7DOS G&B][JsImportPanel]runUpdate() - updateNet() ERROR:" + err.toString());
+    }).then(() => {
+      this.draw_network();
     });
 
     if (this.is_calc_running) {

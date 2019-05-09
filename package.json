@@ -67,7 +67,7 @@
     "@akanass/rx-http-request": "^3.1.0",
     "@types/remarkable": "^1.7.3",
     "ajv": "^6.10.0",
-    "better-jsbayes-viz": "0.0.89",
+    "better-jsbayes-viz": "0.0.9",
     "clone": "^2.1.2",
     "coveralls": "^3.0.3",
     "influx": "^5.0.7",
