@@ -122,6 +122,12 @@ export class SelectDB_Ctrl {
   public exportSavedConnections (): void {
     // Re-save current connections
     this.connectNodes();
+    // Check if there are connections to export
+    if (this.panel.save_datasources.length === 0) {
+      console.log("[7DOS G&B][SelectDB_Ctrl]exportSavedConnections() - No saved connections to export!");
+      JsImportPanel.showErrorMessage("Warning", "No saved connections to export!");
+      return;
+    }
     // Export the json
     const json_content = JSON.stringify(this.panel.save_datasources);
 
@@ -139,7 +145,6 @@ export class SelectDB_Ctrl {
 
   public loadSavedConnections (file_content): void {
     console.log("[7DOS G&B][SelectDB_Ctrl]loadSavedConnections() - loading connections from file...");
-    console.log(file_content);
     const loaded_elements: [] = JSON.parse(JSON.stringify(file_content));
     if (loaded_elements.length > 0) {
       try {
@@ -154,20 +159,43 @@ export class SelectDB_Ctrl {
           if (copied_datasource === null || copied_datasource === undefined) {
             throw new Error("Loaded datasource cannot be copied! Probably is not well-made (ERR-2)");
           }
-          // TODO VALIDATE LENGTH
-          console.log(copied_datasource.getHost());
-          console.log(copied_datasource.getPort());
-          console.log(copied_datasource.getDatabase());
-          loaded_element.nodename.toString();
-          loaded_element.field.toString();
-          loaded_element.table.toString();
+          if (copied_datasource.getHost().length === 0) {
+            throw new Error("copied_datasource getHost() returned an invalid value and cannot be used!");
+          }
+          if (copied_datasource.getPort().length === 0) {
+            throw new Error("copied_datasource getPort() returned an invalid value and cannot be used!");
+          }
+          if (copied_datasource.getDatabase().length === 0) {
+            throw new Error("copied_datasource getDatabase() returned an invalid value and cannot be used!");
+          }
+          if (loaded_element.nodename.toString().length === 0) {
+            throw new Error("element 'nodename' is an invalid value and cannot be used!");
+          }
+          if (loaded_element.field.toString().length === 0) {
+            throw new Error("element 'field' is an invalid value and cannot be used!");
+          }
+          if (loaded_element.table.toString().length === 0) {
+            throw new Error("element 'table' is an invalid value and cannot be used!");
+          }
         }
         // Elements should be valid, let's overwrite the saved array and load the data
-        // this.panel.save_datasources = loaded_elements;
+        this.panel.save_datasources = loaded_elements;
+        console.log("[7DOS G&B][SelectDB_Ctrl]loadSavedConnections() - " +
+          "loading connections done, calling standard load()");
+        // Call standard load
+        this.loadData();
+        this.connectNodes();
       } catch (e) {
         console.error("[7DOS G&B][SelectDB_Ctrl]loadSavedConnections() - " +
           "Can't load connections from file, error:" + e.toString());
+        JsImportPanel.showErrorMessage("Error during import",
+          "Can't load connections from file, check console for more information.");
       }
+    } else {
+      console.log("[7DOS G&B][SelectDB_Ctrl]loadSavedConnections() - " +
+        "Can't load connections, empty file");
+      JsImportPanel.showErrorMessage("Error during import",
+        "Nothing to load from the given file, probably is empty...");
     }
   }
 
@@ -221,7 +249,7 @@ export class SelectDB_Ctrl {
       } else {
         // If the saved id don't exist in the current list, let's compare all datasources to find the same host
         console.log("[7DOS G&B][SelectDB_Ctrl]loaddata() - Can't find datasource id, using Datasource.hasSameHost()");
-        for (const datasource_id in Object.keys(this.datasources)) {
+        for (const datasource_id of Object.keys(this.datasources)) {
           if (this.datasources[datasource_id].hasSameHost(c_datasource)) {
             this.selected_datasource[element.nodename] = datasource_id;
             break;
