@@ -6,7 +6,8 @@
             <input type="text" class="gf-form-input max-width-20 ng-pristine ng-untouched ng-valid ng-empty" disabled
                    ng-model="ctrl.monitoring_message" ng-model-onblur="">
         </div>
-        <gf-form-switch class="gf-form" label="Align" tooltip="Align left and right Y-axes" label-class="width-6" switch-class="width-5"
+        <gf-form-switch class="gf-form" label="Graph with real probabilities"
+                        tooltip="Update the graph drawn with real probabilities coming from the input flux" label-class="width-15" switch-class="width-5"
                         checked="ctrl.panel.graph_connected_to_network" on-change="ctrl.draw_network()">
             <label for="check-324" class="gf-form-label width-6 pointer">Update graph with real probabilities</label>
             <div class="gf-form-switch width-5">
