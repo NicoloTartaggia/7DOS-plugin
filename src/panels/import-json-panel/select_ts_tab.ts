@@ -49,7 +49,7 @@ export class SelectDB_Ctrl {
   public dashboard: DashboardModel;
 
   // Private class stuff - used to store infos about the <select> options
-  private nodes: Array<NodeAdapter>;
+  private nodes: Array<NodeAdapter> = [];
   private datasources: { [datasource_id: string]: DataSource; } = {};
   private databases_names: { [datasource_id: string]: Array<string>; } = {};
   private databases: { [datasource_id: string]: { [database_name: string]: Script_Found_Database; } } = {};
@@ -145,6 +145,11 @@ export class SelectDB_Ctrl {
 
   public loadSavedConnections (file_content): void {
     console.log("[7DOS G&B][SelectDB_Ctrl]loadSavedConnections() - loading connections from file...");
+    if (this.nodes === null || this.nodes === undefined || this.nodes.length === 0) {
+      console.log("[7DOS G&B][SelectDB_Ctrl]loadSavedConnections() - the network is empty...");
+      JsImportPanel.showErrorMessage("Error", "There are no nodes in the network...");
+      return;
+    }
     const loaded_elements: [] = JSON.parse(JSON.stringify(file_content));
     if (loaded_elements.length > 0) {
       try {
@@ -208,7 +213,6 @@ export class SelectDB_Ctrl {
       }
     }
     console.log("[7DOS G&B][SelectDB_Ctrl]connectNodes() - connection done!");
-    JsImportPanel.showSuccessMessage("Connections saved succesfully!");
     this.save_connections();
     this.panelCtrl.saved_read_connections = true;
   }
@@ -411,6 +415,11 @@ export class SelectDB_Ctrl {
 
   private save_connections () {
     console.log("[7DOS G&B][SelectDB_Ctrl]save_connections() - saving connections...");
+    if (this.nodes === null || this.nodes === undefined || this.nodes.length === 0) {
+      console.log("[7DOS G&B][SelectDB_Ctrl]save_connections() - nothing to save...");
+      JsImportPanel.showErrorMessage("Error", "There are no nodes in the network to be saved...");
+      return;
+    }
     for (let i = 0; i < this.nodes.length; i++) {
       const [query, datasource] = this.getQuery(i);
       if (datasource !== null) {
@@ -438,6 +447,7 @@ export class SelectDB_Ctrl {
       }
     }
     console.log("[7DOS G&B][SelectDB_Ctrl]save_connections() - save complete!");
+    JsImportPanel.showSuccessMessage("Connections saved succesfully!");
   }
 
   private getTableObjFromName (database: Script_Found_Database, tableName: string): Script_Found_Table {
