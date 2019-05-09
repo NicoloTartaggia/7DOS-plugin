@@ -228,7 +228,7 @@ export class SelectDB_Ctrl {
         for (let i = 0; i < this.panel.save_datasources.length; i++) {
           if (node === this.panel.save_datasources[i].nodename) {
             // Remove the element and stop the for
-            this.panel.save_datasources.slice(i, 1);
+            this.panel.save_datasources.splice(i, 1);
             break;
           }
         }
