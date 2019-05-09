@@ -119,6 +119,7 @@ export class SelectDB_Ctrl {
     delete this.selected_field[node];
   }
 
+  // Function that export the nodes connections as json file
   public exportSavedConnections (): void {
     // Re-save current connections
     this.connectNodes();
@@ -143,8 +144,10 @@ export class SelectDB_Ctrl {
     document.body.removeChild(element);
   }
 
+  // Function that load the nodes connection from a json file
   public loadSavedConnections (file_content): void {
     console.log("[7DOS G&B][SelectDB_Ctrl]loadSavedConnections() - loading connections from file...");
+    // First check if there are nodes in the network
     if (this.nodes === null || this.nodes === undefined || this.nodes.length === 0) {
       console.log("[7DOS G&B][SelectDB_Ctrl]loadSavedConnections() - the network is empty...");
       JsImportPanel.showErrorMessage("Error", "There are no nodes in the network...");
@@ -187,7 +190,7 @@ export class SelectDB_Ctrl {
         this.panel.save_datasources = loaded_elements;
         console.log("[7DOS G&B][SelectDB_Ctrl]loadSavedConnections() - " +
           "loading connections done, calling standard load()");
-        // Call standard load
+        // Call standard load and connect
         this.loadData();
         this.connectNodes();
       } catch (e) {
@@ -196,7 +199,7 @@ export class SelectDB_Ctrl {
         JsImportPanel.showErrorMessage("Error during import",
           "Can't load connections from file, check console for more information.");
       }
-    } else {
+    } else { // The loaded json is empty
       console.log("[7DOS G&B][SelectDB_Ctrl]loadSavedConnections() - " +
         "Can't load connections, empty file");
       JsImportPanel.showErrorMessage("Error during import",
