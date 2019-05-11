@@ -14,6 +14,8 @@ was the contributing factor.
 More details in [Wikipedia.](https://en.wikipedia.org/wiki/Bayesian_network)
 
 ## The plugin
+![Plugin Screenshot](SCREENSHOT.PNG "Screenshot of the plugin node-flux connection page")
+
 Our plugin gets flows of information from one or more 
 inputs and can perform a probabilistic inference through 
 several steps:
@@ -40,10 +42,10 @@ course.
 
 
 7DOS is composed of seven members:
-- [Nicolò Tartaggia](https://github.com/NicoloTartaggia)
 - [Andrea Trevisin](https://github.com/knowbot)
-- [Michele Roverato](https://github.com/ScrappyCocco)
 - [Giacomo Barzon](https://github.com/Giacomobarzon97)
-- [Marco Costantino](https://github.com/UdrK)
-- [Lorenzo Busin](https://github.com/lorenzobusin)
 - [Giovanni Sorice](https://github.com/GiovanniSorice)
+- [Lorenzo Busin](https://github.com/lorenzobusin)
+- [Marco Costantino](https://github.com/UdrK)
+- [Michele Roverato](https://github.com/ScrappyCocco)
+- [Nicolò Tartaggia](https://github.com/NicoloTartaggia)
