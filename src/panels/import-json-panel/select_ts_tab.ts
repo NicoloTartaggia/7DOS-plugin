@@ -49,7 +49,7 @@ export class SelectDB_Ctrl {
   public dashboard: DashboardModel;
 
   // Private class stuff - used to store infos about the <select> options
-  private nodes: Array<NodeAdapter>;
+  private nodes: Array<NodeAdapter> = [];
   private datasources: { [datasource_id: string]: DataSource; } = {};
   private databases_names: { [datasource_id: string]: Array<string>; } = {};
   private databases: { [datasource_id: string]: { [database_name: string]: Script_Found_Database; } } = {};
@@ -119,6 +119,94 @@ export class SelectDB_Ctrl {
     delete this.selected_field[node];
   }
 
+  // Function that export the nodes connections as json file
+  public exportSavedConnections (): void {
+    // Re-save current connections
+    this.connectNodes();
+    // Check if there are connections to export
+    if (this.panel.save_datasources.length === 0) {
+      console.log("[7DOS G&B][SelectDB_Ctrl]exportSavedConnections() - No saved connections to export!");
+      JsImportPanel.showErrorMessage("Warning", "No saved connections to export!");
+      return;
+    }
+    // Export the json
+    const json_content = JSON.stringify(this.panel.save_datasources);
+
+    const element = document.createElement("a");
+    element.setAttribute("href", "data:text/json;charset=utf-8," + encodeURIComponent(json_content));
+    element.setAttribute("download", "saved_connections.json");
+
+    element.style.display = "none";
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+  }
+
+  // Function that load the nodes connection from a json file
+  public loadSavedConnections (file_content): void {
+    console.log("[7DOS G&B][SelectDB_Ctrl]loadSavedConnections() - loading connections from file...");
+    // First check if there are nodes in the network
+    if (this.nodes === null || this.nodes === undefined || this.nodes.length === 0) {
+      console.log("[7DOS G&B][SelectDB_Ctrl]loadSavedConnections() - the network is empty...");
+      JsImportPanel.showErrorMessage("Error", "There are no nodes in the network...");
+      return;
+    }
+    const loaded_elements: [] = JSON.parse(JSON.stringify(file_content));
+    if (loaded_elements.length > 0) {
+      try {
+        // Validate the loaded array by trying to read all its proprieties
+        for (const element of loaded_elements) {
+          const loaded_element: Saved_Connecton = element as Saved_Connecton;
+          const cast_element: DataSource = loaded_element.datasource as DataSource;
+          if (cast_element === null || cast_element === undefined) {
+            throw new Error("Loaded datasource cannot be copied! Probably is not well-made (ERR-1)");
+          }
+          const copied_datasource: DataSource = DataSource.copy(loaded_element.datasource as DataSource);
+          if (copied_datasource === null || copied_datasource === undefined) {
+            throw new Error("Loaded datasource cannot be copied! Probably is not well-made (ERR-2)");
+          }
+          if (copied_datasource.getHost().length === 0) {
+            throw new Error("copied_datasource getHost() returned an invalid value and cannot be used!");
+          }
+          if (copied_datasource.getPort().length === 0) {
+            throw new Error("copied_datasource getPort() returned an invalid value and cannot be used!");
+          }
+          if (copied_datasource.getDatabase().length === 0) {
+            throw new Error("copied_datasource getDatabase() returned an invalid value and cannot be used!");
+          }
+          if (loaded_element.nodename.toString().length === 0) {
+            throw new Error("element 'nodename' is an invalid value and cannot be used!");
+          }
+          if (loaded_element.field.toString().length === 0) {
+            throw new Error("element 'field' is an invalid value and cannot be used!");
+          }
+          if (loaded_element.table.toString().length === 0) {
+            throw new Error("element 'table' is an invalid value and cannot be used!");
+          }
+        }
+        // Elements should be valid, let's overwrite the saved array and load the data
+        this.panel.save_datasources = loaded_elements;
+        console.log("[7DOS G&B][SelectDB_Ctrl]loadSavedConnections() - " +
+          "loading connections done, calling standard load()");
+        // Call standard load and connect
+        this.loadData();
+        this.connectNodes();
+      } catch (e) {
+        console.error("[7DOS G&B][SelectDB_Ctrl]loadSavedConnections() - " +
+          "Can't load connections from file, error:" + e.toString());
+        JsImportPanel.showErrorMessage("Error during import",
+          "Can't load connections from file, check console for more information.");
+      }
+    } else { // The loaded json is empty
+      console.log("[7DOS G&B][SelectDB_Ctrl]loadSavedConnections() - " +
+        "Can't load connections, empty file");
+      JsImportPanel.showErrorMessage("Error during import",
+        "Nothing to load from the given file, probably is empty...");
+    }
+  }
+
   public connectNodes () {
     console.log("[7DOS G&B][SelectDB_Ctrl]connectNodes() - connecting nodes to datasources...");
     for (let i = 0; i < this.nodes.length; i++) {
@@ -128,7 +216,6 @@ export class SelectDB_Ctrl {
       }
     }
     console.log("[7DOS G&B][SelectDB_Ctrl]connectNodes() - connection done!");
-    JsImportPanel.showSuccessMessage("Connections saved succesfully!");
     this.save_connections();
     this.panelCtrl.saved_read_connections = true;
   }
@@ -144,7 +231,7 @@ export class SelectDB_Ctrl {
         for (let i = 0; i < this.panel.save_datasources.length; i++) {
           if (node === this.panel.save_datasources[i].nodename) {
             // Remove the element and stop the for
-            this.panel.save_datasources.slice(i, 1);
+            this.panel.save_datasources.splice(i, 1);
             break;
           }
         }
@@ -162,7 +249,20 @@ export class SelectDB_Ctrl {
       // Copy datasource, this is necessary to use DataSource functions
       const c_datasource: DataSource = DataSource.copy(element.datasource as DataSource);
       // Get the datasource id and set it as the currently selected datasource for the node
-      this.selected_datasource[element.nodename] = c_datasource.getGrafanaDatasourceId().toString();
+      const saved_id = c_datasource.getGrafanaDatasourceId().toString();
+      if (Object.keys(this.datasources).indexOf(saved_id) >= 0) {
+        // If the saved id exist in the current list, save it directly
+        this.selected_datasource[element.nodename] = saved_id;
+      } else {
+        // If the saved id don't exist in the current list, let's compare all datasources to find the same host
+        console.log("[7DOS G&B][SelectDB_Ctrl]loaddata() - Can't find datasource id, using Datasource.hasSameHost()");
+        for (const datasource_id of Object.keys(this.datasources)) {
+          if (this.datasources[datasource_id].hasSameHost(c_datasource)) {
+            this.selected_datasource[element.nodename] = datasource_id;
+            break;
+          }
+        }
+      }
       // Get the db name, set it as currently selected database and update the objects
       this.selected_database_name[element.nodename] = c_datasource.getDatabase();
       this.update_selected_database(element.nodename);
@@ -318,6 +418,11 @@ export class SelectDB_Ctrl {
 
   private save_connections () {
     console.log("[7DOS G&B][SelectDB_Ctrl]save_connections() - saving connections...");
+    if (this.nodes === null || this.nodes === undefined || this.nodes.length === 0) {
+      console.log("[7DOS G&B][SelectDB_Ctrl]save_connections() - nothing to save...");
+      JsImportPanel.showErrorMessage("Error", "There are no nodes in the network to be saved...");
+      return;
+    }
     for (let i = 0; i < this.nodes.length; i++) {
       const [query, datasource] = this.getQuery(i);
       if (datasource !== null) {
@@ -345,6 +450,7 @@ export class SelectDB_Ctrl {
       }
     }
     console.log("[7DOS G&B][SelectDB_Ctrl]save_connections() - save complete!");
+    JsImportPanel.showSuccessMessage("Connections saved succesfully!");
   }
 
   private getTableObjFromName (database: Script_Found_Database, tableName: string): Script_Found_Table {

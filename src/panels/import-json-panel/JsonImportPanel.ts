@@ -187,7 +187,7 @@ export class JsImportPanel extends PanelCtrl {
   public downloadNetwork (filename, id) {
     const element = document.createElement("a");
     const text = (document.getElementById(id) as HTMLInputElement).value;
-    element.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(text));
+    element.setAttribute("href", "data:text/json;charset=utf-8," + encodeURIComponent(text));
     element.setAttribute("download", filename);
 
     element.style.display = "none";
