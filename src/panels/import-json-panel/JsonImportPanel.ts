@@ -69,6 +69,7 @@ export class JsImportPanel extends PanelCtrl {
   public nextTickPromise: any;
   public panelDefaults = {
     draw_area_id: "",
+    graph_connected_to_network: false,
     jsonContent: "",
     save_datasources: [],
     secondToRefresh: 5,
@@ -78,6 +79,9 @@ export class JsImportPanel extends PanelCtrl {
 
   // Is the monitoring running
   private is_calc_running: boolean = false;
+
+  // Saved original graph without observe
+  private saved_original_graph: JGraph = null;
 
   private readonly json_schema_string = '{"$schema":"http://json-schema.org/schema#","type":"object",' +
     '"properties":{"nodes":{"title":"List of Bayesian Network nodes","description":"This is the array ' +
@@ -173,6 +177,7 @@ export class JsImportPanel extends PanelCtrl {
     this.saved_read_connections = false;
     this.saved_write_connections = false;
     // Show success message
+    this.saved_original_graph = this.loaded_network.getJgraphCopy();
     this.draw_network();
     JsImportPanel.showSuccessMessage("Bayesian network loaded successfully!");
   }
@@ -215,21 +220,31 @@ export class JsImportPanel extends PanelCtrl {
     // Clear current draw
     this.clear_current_draw();
 
-    const g = this.loaded_network.getJgraphCopy();
-    g.reinit();
-    g.sample(10000);
+    let g: JGraph;
+    if (!this.is_calc_running || !this.panel.graph_connected_to_network) {
+      g = this.saved_original_graph; // Use the original graph without observe
+    } else {
+      g = this.loaded_network.getJgraphCopy(); // Use the real graph with real observe
+    }
+    g.reinit().then(() => {
+      g.sample(10000).then(() => {
+        const graph: VGraph = jsbayesviz.fromGraph(g, this.panel.draw_area_id);
+        const options: DrawOptions = {
+          canBeObserved: true, graph: undefined,
+          height: undefined, id: "", samples: 0, width: undefined,
+        };
+        options.id = "#" + this.panel.draw_area_id;
+        options.width = 2000;
+        options.height = 1000;
+        options.graph = graph;
+        options.samples = 1000;
+        options.canBeObserved = !this.panel.graph_connected_to_network;
 
-    const graph: VGraph = jsbayesviz.fromGraph(g, this.panel.draw_area_id);
-    const options: DrawOptions = {graph: undefined, height: undefined, id: "", samples: 0, width: undefined};
-    options.id = "#" + this.panel.draw_area_id;
-    options.width = 2000;
-    options.height = 1000;
-    options.graph = graph;
-    options.samples = 1000;
-
-    console.log("[7DOS G&B][JsImportPanel]draw_network() - calling jsbayesviz.draw()");
-    jsbayesviz.draw(options);
-    console.log("[7DOS G&B][JsImportPanel]draw_network() - done");
+        console.log("[7DOS G&B][JsImportPanel]draw_network() - calling jsbayesviz.draw()");
+        jsbayesviz.draw(options);
+        console.log("[7DOS G&B][JsImportPanel]draw_network() - done");
+      });
+    });
   }
 
   public clear_current_draw () {
@@ -305,6 +320,11 @@ export class JsImportPanel extends PanelCtrl {
       JsImportPanel.showErrorMessage("Error during network update",
         "An error occurred during network update. For more details, check the console.");
       console.error("[7DOS G&B][JsImportPanel]runUpdate() - updateNet() ERROR:" + err.toString());
+    }).then(() => {
+      if (this.panel.graph_connected_to_network) {
+        // If the graph should not be updated skip the draw()
+        this.draw_network();
+      }
     });
 
     if (this.is_calc_running) {
