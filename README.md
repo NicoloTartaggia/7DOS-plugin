@@ -14,7 +14,7 @@ was the contributing factor.
 More details in [Wikipedia.](https://en.wikipedia.org/wiki/Bayesian_network)
 
 ## The plugin
-![Plugin Screenshot](SCREENSHOT.PNG "Screenshot of the plugin node-flux connection page")
+![//Plugin screenshot here](SCREENSHOT.PNG "Screenshot of the plugin node-flux connection page")
 
 Our plugin gets flows of information from one or more 
 inputs and can perform a probabilistic inference through 

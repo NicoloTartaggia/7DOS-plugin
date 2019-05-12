@@ -1,28 +1,33 @@
 {
-  "type": "app",
-  "name": "7DOS jsBayes App",
-
-  "id": "app-jsbayes",
-
-  "info": {
-    "author": {
-      "name": "7DOS",
-      "url": "https://github.com/NicoloTartaggia/7DOS-plugin/"
+    "type": "app",
+    "name": "7DOS jsBayes App",
+    "id": "app-jsbayes",
+    "info": {
+        "author": {
+            "name": "7DOS",
+            "url": "https://github.com/NicoloTartaggia/7DOS-plugin/"
+        },
+        "logos": {
+            "small": "img/circular-logo.png",
+            "large": "img/logo-big.png"
+        },
+        "links": [
+            {
+                "name": "Project site",
+                "url": "https://github.com/NicoloTartaggia/7DOS-plugin/"
+            }
+        ],
+        "version": "1.0.0",
+        "updated": "2019-05-17"
     },
-    "logos": {
-      "small": "img/circular-logo.png",
-      "large": "img/logo-big.png"
+    "includes": [
+        {
+            "type": "panel",
+            "name": "7DOS - G&B"
+        }
+    ],
+    "dependencies": {
+        "grafanaVersion": "5.4.x",
+        "plugins": []
     }
-  },
-  "includes": [
-    {
-      "type": "panel",
-      "name": "7DOS - JSON Test Import Panel"
-    }
-
-  ],
-  "dependencies": {
-    "grafanaVersion": "4.6.x",
-    "plugins": []
-  }
 }
