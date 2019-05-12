@@ -220,31 +220,42 @@ export class JsImportPanel extends PanelCtrl {
     // Clear current draw
     this.clear_current_draw();
 
+    // Graph that has to be drawn
     let g: JGraph;
+    // General draw options
+    const options: DrawOptions = {
+      canBeObserved: true, graph: undefined,
+      height: undefined, id: "", samples: 0, width: undefined,
+    };
+    // Set actual proprieties
+    options.id = "#" + this.panel.draw_area_id;
+    options.width = 2000;
+    options.height = 1000;
+    options.samples = 1000;
+    options.canBeObserved = !this.panel.graph_connected_to_network;
+    // Draw the correct graph
     if (!this.is_calc_running || !this.panel.graph_connected_to_network) {
       g = this.saved_original_graph; // Use the original graph without observe
-    } else {
-      g = this.loaded_network.getJgraphCopy(); // Use the real graph with real observe
-    }
-    g.reinit().then(() => {
-      g.sample(10000).then(() => {
-        const graph: VGraph = jsbayesviz.fromGraph(g, this.panel.draw_area_id);
-        const options: DrawOptions = {
-          canBeObserved: true, graph: undefined,
-          height: undefined, id: "", samples: 0, width: undefined,
-        };
-        options.id = "#" + this.panel.draw_area_id;
-        options.width = 2000;
-        options.height = 1000;
-        options.graph = graph;
-        options.samples = 1000;
-        options.canBeObserved = !this.panel.graph_connected_to_network;
+      g.reinit().then(() => {
+        g.sample(10000).then(() => {
+          options.graph = jsbayesviz.fromGraph(g, this.panel.draw_area_id);
 
-        console.log("[7DOS G&B][JsImportPanel]draw_network() - calling jsbayesviz.draw()");
-        jsbayesviz.draw(options);
-        console.log("[7DOS G&B][JsImportPanel]draw_network() - done");
+          console.log("[7DOS G&B][JsImportPanel]draw_network() - " +
+            "calling jsbayesviz.draw() after network resample");
+          jsbayesviz.draw(options);
+          console.log("[7DOS G&B][JsImportPanel]draw_network() - done");
+        });
       });
-    });
+    } else { // If using real probabilities, don't need to sample the graph
+      g = this.loaded_network.getJgraphCopy(); // Use the real graph with real observe
+
+      options.graph = jsbayesviz.fromGraph(g, this.panel.draw_area_id);
+
+      console.log("[7DOS G&B][JsImportPanel]draw_network() - " +
+        "calling jsbayesviz.draw() without re-sampling the network");
+      jsbayesviz.draw(options);
+      console.log("[7DOS G&B][JsImportPanel]draw_network() - done");
+    }
   }
 
   public clear_current_draw () {
