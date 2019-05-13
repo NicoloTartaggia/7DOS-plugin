@@ -1,16 +1,24 @@
-import {ConcreteNetworkAdapter} from "../adapter/ConcreteNetworkAdapter";
-import {AbstractValue} from "../value/AbstractValue";
-import {BoolValue} from "../value/BoolValue";
-import {RangeValue} from "../value/RangeValue";
-import {StringValue} from "../value/StringValue";
-import {ConcreteNetBuilder} from "./ConcreteNetBuilder";
-import {NetBuilder} from "./NetBuilder";
-import {NetParser} from "./NetParser";
+/**
+ * @File JsonNetParser.ts
+ * @Type TypeScript file
+ * @Desc Contains the JsonNetParser class.
+ */
+import {ConcreteNetworkAdapter} from "../adapter/adapter";
+import {AbstractValue, BoolValue, RangeValue, StringValue} from "../value/value";
+import {ConcreteNetBuilder, NetBuilder, NetParser} from "./factory";
 
 import Ajv from "ajv";
-
+/**
+ * @class JsonNetParser
+ * @desc Provides the necessary methods to parse a JSON file containing a
+ * valid network, and creates with a ConcreteNetBuilder.
+ */
 export class JsonNetParser implements NetParser {
-
+/**
+ * @desc Parses a node's state creating the correct AbstractValue subclassed object.
+ * @param current_value The current state to be parsed.
+ * @returns An AbstractValue.
+ */
   private static parse_current_value (current_value): AbstractValue {
     if (current_value.type === "boolean") {
       return new BoolValue(current_value.value, current_value.name);
@@ -43,7 +51,12 @@ export class JsonNetParser implements NetParser {
 
   // --------------------------------
   // JSON PARSING STUFF
-
+  /**
+   * @desc Parses an uploaded JSON file, using a JSON schema to validate it.
+   * @param file_content Content of the uploaded JSON file.
+   * @param json_schema_content Content of the JSON schema.
+   * @returns A ConcreteNetworkAdapter consistent with the network described in the JSON file.
+   */
   public createNet (file_content: string, json_schema_content: string = null): ConcreteNetworkAdapter {
     const builder: NetBuilder = new ConcreteNetBuilder();
 
