@@ -1,3 +1,8 @@
+/**
+ * @File NetBuilder.ts
+ * @Type TypeScript file
+ * @Desc Contains the NetBuilder interface declaration.
+ */
 import {ConcreteNetworkAdapter} from "../adapter/ConcreteNetworkAdapter";
 import {AbstractValue} from "../value/AbstractValue";
 
