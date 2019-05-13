@@ -14,6 +14,9 @@ export class DataSource {
    * @returns A new DataSource object copy of the argument.
    */
   public static copy (other: DataSource): DataSource {
+    if (other == null) {
+      throw new Error("[7DOS G&B][DataSource]copy - invalid datasource parameter");
+    }
     return new DataSource((other.host + ":" + other.port), other.database, other.username, other.password,
       other.type, this.name, other.grafanaDatasourceId);
   }
