@@ -160,6 +160,9 @@ export class DataSource {
    * @returns A new DataSource object.
    */
   public cloneWithDB (database_name: string): DataSource {
+    if (database_name == null || database_name.length === 0) {
+      throw new Error("[7DOS G&B][DataSource]cloneWithDB - invalid database_name parameter");
+    }
     return new DataSource((this.host + ":" + this.port), database_name, this.username, this.password,
       this.type, this.name, this.grafanaDatasourceId);
   }
