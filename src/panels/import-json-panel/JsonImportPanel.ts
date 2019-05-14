@@ -56,6 +56,7 @@ export class JsImportPanel extends PanelCtrl {
   // Saved data
   public saved_read_connections: boolean = false;
   public saved_write_connections: boolean = false;
+  public json_edit_box_content: string = "";
 
   // Form
   public node_name: string;
@@ -118,7 +119,7 @@ export class JsImportPanel extends PanelCtrl {
     // Load data
     if (this.panel.jsonContent !== "") {
       this.message = "";
-      this.onTextBoxRefresh();
+      this.onUpload(JSON.parse(this.panel.jsonContent));
     } else {
       this.message = "Open 'edit' window to configure panel with a Bayesian network";
     }
@@ -169,6 +170,7 @@ export class JsImportPanel extends PanelCtrl {
       throw new Error("[7DOS G&B][JsImportPanel]onUpload() - Error parsing the JSON:" + e.toString());
     }
     this.message = "";
+    this.json_edit_box_content = JSON.stringify(net, null, "\t");
     this.panel.jsonContent = JSON.stringify(net, null, "\t");
     this.events.emit("data-received", null);
     this.netUpdater = new NetUpdater(this.loaded_network);
@@ -203,8 +205,9 @@ export class JsImportPanel extends PanelCtrl {
     document.body.removeChild(element);
   }
 
+  // Called from anularjs with ng-change
   public onTextBoxRefresh () {
-    this.onUpload(JSON.parse(this.panel.jsonContent));
+    this.onUpload(JSON.parse(this.json_edit_box_content));
   }
 
   // ------------------------------------------------------
