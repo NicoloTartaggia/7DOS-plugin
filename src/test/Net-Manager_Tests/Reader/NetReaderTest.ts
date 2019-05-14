@@ -90,3 +90,18 @@ describe("NetReader - connectNode", () => {
         expect(() => networkReader.connectNode("node", new DataSource("http://localhost", "testDB"), "")).to.throw(Error, "[7DOS G&B][NetReader]connectNode - Invalid query");
     });
 });
+
+describe("NetReader - disconnectNode", () => {
+    const networkReader: NetReader = new NetReader(network);
+    it("Undefined node - Error", () => {
+        let node: string;
+        expect(() => networkReader.disconnectNode(node)).to.throw(Error, "[7DOS G&B][NetReader]disconnectNode - Invalid node");
+    });
+    it("Node not present - Error", () => {
+        expect(() => networkReader.disconnectNode("nodochenonce")).to.throw(Error, "[7DOS G&B][NetReader]disconnectNode - This node might be not linked to any flow");
+    });
+    it("Undefined query - Error", () => {
+        networkReader.connectNode("Example2", new DataSource("http://localhost:8086/", "testDB"), "SELECT Percent_DPC_Time FROM win_cpu");
+        expect(() => networkReader.disconnectNode("Example2")).to.not.throw(Error);
+    });
+});
